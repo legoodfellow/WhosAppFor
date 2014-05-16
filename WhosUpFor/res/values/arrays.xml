@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+ 
+ 
+
+    <!-- Main Activity Array -->
+    <string-array name="ui_main_activity_dialog_profile_image_array">
+        <item>Take from Camera</item>
+        <item>Select from gallery</item>
+    </string-array>
+
+</resources>

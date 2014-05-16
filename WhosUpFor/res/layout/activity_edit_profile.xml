@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false" >
+
+            <ImageView
+                android:id="@+id/editProfileImage"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:onClick="onImageClicked"
+                android:src="@drawable/icon_selfies" />
+            <!-- android:src="@drawable/default_profile" -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/ui_edit_profile_activity_user_first_name" />
+
+                <EditText
+                    android:id="@+id/editProfileFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:hint="@string/ui_edit_profile_activity_user_first_name_hint"
+                    android:inputType="textCapWords"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/ui_edit_profile_activity_user_last_name" />
+
+                <EditText
+                    android:id="@+id/editProfileLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:hint="@string/ui_edit_profile_activity_user_last_name_hint"
+                    android:inputType="textCapWords"
+                    android:singleLine="true" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/ui_edit_profile_activity_user_email" />
+
+        <EditText
+            android:id="@+id/editProfileEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/ui_edit_profile_activity_user_email_hint"
+            android:inputType="textEmailAddress"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/ui_edit_profile_activity_user_phone" />
+
+        <EditText
+            android:id="@+id/editProfilePhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/ui_edit_profile_activity_user_phone_hint"
+            android:inputType="phone"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/ui_edit_profile_activity_user_gender" />
+
+        <RadioGroup
+            android:id="@+id/editProfileRadioGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/editProfileRadioGenderF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ui_edit_profile_activity_user_gender_female" />
+
+            <RadioButton
+                android:id="@+id/editProfileRadioGenderM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ui_edit_profile_activity_user_gender_male" />
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/ui_edit_profile_activity_user_class" />
+
+        <EditText
+            android:id="@+id/editProfileClass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/ui_edit_profile_activity_user_class_hint"
+            android:inputType="number"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/ui_edit_profile_activity_user_major" />
+
+        <EditText
+            android:id="@+id/editProfileMajor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="@string/ui_edit_profile_activity_user_major_hint"
+            android:inputType="textCapWords"
+            android:singleLine="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/editProfileBtnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:onClick="onSaveClicked"
+                android:text="@string/ui_btn_save" />
+
+            <Button
+                android:id="@+id/editProfileBtnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:onClick="onCancelClicked"
+                android:text="@string/ui_btn_cancel" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

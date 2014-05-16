@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.dartmouth.cs.whosupfor"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="18" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.SelectNewEventTypeActivity"
+            android:label="@string/title_activity_select_new_event_type"
+            android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.ContactsActivity"
+            android:label="@string/title_activity_contacts"
+            android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+    </application>
+
+</manifest>

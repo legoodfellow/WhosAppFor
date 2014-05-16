@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Who\'s Up For</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+    <!-- Main_Activity -->
+
+    <string name="ui_main_activity_btn_filter">Filter</string>
+    <string name="ui_main_activity_btn_post">Post Event</string>
+    <string name="ui_main_activity_dialog_profile_photo">Select profile image</string>
+
+    <!-- SelectNewEventTypeActivity -->
+
+    <string name="title_activity_select_new_event_type">SelectNewEventTypeActivity</string>
+
+    <!-- Menu -->
+    <string name="ui_menu_profile">Profile</string>
+    <string name="ui_menu_contacts">Contacts</string>
+    <string name="ui_menu_settings">Settings</string>
+    <string name="ui_menu_logout">Logout</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+
+    <!-- Edit_Profile_Activity -->
+    <string name="ui_edit_profile_activity_profile_photo">Profile photo</string>
+    <string name="ui_edit_profile_activity_user_first_name">First Name(required):</string>
+    <string name="ui_edit_profile_activity_user_first_name_hint">Your first name here</string>
+    <string name="ui_edit_profile_activity_user_last_name">Last Name(required):</string>
+    <string name="ui_edit_profile_activity_user_last_name_hint">Your last name here</string>
+    <string name="ui_edit_profile_activity_user_email">Email(required):</string>
+    <string name="ui_edit_profile_activity_user_email_hint">Your email address here</string>
+    <string name="ui_edit_profile_activity_user_phone">Phone:</string>
+    <string name="ui_edit_profile_activity_user_phone_hint">Your phone number here</string>
+    <string name="ui_edit_profile_activity_user_gender">Gender:</string>
+    <string name="ui_edit_profile_activity_user_gender_female">Female</string>
+    <string name="ui_edit_profile_activity_user_gender_male">Male</string>
+    <string name="ui_edit_profile_activity_user_class">Class:</string>
+    <string name="ui_edit_profile_activity_user_class_hint">eg:2012</string>
+    <string name="ui_edit_profile_activity_user_major">Major:</string>
+    <string name="ui_edit_profile_activity_user_major_hint">Your major here</string>
+
+    <!-- Button -->
+    <string name="ui_btn_save">Save</string>
+    <string name="ui_btn_cancel">Cancel</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_contacts">ContactsActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+</resources>
