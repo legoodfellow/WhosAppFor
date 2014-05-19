@@ -43,8 +43,29 @@
     <!-- Button -->
     <string name="ui_btn_save">Save</string>
     <string name="ui_btn_cancel">Cancel</string>
+    <string name="ui_btn_event_type_food">Food</string>
+    <string name="ui_btn_event_type_sports">Sports</string>
+    <string name="ui_btn_event_type_study">Study</string>
+    <string name="ui_btn_event_type_movie">Movie</string>
+    <string name="ui_btn_event_type_party">Party</string>
+    <string name="ui_btn_event_type_add_new">+</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_contacts">ContactsActivity</string>
     <string name="title_activity_login">LoginActivity</string>
 
+    <!-- Create_New_Event_Activity -->
+    <string name="title_activity_create_new_event">CreateNewEventActivity</string>
+    <string name="ui_create_new_event_activity_whos">Who\'s</string>
+    <string name="ui_create_new_event_activity_up4">Up4</string>
+    <string name="ui_create_new_event_activity_up4_hint">e.g : EBA</string>
+    <string name="ui_create_new_event_activity_date">Date</string>
+    <string name="ui_create_new_event_activity_starts">Starts</string>
+    <string name="ui_create_new_event_activity_ends">Ends</string>
+    <string name="ui_create_new_event_activity_location">Location</string>
+    <string name="ui_create_new_event_activity_location_hint">Optional</string> 
+    <string name="ui_create_new_event_activity_comments">Comments</string>
+    <string name="ui_create_new_event_activity_comments_hint">Your comments here</string>
+    
+    
+    
 </resources>

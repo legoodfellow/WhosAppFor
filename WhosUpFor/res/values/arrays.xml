@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
- 
- 
-
-    <!-- Main Activity Array -->
+    <!-- Main_Activity -->
     <string-array name="ui_main_activity_dialog_profile_image_array">
         <item>Take from Camera</item>
         <item>Select from gallery</item>
     </string-array>
+
+    <!-- Create_New_Event_Activity -->
+    <string-array name="ui_create_new_event_activity_spinner_entries_whos">
+        <item>Friends</item>
+        <item>CS65</item>
+        <item>Public</item>
+    </string-array>
+    
+
 
 </resources>

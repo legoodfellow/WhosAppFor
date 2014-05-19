@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="edu.dartmouth.cs.whosupfor.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,6 +58,15 @@
         <activity
             android:name="edu.dartmouth.cs.whosupfor.LoginActivity"
             android:label="@string/title_activity_login" >
+        </activity>
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.CreateNewEventActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_create_new_event"
+            android:parentActivityName="edu.dartmouth.cs.whosupfor.SelectNewEventTypeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.whosupfor.SelectNewEventTypeActivity" />
         </activity>
     </application>
 

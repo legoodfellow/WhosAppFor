@@ -9,7 +9,10 @@ package edu.dartmouth.cs.whosupfor;
 
 public final class R {
     public static final class array {
-        /**  Main Activity Array 
+        /**  Create_New_Event_Activity 
+         */
+        public static final int ui_create_new_event_activity_spinner_entries_whos=0x7f040001;
+        /**  Main_Activity 
          */
         public static final int ui_main_activity_dialog_profile_image_array=0x7f040000;
     }
@@ -31,58 +34,93 @@ public final class R {
         public static final int icon_selfies=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f09000f;
-        public static final int btnMainActivityFilter=0x7f09000d;
-        public static final int btnMainActivityPostEvent=0x7f09000e;
-        public static final int editProfileBtnCancel=0x7f09000b;
-        public static final int editProfileBtnSave=0x7f09000a;
-        public static final int editProfileClass=0x7f090008;
-        public static final int editProfileEmail=0x7f090003;
-        public static final int editProfileFirstName=0x7f090001;
-        public static final int editProfileImage=0x7f090000;
-        public static final int editProfileLastName=0x7f090002;
-        public static final int editProfileMajor=0x7f090009;
-        public static final int editProfilePhone=0x7f090004;
-        public static final int editProfileRadioGender=0x7f090005;
-        public static final int editProfileRadioGenderF=0x7f090006;
-        public static final int editProfileRadioGenderM=0x7f090007;
-        public static final int imageMainActivityProfile=0x7f09000c;
-        public static final int menuitem_contacts=0x7f090011;
-        public static final int menuitem_logout=0x7f090013;
-        public static final int menuitem_profile=0x7f090010;
-        public static final int menuitem_settings=0x7f090012;
+        public static final int action_settings=0x7f09001d;
+        public static final int activitySelectNewEventTypeBtnAddNew=0x7f09001c;
+        public static final int activitySelectNewEventTypeBtnFood=0x7f090017;
+        public static final int activitySelectNewEventTypeBtnMovie=0x7f09001a;
+        public static final int activitySelectNewEventTypeBtnParty=0x7f09001b;
+        public static final int activitySelectNewEventTypeBtnSports=0x7f090018;
+        public static final int activitySelectNewEventTypeBtnStudy=0x7f090019;
+        public static final int btnMainActivityFilter=0x7f090015;
+        public static final int btnMainActivityPostEvent=0x7f090016;
+        public static final int createNewEventActivitySpinnerWhos=0x7f090000;
+        public static final int createNewEventActivityTextComments=0x7f090005;
+        public static final int createNewEventActivityTextEnds=0x7f090004;
+        public static final int createNewEventActivityTextLocation=0x7f090002;
+        public static final int createNewEventActivityTextStarts=0x7f090003;
+        public static final int createNewEventActivityTextUp4=0x7f090001;
+        public static final int createNewEventActivitybtnCancel=0x7f090007;
+        public static final int createNewEventActivitybtnSave=0x7f090006;
+        public static final int editProfileBtnCancel=0x7f090013;
+        public static final int editProfileBtnSave=0x7f090012;
+        public static final int editProfileClass=0x7f090010;
+        public static final int editProfileEmail=0x7f09000b;
+        public static final int editProfileFirstName=0x7f090009;
+        public static final int editProfileImage=0x7f090008;
+        public static final int editProfileLastName=0x7f09000a;
+        public static final int editProfileMajor=0x7f090011;
+        public static final int editProfilePhone=0x7f09000c;
+        public static final int editProfileRadioGender=0x7f09000d;
+        public static final int editProfileRadioGenderF=0x7f09000e;
+        public static final int editProfileRadioGenderM=0x7f09000f;
+        public static final int imageMainActivityProfile=0x7f090014;
+        public static final int menuitem_contacts=0x7f09001f;
+        public static final int menuitem_logout=0x7f090021;
+        public static final int menuitem_profile=0x7f09001e;
+        public static final int menuitem_settings=0x7f090020;
     }
     public static final class layout {
         public static final int activity_contacts=0x7f030000;
-        public static final int activity_edit_profile=0x7f030001;
-        public static final int activity_login=0x7f030002;
-        public static final int activity_main=0x7f030003;
-        public static final int activity_select_new_event_type=0x7f030004;
-        public static final int activity_settings=0x7f030005;
+        public static final int activity_create_new_event=0x7f030001;
+        public static final int activity_edit_profile=0x7f030002;
+        public static final int activity_login=0x7f030003;
+        public static final int activity_main=0x7f030004;
+        public static final int activity_select_new_event_type=0x7f030005;
+        public static final int activity_settings=0x7f030006;
     }
     public static final class menu {
         public static final int contacts=0x7f080000;
         public static final int edit_profile=0x7f080001;
-        public static final int login=0x7f080002;
-        public static final int main=0x7f080003;
-        public static final int select_new_event_type=0x7f080004;
-        public static final int settings=0x7f080005;
+        public static final int event_detail=0x7f080002;
+        public static final int login=0x7f080003;
+        public static final int main=0x7f080004;
+        public static final int select_new_event_type=0x7f080005;
+        public static final int settings=0x7f080006;
     }
     public static final class string {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060002;
-        public static final int title_activity_contacts=0x7f06001f;
+        public static final int title_activity_contacts=0x7f060025;
+        /**  Create_New_Event_Activity 
+         */
+        public static final int title_activity_create_new_event=0x7f060027;
         public static final int title_activity_edit_profile=0x7f06000b;
-        public static final int title_activity_login=0x7f060020;
+        public static final int title_activity_login=0x7f060026;
         /**  SelectNewEventTypeActivity 
          */
         public static final int title_activity_select_new_event_type=0x7f060006;
-        public static final int title_activity_settings=0x7f06001e;
+        public static final int title_activity_settings=0x7f060024;
         public static final int ui_btn_cancel=0x7f06001d;
+        public static final int ui_btn_event_type_add_new=0x7f060023;
+        public static final int ui_btn_event_type_food=0x7f06001e;
+        public static final int ui_btn_event_type_movie=0x7f060021;
+        public static final int ui_btn_event_type_party=0x7f060022;
+        public static final int ui_btn_event_type_sports=0x7f06001f;
+        public static final int ui_btn_event_type_study=0x7f060020;
         /**  Button 
          */
         public static final int ui_btn_save=0x7f06001c;
+        public static final int ui_create_new_event_activity_comments=0x7f060030;
+        public static final int ui_create_new_event_activity_comments_hint=0x7f060031;
+        public static final int ui_create_new_event_activity_date=0x7f06002b;
+        public static final int ui_create_new_event_activity_ends=0x7f06002d;
+        public static final int ui_create_new_event_activity_location=0x7f06002e;
+        public static final int ui_create_new_event_activity_location_hint=0x7f06002f;
+        public static final int ui_create_new_event_activity_starts=0x7f06002c;
+        public static final int ui_create_new_event_activity_up4=0x7f060029;
+        public static final int ui_create_new_event_activity_up4_hint=0x7f06002a;
+        public static final int ui_create_new_event_activity_whos=0x7f060028;
         /**  Edit_Profile_Activity 
          */
         public static final int ui_edit_profile_activity_profile_photo=0x7f06000c;

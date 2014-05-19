@@ -1,19 +1,28 @@
 package edu.dartmouth.cs.whosupfor;
 
-import android.os.Bundle;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.NavUtils;
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.view.View;
+import android.widget.Toast;
+import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class SelectNewEventTypeActivity extends Activity {
+
+	public Context mContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_new_event_type);
+		
+		mContext = getApplicationContext();
 		// Show the Up button in the action bar.
 		setupActionBar();
 	}
@@ -50,6 +59,77 @@ public class SelectNewEventTypeActivity extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Open different event post UI depending on the event type
+	 * 
+	 * @param view
+	 */
+	public void onClicked(View view) {
+
+		Intent intent;
+		Bundle extra = new Bundle();
+
+		switch (view.getId()) {
+		// Food
+		case R.id.activitySelectNewEventTypeBtnFood:
+			Toast.makeText(this,
+					getString(R.id.activitySelectNewEventTypeBtnFood),
+					Toast.LENGTH_SHORT).show();
+			// Remember the event type
+			extra.putInt(Globals.KEY_EVENT_TYPE,
+					R.id.activitySelectNewEventTypeBtnFood);
+			break;
+		// Sports
+		case R.id.activitySelectNewEventTypeBtnSports:
+			Toast.makeText(this,
+					getString(R.id.activitySelectNewEventTypeBtnSports),
+					Toast.LENGTH_SHORT).show();
+			extra.putInt(Globals.KEY_EVENT_TYPE,
+					R.id.activitySelectNewEventTypeBtnSports);
+			break;
+		// Study
+		case R.id.activitySelectNewEventTypeBtnStudy:
+			Toast.makeText(this,
+					getString(R.id.activitySelectNewEventTypeBtnStudy),
+					Toast.LENGTH_SHORT).show();
+			extra.putInt(Globals.KEY_EVENT_TYPE,
+					R.id.activitySelectNewEventTypeBtnStudy);
+			break;
+		// Movie
+		case R.id.activitySelectNewEventTypeBtnMovie:
+			Toast.makeText(this,
+					getString(R.id.activitySelectNewEventTypeBtnMovie),
+					Toast.LENGTH_SHORT).show();
+			extra.putInt(Globals.KEY_EVENT_TYPE,
+					R.id.activitySelectNewEventTypeBtnMovie);
+			break;
+		// Party
+		case R.id.activitySelectNewEventTypeBtnParty:
+			Toast.makeText(this,
+					getString(R.id.activitySelectNewEventTypeBtnParty),
+					Toast.LENGTH_SHORT).show();
+			extra.putInt(Globals.KEY_EVENT_TYPE,
+					R.id.activitySelectNewEventTypeBtnParty);
+			break;
+		// New Event Type
+		case R.id.activitySelectNewEventTypeBtnAddNew:
+			Toast.makeText(this,
+					getString(R.id.activitySelectNewEventTypeBtnAddNew),
+					Toast.LENGTH_SHORT).show();
+			extra.putInt(Globals.KEY_EVENT_TYPE,
+					R.id.activitySelectNewEventTypeBtnAddNew);
+			break;
+
+		default:
+			break;
+		}
+
+		intent = new Intent(mContext, CreateNewEventActivity.class);
+		intent.putExtras(extra);
+		// Call CreateNewEventActivity to enter detail event info.
+		startActivity(intent);
 	}
 
 }
