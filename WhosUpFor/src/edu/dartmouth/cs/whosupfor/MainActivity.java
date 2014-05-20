@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.whosupfor;
 
 import java.util.ArrayList;
+import java.util.Currency;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -12,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -55,9 +55,15 @@ public class MainActivity extends FragmentActivity {
 						getString(R.string.ui_tabname_my_post)),
 				MyPostFragment.class, null);
 		mPagerAdapter.addTab(
-				actionBar.newTab().setText(
-						getString(R.string.ui_tabname_going)),
+				actionBar.newTab()
+						.setText(getString(R.string.ui_tabname_going)),
 				GoingFragment.class, null);
+
+		// Restore to the previous tab before rotation
+		if (savedInstanceState != null) {
+			actionBar.setSelectedNavigationItem(savedInstanceState.getInt(
+					Globals.TAB_KEY_INDEX, 0));
+		}
 
 		// // Create new tabs and set up the titles of the tabs
 		// ActionBar.Tab mStartTab = actionBar.newTab().setText(
@@ -68,9 +74,9 @@ public class MainActivity extends FragmentActivity {
 		// getString(R.string.ui_tabname_going));
 
 		// Create the fragments
-		mNewsFeedFragment = new NewsFeedFragment();
-		mMyPostFragment = new MyPostFragment();
-		mGoingFragment = new GoingFragment();
+		// mNewsFeedFragment = new NewsFeedFragment();
+		// mMyPostFragment = new MyPostFragment();
+		// mGoingFragment = new GoingFragment();
 
 		// // Bind the fragments to the tabs - set up tabListeners for each tab
 		// mStartTab.setTabListener(new MyTabsListener(mNewsFeedFragment,
@@ -85,11 +91,6 @@ public class MainActivity extends FragmentActivity {
 		// actionBar.addTab(mHistoryTab);
 		// actionBar.addTab(mSettingsTab);
 
-		// Restore to the previous tab before rotation
-		if (savedInstanceState != null) {
-			actionBar.setSelectedNavigationItem(savedInstanceState.getInt(
-					Globals.TAB_KEY_INDEX, 0));
-		}
 	}
 
 	/**
@@ -156,7 +157,7 @@ public class MainActivity extends FragmentActivity {
 	 */
 	private class MyPagerAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
-		private final Context mContext;
+		private final Context mHelperContext;
 		private final ActionBar mActionBar;
 		private final ViewPager mViewPager;
 		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
@@ -173,7 +174,7 @@ public class MainActivity extends FragmentActivity {
 
 		public MyPagerAdapter(FragmentManager fm, ViewPager pager) {
 			super(fm);
-			mContext = getApplicationContext();
+			mHelperContext = getApplicationContext();
 			mActionBar = getActionBar();
 			mViewPager = pager;
 			mViewPager.setAdapter(this);
@@ -237,6 +238,9 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			Toast.makeText(mHelperContext, "Unselected!", Toast.LENGTH_SHORT)
+					.show();
+//			ft.remove(getFragmentManager().findFragmentByTag(tab.toString()));
 		}
 
 		@Override

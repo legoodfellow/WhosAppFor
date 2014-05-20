@@ -49,7 +49,7 @@ public class EditProfileActivity extends Activity {
 		// Get imageView and context
 		mImageView = (ImageView) findViewById(R.id.editProfileImage);
 		mContext = getApplicationContext();
-		
+
 		if (savedInstanceState != null) {
 			// Get saved byteArray of Bitmap image
 			mByteArray = savedInstanceState
@@ -214,7 +214,10 @@ public class EditProfileActivity extends Activity {
 		saveProfileData();
 		Toast.makeText(mContext, Globals.TOAST_SAVE_MESSAGE, Toast.LENGTH_SHORT)
 				.show();
-		finish();
+
+		Intent intent = new Intent(mContext, MainActivity.class);
+		startActivity(intent);
+		
 	}
 
 	/**
@@ -252,12 +255,12 @@ public class EditProfileActivity extends Activity {
 			// Load the profile name
 			mKey = getString(R.string.preference_key_edit_profile_activity_profile_first_name);
 			String mValue = mPrefs.getString(mKey, "");
-			((EditText) findViewById(R.id.editProfileFirstName)).setText(mValue);
+			((EditText) findViewById(R.id.editProfileFirstName))
+					.setText(mValue);
 			mKey = getString(R.string.preference_key_edit_profile_activity_profile_last_name);
 			mValue = mPrefs.getString(mKey, "");
 			((EditText) findViewById(R.id.editProfileLastName)).setText(mValue);
 
-			
 			// Load the profile email
 			mKey = getString(R.string.preference_key_edit_profile_activity_profile_email);
 			mValue = mPrefs.getString(mKey, "");
@@ -361,14 +364,17 @@ public class EditProfileActivity extends Activity {
 		mImageView.buildDrawingCache();
 		Bitmap bmap = mImageView.getDrawingCache();
 		try {
+			NewsFeedFragment.mHasProfileImage = true;
 			FileOutputStream fos = openFileOutput(
-					getString(R.string.preference_key_edit_profile_photo_file_name), MODE_PRIVATE);
+					getString(R.string.preference_key_edit_profile_photo_file_name),
+					MODE_PRIVATE);
 			bmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 			fos.flush();
 			fos.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+
 	}
 
 }

@@ -31,5 +31,9 @@ public class Globals {
 	// Toast
 	public static final String TOAST_SAVE_MESSAGE = "Saved";
 	public static final String TOAST_CANCEL_MESSAGE = "Canceled";
+	
+	// Boolean
+	public static boolean HAS_PROFILE_IMAGE = false;
+	
 
 }

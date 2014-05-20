@@ -66,6 +66,7 @@
     <string name="ui_btn_event_type_movie">Movie</string>
     <string name="ui_btn_event_type_party">Party</string>
     <string name="ui_btn_event_type_add_new">+</string>
+    
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_contacts">ContactsActivity</string>
     <string name="title_activity_login">LoginActivity</string>
