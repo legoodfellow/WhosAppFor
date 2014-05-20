@@ -52,38 +52,38 @@ public class MainActivity extends FragmentActivity {
 				NewsFeedFragment.class, null);
 		mPagerAdapter.addTab(
 				actionBar.newTab().setText(
-						getString(R.string.ui_tabname_news_feed)),
+						getString(R.string.ui_tabname_my_post)),
 				MyPostFragment.class, null);
 		mPagerAdapter.addTab(
 				actionBar.newTab().setText(
-						getString(R.string.ui_tabname_news_feed)),
+						getString(R.string.ui_tabname_going)),
 				GoingFragment.class, null);
 
-//		// Create new tabs and set up the titles of the tabs
-//		ActionBar.Tab mStartTab = actionBar.newTab().setText(
-//				getString(R.string.ui_tabname_news_feed));
-//		ActionBar.Tab mHistoryTab = actionBar.newTab().setText(
-//				getString(R.string.ui_tabname_my_post));
-//		ActionBar.Tab mSettingsTab = actionBar.newTab().setText(
-//				getString(R.string.ui_tabname_going));
+		// // Create new tabs and set up the titles of the tabs
+		// ActionBar.Tab mStartTab = actionBar.newTab().setText(
+		// getString(R.string.ui_tabname_news_feed));
+		// ActionBar.Tab mHistoryTab = actionBar.newTab().setText(
+		// getString(R.string.ui_tabname_my_post));
+		// ActionBar.Tab mSettingsTab = actionBar.newTab().setText(
+		// getString(R.string.ui_tabname_going));
 
 		// Create the fragments
 		mNewsFeedFragment = new NewsFeedFragment();
 		mMyPostFragment = new MyPostFragment();
 		mGoingFragment = new GoingFragment();
 
-//		// Bind the fragments to the tabs - set up tabListeners for each tab
-//		mStartTab.setTabListener(new MyTabsListener(mNewsFeedFragment,
-//				getApplicationContext()));
-//		mHistoryTab.setTabListener(new MyTabsListener(mMyPostFragment,
-//				getApplicationContext()));
-//		mSettingsTab.setTabListener(new MyTabsListener(mGoingFragment,
-//				getApplicationContext()));
-//
-//		// Add the tabs to the actionBar
-//		actionBar.addTab(mStartTab);
-//		actionBar.addTab(mHistoryTab);
-//		actionBar.addTab(mSettingsTab);
+		// // Bind the fragments to the tabs - set up tabListeners for each tab
+		// mStartTab.setTabListener(new MyTabsListener(mNewsFeedFragment,
+		// getApplicationContext()));
+		// mHistoryTab.setTabListener(new MyTabsListener(mMyPostFragment,
+		// getApplicationContext()));
+		// mSettingsTab.setTabListener(new MyTabsListener(mGoingFragment,
+		// getApplicationContext()));
+		//
+		// // Add the tabs to the actionBar
+		// actionBar.addTab(mStartTab);
+		// actionBar.addTab(mHistoryTab);
+		// actionBar.addTab(mSettingsTab);
 
 		// Restore to the previous tab before rotation
 		if (savedInstanceState != null) {
@@ -152,8 +152,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	/**
-	 * A simple pager adapter that represents 5 ScreenSlidePageFragment objects,
-	 * in sequence.
+	 * A simple pager adapter that represents 3 objects, in sequence.
 	 */
 	private class MyPagerAdapter extends FragmentPagerAdapter implements
 			ActionBar.TabListener, ViewPager.OnPageChangeListener {
@@ -247,41 +246,41 @@ public class MainActivity extends FragmentActivity {
 
 }
 
-///**
+// /**
 // * TabListenr class for managing user interaction with the ActionBar tabs. The
 // * application mHelperContext is passed in pass it in constructor, needed for
 // * the toast.
 // */
-//class MyTabsListener implements ActionBar.TabListener {
-//	public Fragment mFragment;
-//	public Context mHelperContext;
+// class MyTabsListener implements ActionBar.TabListener {
+// public Fragment mFragment;
+// public Context mHelperContext;
 //
-//	public MyTabsListener(Fragment fragment, Context context) {
-//		this.mFragment = fragment;
-//		this.mHelperContext = context;
+// public MyTabsListener(Fragment fragment, Context context) {
+// this.mFragment = fragment;
+// this.mHelperContext = context;
 //
-//	}
+// }
 //
-//	@Override
-//	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-//		Toast.makeText(mHelperContext, "Reselected!", Toast.LENGTH_SHORT)
-//				.show();
+// @Override
+// public void onTabReselected(Tab tab, FragmentTransaction ft) {
+// Toast.makeText(mHelperContext, "Reselected!", Toast.LENGTH_SHORT)
+// .show();
 //
-//	}
+// }
 //
-//	@Override
-//	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-//		Toast.makeText(mHelperContext, "Selected!", Toast.LENGTH_SHORT).show();
+// @Override
+// public void onTabSelected(Tab tab, FragmentTransaction ft) {
+// Toast.makeText(mHelperContext, "Selected!", Toast.LENGTH_SHORT).show();
 //
-//		// ft.replace(R.id.fragment_container, mFragment);
-//	}
+// // ft.replace(R.id.fragment_container, mFragment);
+// }
 //
-//	@Override
-//	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-//		Toast.makeText(mHelperContext, "Unselected!", Toast.LENGTH_SHORT)
-//				.show();
+// @Override
+// public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+// Toast.makeText(mHelperContext, "Unselected!", Toast.LENGTH_SHORT)
+// .show();
 //
-//		// ft.remove(mFragment);
-//	}
+// // ft.remove(mFragment);
+// }
 //
-//}
+// }
