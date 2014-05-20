@@ -6,13 +6,18 @@
     <string name="hello_world">Hello world!</string>
 
     <!-- Main_Activity -->
-
     <string name="ui_main_activity_btn_filter">Filter</string>
     <string name="ui_main_activity_btn_post">Post Event</string>
     <string name="ui_main_activity_dialog_profile_photo">Select profile image</string>
+    <string name="ui_tabname_news_feed">News Feed</string>
+    <string name="ui_tabname_my_post">My Post</string>
+    <string name="ui_tabname_going">Going</string>
 
-    <!-- SelectNewEventTypeActivity -->
+    <!-- News_Feed_Fragment -->
+    <string name="ui_news_feed_fragment_btn_filter">Filter</string>
+    <string name="ui_news_feed_fragment_btn_post">Post Event</string>
 
+    <!-- Select_New_Event_Type_Activity -->
     <string name="title_activity_select_new_event_type">SelectNewEventTypeActivity</string>
 
     <!-- Menu -->
@@ -39,6 +44,18 @@
     <string name="ui_edit_profile_activity_user_class_hint">eg:2012</string>
     <string name="ui_edit_profile_activity_user_major">Major:</string>
     <string name="ui_edit_profile_activity_user_major_hint">Your major here</string>
+    
+
+    <!-- Shared_Preference -->
+    <string name="preference_name_edit_profile_activity">account_profile_shared_preference</string>
+    <string name="preference_key_edit_profile_activity_profile_first_name">profile_first_name</string>
+    <string name="preference_key_edit_profile_activity_profile_last_name">profile_last_name</string>
+    <string name="preference_key_edit_profile_activity_profile_email">profile_email</string>
+    <string name="preference_key_edit_profile_activity_profile_phone">profile_phone</string>
+    <string name="preference_key_edit_profile_activity_profile_gender">profile_gender</string>
+    <string name="preference_key_edit_profile_activity_profile_class">profile_class</string>
+    <string name="preference_key_edit_profile_activity_profile_major">profile_major</string>
+    <string name="preference_key_edit_profile_photo_file_name">profile_photo.png</string>
 
     <!-- Button -->
     <string name="ui_btn_save">Save</string>
@@ -62,10 +79,27 @@
     <string name="ui_create_new_event_activity_starts">Starts</string>
     <string name="ui_create_new_event_activity_ends">Ends</string>
     <string name="ui_create_new_event_activity_location">Location</string>
-    <string name="ui_create_new_event_activity_location_hint">Optional</string> 
+    <string name="ui_create_new_event_activity_location_hint">Optional</string>
     <string name="ui_create_new_event_activity_comments">Comments</string>
     <string name="ui_create_new_event_activity_comments_hint">Your comments here</string>
-    
-    
-    
+
+    <!-- Dialog -->
+    <string name="ui_dialog_profile_photo">Select profile image</string>
+    <string name="ui_dialog_pick_date">Pick date</string>
+    <string name="ui_dialog_pick_time">Pick time</string>
+    <string name="ui_dialog_ok">OK</string>
+    <string name="ui_dialog_cancel">Cancel</string>
+
+    <!-- Fragment_Filter_Dialog -->
+    <string name="ui_fragment_filter_dialog_event_type">Event Type</string>
+    <string name="ui_fragment_filter_dialog_circle">Circle</string>
+    <string name="ui_fragment_filter_dialog_event_type_food">Food</string>
+    <string name="ui_fragment_filter_dialog_event_type_sports">Sports</string>
+    <string name="ui_fragment_filter_dialog_event_type_study">Study</string>
+    <string name="ui_fragment_filter_dialog_event_type_movie">Movie</string>
+    <string name="ui_fragment_filter_dialog_event_type_party">Party</string>
+    <string name="ui_fragment_filter_dialog_circle_friends">Friends</string>
+    <string name="ui_fragment_filter_dialog_circle_cs65">CS65</string>
+    <string name="ui_fragment_filter_dialog_circle_public">Public</string>
+
 </resources>

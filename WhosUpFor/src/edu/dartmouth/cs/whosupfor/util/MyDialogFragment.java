@@ -11,16 +11,19 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
-import edu.dartmouth.cs.whosupfor.EditProfileActivity;
 import edu.dartmouth.cs.whosupfor.CreateNewEventActivity;
+import edu.dartmouth.cs.whosupfor.EditProfileActivity;
 import edu.dartmouth.cs.whosupfor.R;
 
 public class MyDialogFragment extends DialogFragment {
 
+	private CharSequence[] items = { "Friends", "CS65", "Public" };
 	private Calendar mDateAndTime = Calendar.getInstance();
-	
+
 	/**
 	 * Method to create various dialogs, call helper method: onCreateDialog
 	 * 
@@ -45,14 +48,15 @@ public class MyDialogFragment extends DialogFragment {
 		// final EditText input = new EditText(getActivity());
 
 		switch (title) {
-		// Profile change
-		case R.string.ui_main_activity_dialog_profile_photo:
+
+		// Profile change image
+		case R.string.ui_dialog_profile_photo:
 
 			// Build picture picker dialog for choosing from camera or gallery
 			return new AlertDialog.Builder(getActivity())
 					.setTitle(title)
 					.setItems(
-							R.array.ui_main_activity_dialog_profile_image_array,
+							R.array.ui_edit_profile_activity_dialog_profile_image_array,
 							new OnClickListener() {
 								public void onClick(DialogInterface arg0,
 										int arg1) {
@@ -61,7 +65,50 @@ public class MyDialogFragment extends DialogFragment {
 								}
 							}).create();
 
-		case Globals.PICK_DATE:
+			// Filter
+		case R.string.ui_news_feed_fragment_btn_filter:
+			LayoutInflater inflater = getActivity().getLayoutInflater();
+			View view = inflater.inflate(R.layout.fragment_filter_dialog, null);
+
+			// Build picture picker dialog for choosing from camera or gallery
+			return new AlertDialog.Builder(getActivity())
+					.setView(view)
+					.setTitle(title)
+//					.setMultiChoiceItems(items,
+//							new boolean[] { false, false, false },
+//							new DialogInterface.OnMultiChoiceClickListener() {
+//								public void onClick(DialogInterface arg0,
+//										int arg1, boolean arg2) {
+//									// TODO Auto-generated method stub
+//
+//								}
+//							})
+//					.setMultiChoiceItems(items,
+//							new boolean[] { false, false, false },
+//							new DialogInterface.OnMultiChoiceClickListener() {
+//								public void onClick(DialogInterface arg0,
+//										int arg1, boolean arg2) {
+//									// TODO Auto-generated method stub
+//
+//								}
+//							})
+					.setPositiveButton(R.string.ui_dialog_ok,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+
+								}
+							})
+					.setNegativeButton(R.string.ui_dialog_cancel,
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+
+								}
+							}).create();
+
+			// Pick date
+		case R.string.ui_dialog_pick_date:
 			DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
 				public void onDateSet(DatePicker view, int year,
 						int monthOfYear, int dayOfMonth) {
@@ -77,8 +124,8 @@ public class MyDialogFragment extends DialogFragment {
 					mDateAndTime.get(Calendar.MONTH),
 					mDateAndTime.get(Calendar.DAY_OF_MONTH));
 
-			// Time
-		case Globals.PICK_TIME:
+			// Pick time
+		case R.string.ui_dialog_pick_time:
 			TimePickerDialog.OnTimeSetListener mTimeListener = new OnTimeSetListener() {
 				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					mDateAndTime.set(Calendar.HOUR, hourOfDay);

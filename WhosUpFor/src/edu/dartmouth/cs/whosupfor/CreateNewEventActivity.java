@@ -29,7 +29,7 @@ public class CreateNewEventActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 		
-		// Get context
+		// Get mHelperContext
 		mContext =  getApplicationContext();
 		
 		// Get event type
@@ -78,12 +78,12 @@ public class CreateNewEventActivity extends Activity {
 
 		switch (view.getId()) {
 		case R.id.createNewEventActivityTextStarts:
-			dialogId = Globals.PICK_DATE;
+			dialogId = R.string.ui_dialog_pick_date;
 			disDialog(dialogId);
 			break;
 
 		case R.id.createNewEventActivityTextEnds:
-			dialogId = Globals.PICK_DATE;
+			dialogId = R.string.ui_dialog_pick_date;;
 			disDialog(dialogId);
 			break;
 			
@@ -145,7 +145,7 @@ public class CreateNewEventActivity extends Activity {
 //		Log.d(Globals.TAG_MANUAL_INPUT_ACTIVITY,
 //				"onDateSave(Calendar dateTime): " + dt);
 		
-		int dialogId = Globals.PICK_TIME;
+		int dialogId = R.string.ui_dialog_pick_time;
 		disDialog(dialogId);
 	}
 	

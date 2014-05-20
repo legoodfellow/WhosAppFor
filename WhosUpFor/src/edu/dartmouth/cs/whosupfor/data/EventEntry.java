@@ -1,6 +1,7 @@
 package edu.dartmouth.cs.whosupfor.data;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.json.JSONException;
@@ -18,10 +19,21 @@ public class EventEntry {
 	private Long mDbId; // Database mDbId of the entry
 	private String mOrganizer; // User id of the person who created this event
 	private int mEventType; // eg: Food, Study, Movie....
+	private String mEventTitle; // Brief description of the event (“Dinner”,
+								// “Studying for CS65”, “Playing frisbee”, etc.)
+	private String mLocation; // The organizer’s text description of the
+								// location (“Boloco”, “Sudikoff”, etc) (GPS
+								// data might be added for v2)
+	private int mTimeStamp; // Automatically generated timestamp in milliseconds
+							// of when the event was created
 	private String mStartDate; // Event start date
 	private String mStartTime; // Event start time
 	private String mEndDate; // Event end date
 	private String mEndTime; // Event end time
+	private String mDetail; // The organizer’s comment with event details
+	private ArrayList<String> mAttendees; // List of attendee IDs
+	private int mCircle; // Circle to be received the invitation
+	
 
 	private double mDistance; // Distance traveled. Either in meters or feet.
 	private double mAvgPace; // Average pace

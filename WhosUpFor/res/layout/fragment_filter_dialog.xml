@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ui_fragment_filter_dialog_event_type" />
+
+    <RadioGroup
+        android:id="@+id/fragmentFilterDialogRadioEventType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioEventTypeFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/ui_fragment_filter_dialog_event_type_food" />
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioEventSports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ui_fragment_filter_dialog_event_type_sports" />
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioEventStudy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ui_fragment_filter_dialog_event_type_study" />
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioEventMovie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ui_fragment_filter_dialog_event_type_movie" />
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioEventParty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ui_fragment_filter_dialog_event_type_party" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ui_fragment_filter_dialog_circle" />
+
+    <RadioGroup
+        android:id="@+id/fragmentFilterDialogRadioCircle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioCircleFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/ui_fragment_filter_dialog_circle_friends" />
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioCircleCS65"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ui_fragment_filter_dialog_circle_cs65" />
+
+        <RadioButton
+            android:id="@+id/fragmentFilterDialogRadioCirclePublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/ui_fragment_filter_dialog_circle_public" />
+    </RadioGroup>
+
+</LinearLayout>
