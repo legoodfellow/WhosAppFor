@@ -1,7 +1,6 @@
 package edu.dartmouth.cs.whosupfor;
 
 import java.util.ArrayList;
-import java.util.Currency;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -18,6 +17,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import edu.dartmouth.cs.whosupfor.menu.ContactsActivity;
+import edu.dartmouth.cs.whosupfor.menu.EditProfileActivity;
+import edu.dartmouth.cs.whosupfor.menu.SettingsActivity;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class MainActivity extends FragmentActivity {

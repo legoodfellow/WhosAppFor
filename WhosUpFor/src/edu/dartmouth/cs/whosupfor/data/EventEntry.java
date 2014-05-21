@@ -3,6 +3,7 @@ package edu.dartmouth.cs.whosupfor.data;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,43 +11,34 @@ import org.json.JSONObject;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 /**
- * ADT for storing event data
+ * ADT for storing event entry data
+ * using email as the unique user id
  * 
  * @author Aaron Jun Yang
  * 
  */
 public class EventEntry {
 	private Long mDbId; // Database mDbId of the entry
-	private String mOrganizer; // User id of the person who created this event
+//	private String mOrganizerId; // User id of the person who created this event
+	private String mEmail;
 	private int mEventType; // eg: Food, Study, Movie....
 	private String mEventTitle; // Brief description of the event (“Dinner”,
 								// “Studying for CS65”, “Playing frisbee”, etc.)
 	private String mLocation; // The organizer’s text description of the
 								// location (“Boloco”, “Sudikoff”, etc) (GPS
 								// data might be added for v2)
-	private int mTimeStamp; // Automatically generated timestamp in milliseconds
-							// of when the event was created
+	private Date mTimeStamp; // Automatically generated timestamp in
+								// milliseconds
+								// of when the event was created
 	private String mStartDate; // Event start date
 	private String mStartTime; // Event start time
 	private String mEndDate; // Event end date
 	private String mEndTime; // Event end time
 	private String mDetail; // The organizer’s comment with event details
 	private ArrayList<String> mAttendees; // List of attendee IDs
-	private int mCircle; // Circle to be received the invitation
-	
+	private int mCircle; // Indicates which friend circle can view the event (
+							// e.g. 0 = public, 1 = friends)
 
-	private double mDistance; // Distance traveled. Either in meters or feet.
-	private double mAvgPace; // Average pace
-	private double mAvgSpeed; // Average speed
-	private int mCalorie; // Calories burnt
-	private double mClimb; // Climb. Either in meters or feet.
-	private int mHeartRate; // Heart rate
-	private String mComment; // Comments
-	private byte[] mGPSData;
-	// private ArrayList<LatLng> mLocationList; // Location list
-	//
-	// private static final String DATE_FORMAT_NOW = "MMM dd, yyyy";
-	// private static final String TIME_FORMAT_NOW = "HH:mm:ss";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat(
 			Globals.DATE_FORMAT_NOW);
 	private static final SimpleDateFormat stf = new SimpleDateFormat(
@@ -54,18 +46,17 @@ public class EventEntry {
 
 	public EventEntry() {
 		this.mEventType = -1;
-
+		this.mEventTitle = " ";
+		this.mEmail = " ";
+		this.mLocation = " ";
+		this.mTimeStamp = Calendar.getInstance().getTime();
 		this.mStartDate = sdf.format(Calendar.getInstance().getTime());
 		this.mStartTime = stf.format(Calendar.getInstance().getTime());
-
-		this.mDistance = 0.0;
-		this.mAvgPace = 0.0;
-		this.mAvgSpeed = 0.0;
-		this.mCalorie = 0;
-		this.mClimb = 0.0;
-		this.mHeartRate = 0;
-		this.mComment = " ";
-		this.mGPSData = new byte[0];
+		this.mEndDate = sdf.format(Calendar.getInstance().getTime());
+		this.mEndTime = stf.format(Calendar.getInstance().getTime());
+		this.mDetail = " ";
+		this.mAttendees = new ArrayList<String>();
+		this.mCircle = -1;
 	}
 
 	/**
@@ -82,12 +73,6 @@ public class EventEntry {
 			mStartDate = obj.getString("date");
 			mStartTime = obj.getString("time");
 
-			mDistance = obj.getDouble("distance");
-			mAvgSpeed = obj.getDouble("avgSpeed");
-			mCalorie = obj.getInt("calorie");
-			mClimb = obj.getDouble("climb");
-			mHeartRate = obj.getInt("heartrate");
-			mComment = obj.getString("comment");
 		} catch (JSONException e) {
 			return null;
 		}
@@ -109,12 +94,6 @@ public class EventEntry {
 			obj.put("dateTime", mStartDate);
 			obj.put("time", mStartTime);
 
-			obj.put("distance", mDistance);
-			obj.put("avgSpeed", mAvgSpeed);
-			obj.put("calorie", mCalorie);
-			obj.put("climb", mClimb);
-			obj.put("heartrate", mHeartRate);
-			obj.put("comment", mComment);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -136,120 +115,110 @@ public class EventEntry {
 	}
 
 	/**
-	 * Set input type
+	 * Set email
+	 *  
+	 * @param organizerId
+	 */
+	public void setEmail(String email) {
+		mEmail = email;
+	}
+
+	public String getEmail() {
+		return mEmail;
+	}
+
+	/**
+	 * Set event type
 	 * 
 	 * @param inputType
 	 */
-	public void setInputType(int inputType) {
-		mEventType = inputType;
+	public void setEventType(int eventType) {
+		mEventType = eventType;
 	}
 
-	public int getInputType() {
+	public int getEventType() {
 		return mEventType;
 	}
 
 	/**
-	 * Set date and time
+	 * Set event title
 	 * 
-	 * @param dateTime
+	 * @param eventTitle
 	 */
-	public void setDate(String date) {
-		mStartDate = date;
+	public void setEventTitle(String eventTitle) {
+		mEventTitle = eventTitle;
 	}
 
-	public String getDate() {
+	public String getEventTitle() {
+		return mEventTitle;
+	}
+
+	/**
+	 * Set event location
+	 * 
+	 * @param location
+	 */
+	public void setLocation(String location) {
+		mLocation = location;
+	}
+
+	public String getLocation() {
+		return mLocation;
+	}
+
+	/**
+	 * Set time stamp
+	 * 
+	 * @param timeStamp
+	 */
+	public void setTimeStamp(Date timeStamp) {
+		mTimeStamp = timeStamp;
+	}
+
+	public Date getTimeStamp() {
+		return mTimeStamp;
+	}
+
+	/**
+	 * Set Start date and time
+	 * 
+	 * @param startDate
+	 */
+	public void setStartDate(String startDate) {
+		mStartDate = startDate;
+	}
+
+	public String getStartDate() {
 		return mStartDate;
 	}
 
-	public void setTime(String Time) {
-		mStartTime = Time;
+	public void setStartTime(String startTime) {
+		mStartTime = startTime;
 	}
 
-	public String getTime() {
+	public String getStartTime() {
 		return mStartTime;
 	}
 
 	/**
-	 * Set distance
+	 * Set end date and time
 	 * 
-	 * @param distance
+	 * @param endDatena
 	 */
-	public void setDistance(double distance) {
-		mDistance = distance;
+	public void setEndDate(String endDate) {
+		mStartDate = endDate;
 	}
 
-	/**
-	 * Get distance in km/mile
-	 * 
-	 * @return
-	 */
-	public double getDistance() {
-		return mDistance;
+	public String getEndDate() {
+		return mStartDate;
 	}
 
-	/**
-	 * Set average pace
-	 * 
-	 * @param avgPace
-	 */
-	public void setAvgPace(double avgPace) {
-		mAvgPace = avgPace;
+	public void setEndTime(String endTime) {
+		mStartTime = endTime;
 	}
 
-	public double getAvgPace() {
-		return mAvgPace;
-	}
-
-	/**
-	 * Set average speed
-	 * 
-	 * @param avgSpeed
-	 */
-	public void setAvgSpeed(double avgSpeed) {
-		mAvgSpeed = avgSpeed;
-	}
-
-	public double getAvgSpeed() {
-		return mAvgSpeed;
-	}
-
-	/**
-	 * Set Calorie
-	 * 
-	 * @param calorie
-	 */
-	public void setCalorie(int calorie) {
-		mCalorie = calorie;
-	}
-
-	public int getCalorie() {
-		return mCalorie;
-	}
-
-	/**
-	 * Set climb
-	 * 
-	 * @param climb
-	 */
-	public void setClimb(double climb) {
-		mClimb = climb;
-	}
-
-	public double getClimb() {
-		return mClimb;
-	}
-
-	/**
-	 * Set heart rate
-	 * 
-	 * @param heartRate
-	 */
-	public void setHeartRate(int heartRate) {
-		mHeartRate = heartRate;
-	}
-
-	public int getHeartRate() {
-		return mHeartRate;
+	public String getEndTime() {
+		return mStartTime;
 	}
 
 	/**
@@ -257,20 +226,24 @@ public class EventEntry {
 	 * 
 	 * @param comment
 	 */
-	public void setComment(String comment) {
-		mComment = comment;
+	public void setDetail(String detail) {
+		mDetail = detail;
 	}
 
-	public String getComment() {
-		return mComment;
+	public String getDetail() {
+		return mDetail;
 	}
 
-	public void setGPSData(byte[] locationArray) {
-		mGPSData = locationArray;
+	/**
+	 * Set circle
+	 * 
+	 * @param circle
+	 */
+	public void setCircle(int circle) {
+		mCircle = circle;
 	}
 
-	public byte[] getGPSData() {
-		return mGPSData;
+	public int getCircle() {
+		return mCircle;
 	}
-
 }

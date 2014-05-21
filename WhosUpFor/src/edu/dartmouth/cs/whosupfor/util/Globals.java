@@ -1,5 +1,8 @@
 package edu.dartmouth.cs.whosupfor.util;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 public class Globals {
 
 	// LOG
@@ -22,8 +25,29 @@ public class Globals {
 	public static final String DATE_FORMAT_NOW = "MMM dd, yyyy";
 	public static final String TIME_FORMAT_NOW = "HH:mm:ss";
 
-	// EditProfileActivity
+	// EventEntryDbHelper
+	public static final String TABLE_NAME_ENTRIES = "eventEntryTable";
+	public static final String KEY_EVENT_ENTRY_ROWID = "_id";
+	public static final String KEY_INPUT_TYPE = "inputType";
+	public static final String KEY_ACTIVITY_TYPE = "activityType";
+	public static final String KEY_DATE = "date";
+	public static final String KEY_TIME = "time";
+	public static final String KEY_DURATION = "duration";
+	public static final String KEY_DISTANCE = "distance";
+	public static final String KEY_AVG_PACE = "pace";
+	public static final String KEY_AVG_SPEED = "speed";
+	public static final String KEY_CALORIES = "calories";
+	public static final String KEY_CLIMB = "climb";
+	public static final String KEY_HEARTRATE = "heartRate";
+	public static final String KEY_COMMENT = "comment";
+	public static final String KEY_PRIVACY = "privacy";
+	public static final String KEY_GPS_DATA = "gps";
+	public static final String DATABASE_NAME = "myrun.db";
+	public static final int DATABASE_VERSION = 1;
+	
 
+
+	// EditProfileActivity
 	public static final String IMG_INSTANCE_STATE_KEY = "saved_image";
 	public static final String URI_INSTANCE_STATE_KEY = "saved_uri";
 	public static final String IMAGE_UNSPECIFIED = "image/*";
@@ -31,9 +55,8 @@ public class Globals {
 	// Toast
 	public static final String TOAST_SAVE_MESSAGE = "Saved";
 	public static final String TOAST_CANCEL_MESSAGE = "Canceled";
-	
+
 	// Boolean
 	public static boolean HAS_PROFILE_IMAGE = false;
-	
 
 }

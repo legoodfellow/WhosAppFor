@@ -1,5 +1,7 @@
 package edu.dartmouth.cs.whosupfor.data;
 
-public class UserEntryDbHelper {
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class UserEntryDbHelper  {
 
 }

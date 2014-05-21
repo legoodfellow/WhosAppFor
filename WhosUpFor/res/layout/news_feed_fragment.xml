@@ -6,15 +6,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:baselineAligned="false" >
 
         <ImageView
             android:id="@+id/imageNewsFeedFragmentProfile"
-            android:layout_width="143dp"
-            android:layout_height="126dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_margin="5dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:onClick="onClicked"
@@ -23,8 +23,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+            android:layout_weight="4"
+            android:orientation="horizontal" >
 
             <Button
                 android:id="@+id/btnNewsFeedFragmentFilter"
@@ -32,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/button_shape"
                 android:text="@string/ui_news_feed_fragment_btn_filter" />
 
@@ -41,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/button_shape"
                 android:text="@string/ui_news_feed_fragment_btn_post" />
         </LinearLayout>

@@ -16,8 +16,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import edu.dartmouth.cs.whosupfor.CreateNewEventActivity;
-import edu.dartmouth.cs.whosupfor.EditProfileActivity;
 import edu.dartmouth.cs.whosupfor.R;
+import edu.dartmouth.cs.whosupfor.menu.EditProfileActivity;
 
 public class MyDialogFragment extends DialogFragment {
 

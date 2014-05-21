@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="12"
         android:targetSdkVersion="18" />
 
     <uses-feature
@@ -45,7 +45,7 @@
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
         <activity
-            android:name="edu.dartmouth.cs.whosupfor.EditProfileActivity"
+            android:name="edu.dartmouth.cs.whosupfor.menu.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
             <meta-data
@@ -53,7 +53,7 @@
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
         <activity
-            android:name="edu.dartmouth.cs.whosupfor.SettingsActivity"
+            android:name="edu.dartmouth.cs.whosupfor.menu.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
             <meta-data
@@ -61,7 +61,7 @@
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
         <activity
-            android:name="edu.dartmouth.cs.whosupfor.ContactsActivity"
+            android:name="edu.dartmouth.cs.whosupfor.menu.ContactsActivity"
             android:label="@string/title_activity_contacts"
             android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
             <meta-data
