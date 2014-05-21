@@ -37,15 +37,18 @@ public final class R {
         public static final int icon_selfies=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f090029;
+        public static final int action_settings=0x7f09002d;
         public static final int activitySelectNewEventTypeBtnAddNew=0x7f09001a;
         public static final int activitySelectNewEventTypeBtnFood=0x7f090015;
         public static final int activitySelectNewEventTypeBtnMovie=0x7f090018;
         public static final int activitySelectNewEventTypeBtnParty=0x7f090019;
         public static final int activitySelectNewEventTypeBtnSports=0x7f090016;
         public static final int activitySelectNewEventTypeBtnStudy=0x7f090017;
-        public static final int btnNewsFeedFragmentFilter=0x7f090026;
-        public static final int btnNewsFeedFragmentPostEvent=0x7f090027;
+        public static final int btnNewsFeedFragmentFilter=0x7f09002a;
+        public static final int btnNewsFeedFragmentPostEvent=0x7f09002b;
+        public static final int button1=0x7f09001e;
+        public static final int contactListItemUserName=0x7f09001d;
+        public static final int contactListItemUserProfileImage=0x7f09001c;
         public static final int createNewEventActivitySpinnerWhos=0x7f090000;
         public static final int createNewEventActivityTextComments=0x7f090005;
         public static final int createNewEventActivityTextEnds=0x7f090004;
@@ -66,22 +69,23 @@ public final class R {
         public static final int editProfileRadioGender=0x7f09000c;
         public static final int editProfileRadioGenderF=0x7f09000d;
         public static final int editProfileRadioGenderM=0x7f09000e;
-        public static final int fragmentFilterDialogRadioCircle=0x7f090021;
-        public static final int fragmentFilterDialogRadioCircleCS65=0x7f090023;
-        public static final int fragmentFilterDialogRadioCircleFriends=0x7f090022;
-        public static final int fragmentFilterDialogRadioCirclePublic=0x7f090024;
-        public static final int fragmentFilterDialogRadioEventMovie=0x7f09001f;
-        public static final int fragmentFilterDialogRadioEventParty=0x7f090020;
-        public static final int fragmentFilterDialogRadioEventSports=0x7f09001d;
-        public static final int fragmentFilterDialogRadioEventStudy=0x7f09001e;
-        public static final int fragmentFilterDialogRadioEventType=0x7f09001b;
-        public static final int fragmentFilterDialogRadioEventTypeFood=0x7f09001c;
-        public static final int imageNewsFeedFragmentProfile=0x7f090025;
-        public static final int menuitem_add_contacts=0x7f090028;
-        public static final int menuitem_contacts=0x7f09002b;
-        public static final int menuitem_logout=0x7f09002d;
-        public static final int menuitem_profile=0x7f09002a;
-        public static final int menuitem_settings=0x7f09002c;
+        public static final int employee=0x7f09001b;
+        public static final int fragmentFilterDialogRadioCircle=0x7f090025;
+        public static final int fragmentFilterDialogRadioCircleCS65=0x7f090027;
+        public static final int fragmentFilterDialogRadioCircleFriends=0x7f090026;
+        public static final int fragmentFilterDialogRadioCirclePublic=0x7f090028;
+        public static final int fragmentFilterDialogRadioEventMovie=0x7f090023;
+        public static final int fragmentFilterDialogRadioEventParty=0x7f090024;
+        public static final int fragmentFilterDialogRadioEventSports=0x7f090021;
+        public static final int fragmentFilterDialogRadioEventStudy=0x7f090022;
+        public static final int fragmentFilterDialogRadioEventType=0x7f09001f;
+        public static final int fragmentFilterDialogRadioEventTypeFood=0x7f090020;
+        public static final int imageNewsFeedFragmentProfile=0x7f090029;
+        public static final int menuitem_add_contacts=0x7f09002c;
+        public static final int menuitem_contacts=0x7f09002f;
+        public static final int menuitem_logout=0x7f090031;
+        public static final int menuitem_profile=0x7f09002e;
+        public static final int menuitem_settings=0x7f090030;
         public static final int pager=0x7f090014;
     }
     public static final class layout {
@@ -92,8 +96,9 @@ public final class R {
         public static final int activity_main=0x7f030004;
         public static final int activity_select_new_event_type=0x7f030005;
         public static final int activity_settings=0x7f030006;
-        public static final int fragment_filter_dialog=0x7f030007;
-        public static final int news_feed_fragment=0x7f030008;
+        public static final int contact_list_item=0x7f030007;
+        public static final int fragment_filter_dialog=0x7f030008;
+        public static final int news_feed_fragment=0x7f030009;
     }
     public static final class menu {
         public static final int contacts=0x7f080000;

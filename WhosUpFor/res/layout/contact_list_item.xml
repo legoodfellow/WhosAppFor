@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/employee"
+    android:layout_width="fill_parent"
+    android:layout_height="60dp"
+    android:layout_gravity="fill_vertical"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/contactListItemUserProfileImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/contactListItemUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="left"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button1"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginRight="5dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="right"
+        android:background="@drawable/button_shape"
+        android:text="delete" />
+
+</LinearLayout>

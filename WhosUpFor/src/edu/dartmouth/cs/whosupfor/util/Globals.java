@@ -26,8 +26,11 @@ public class Globals {
 	public static final String TIME_FORMAT_NOW = "HH:mm:ss";
 
 	// EventEntryDbHelper
-	public static final String TABLE_NAME_ENTRIES = "eventEntryTable";
-	public static final String KEY_EVENT_ENTRY_ROWID = "_id";
+	public static final String DATABASE_NAME = "whosupfor.db";
+	public static final int DATABASE_VERSION = 1;
+
+	public static final String TABLE_NAME_EVENT_ENTRIES = "eventEntryTable";
+	public static final String KEY_EVENT_ROWID = "event_id";
 	public static final String KEY_INPUT_TYPE = "inputType";
 	public static final String KEY_ACTIVITY_TYPE = "activityType";
 	public static final String KEY_DATE = "date";
@@ -42,10 +45,18 @@ public class Globals {
 	public static final String KEY_COMMENT = "comment";
 	public static final String KEY_PRIVACY = "privacy";
 	public static final String KEY_GPS_DATA = "gps";
-	public static final String DATABASE_NAME = "myrun.db";
-	public static final int DATABASE_VERSION = 1;
 	
-
+	public static final String TABLE_NAME_USER_ENTRIES = "userEntryTable";
+	public static final String KEY_USER_ROWID = "user_id";
+	public static final String KEY_USER_FIRST_NAME = "user_first_name";
+	public static final String KEY_USER_LAST_NAME = "user_last_name";
+	public static final String KEY_USER_EMAIL = "user_email";
+	public static final String KEY_USER_BIO = "user_bio";
+	public static final String KEY_USER_GENDER = "user_gender";
+	public static final String KEY_USER_CLASS_YEAR = "user_class_year";
+	public static final String KEY_USER_MAJOR = "user_major";
+	public static final String KEY_USER_PASSWORD = "user_password";
+	public static final String KEY_USER_PROFILE_PHOTO = "user_profile_photo";
 
 	// EditProfileActivity
 	public static final String IMG_INSTANCE_STATE_KEY = "saved_image";

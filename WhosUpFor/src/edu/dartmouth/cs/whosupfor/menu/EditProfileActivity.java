@@ -29,10 +29,8 @@ import android.widget.Toast;
 import edu.dartmouth.cs.whosupfor.MainActivity;
 import edu.dartmouth.cs.whosupfor.NewsFeedFragment;
 import edu.dartmouth.cs.whosupfor.R;
-import edu.dartmouth.cs.whosupfor.R.drawable;
-import edu.dartmouth.cs.whosupfor.R.id;
-import edu.dartmouth.cs.whosupfor.R.layout;
-import edu.dartmouth.cs.whosupfor.R.string;
+import edu.dartmouth.cs.whosupfor.data.UserEntry;
+import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.MyDialogFragment;
 
@@ -48,6 +46,10 @@ public class EditProfileActivity extends Activity {
 
 	public Context mContext;
 
+	private UserEntry mUserEntry;
+	private UserEntryDbHelper mUserEntryDbHelper;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -381,7 +383,44 @@ public class EditProfileActivity extends Activity {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-
+		
+		// Only for demo purpose, we save the profile to UserEntry and show it in the Contacts
+		mUserEntry = new UserEntry();
+		
+		mValue = (String) ((EditText) findViewById(R.id.editProfileFirstName))
+				.getText().toString();
+		mUserEntry.setFirstName(mValue);
+		
+		mValue = (String) ((EditText) findViewById(R.id.editProfileLastName))
+				.getText().toString();
+		mUserEntry.setFirstName(mValue);
+		
+		mValue = (String) ((EditText) findViewById(R.id.editProfileEmail))
+				.getText().toString();
+		mUserEntry.setEmail(mValue);
+		
+		mIntValue = mRadioGroup.indexOfChild(findViewById(mRadioGroup
+				.getCheckedRadioButtonId()));
+		mUserEntry.setGender(mIntValue);
+		
+		mIntValue = Integer.parseInt((String)((EditText) findViewById(R.id.editProfileClass))
+				.getText().toString());
+		mUserEntry.setClassYear(mIntValue);
+		
+		mValue = (String) ((EditText) findViewById(R.id.editProfileMajor))
+				.getText().toString();
+		mUserEntry.setMajor(mValue);
+		
+		mValue = (String) ((EditText) findViewById(R.id.editProfileBio))
+				.getText().toString();
+		mUserEntry.setBio(mValue);
+		
+		mUserEntry.setProfilePhoto(mByteArray);
+		
+		mUserEntryDbHelper = new UserEntryDbHelper(this);
+		mUserEntryDbHelper.insertEntry(mUserEntry);
+		mUserEntryDbHelper.close();
+		
 	}
 
 }
