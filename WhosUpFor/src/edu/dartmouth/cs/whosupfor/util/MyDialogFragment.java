@@ -47,6 +47,9 @@ public class MyDialogFragment extends DialogFragment {
 		int title = getArguments().getInt("title");
 		// final EditText input = new EditText(getActivity());
 
+		TimePickerDialog.OnTimeSetListener mTimeListener;
+		DatePickerDialog.OnDateSetListener mDateListener;
+
 		switch (title) {
 
 		// Profile change image
@@ -74,24 +77,24 @@ public class MyDialogFragment extends DialogFragment {
 			return new AlertDialog.Builder(getActivity())
 					.setView(view)
 					.setTitle(title)
-//					.setMultiChoiceItems(items,
-//							new boolean[] { false, false, false },
-//							new DialogInterface.OnMultiChoiceClickListener() {
-//								public void onClick(DialogInterface arg0,
-//										int arg1, boolean arg2) {
-//									// TODO Auto-generated method stub
-//
-//								}
-//							})
-//					.setMultiChoiceItems(items,
-//							new boolean[] { false, false, false },
-//							new DialogInterface.OnMultiChoiceClickListener() {
-//								public void onClick(DialogInterface arg0,
-//										int arg1, boolean arg2) {
-//									// TODO Auto-generated method stub
-//
-//								}
-//							})
+					// .setMultiChoiceItems(items,
+					// new boolean[] { false, false, false },
+					// new DialogInterface.OnMultiChoiceClickListener() {
+					// public void onClick(DialogInterface arg0,
+					// int arg1, boolean arg2) {
+					// // TODO Auto-generated method stub
+					//
+					// }
+					// })
+					// .setMultiChoiceItems(items,
+					// new boolean[] { false, false, false },
+					// new DialogInterface.OnMultiChoiceClickListener() {
+					// public void onClick(DialogInterface arg0,
+					// int arg1, boolean arg2) {
+					// // TODO Auto-generated method stub
+					//
+					// }
+					// })
 					.setPositiveButton(R.string.ui_dialog_ok,
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
@@ -107,16 +110,18 @@ public class MyDialogFragment extends DialogFragment {
 								}
 							}).create();
 
-			// Pick date
-		case R.string.ui_dialog_pick_date:
-			DatePickerDialog.OnDateSetListener mDateListener = new DatePickerDialog.OnDateSetListener() {
+			// Pick start date
+		case R.string.ui_dialog_pick_start_date:
+			mDateListener = new DatePickerDialog.OnDateSetListener() {
 				public void onDateSet(DatePicker view, int year,
 						int monthOfYear, int dayOfMonth) {
 					mDateAndTime.set(Calendar.YEAR, year);
 					mDateAndTime.set(Calendar.MONTH, monthOfYear);
 					mDateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-					((CreateNewEventActivity) getActivity())
-							.onDateSave(mDateAndTime);
+					((CreateNewEventActivity) getActivity()).onStartDateSet(
+							mDateAndTime.get(Calendar.YEAR),
+							mDateAndTime.get(Calendar.MONTH),
+							mDateAndTime.get(Calendar.DAY_OF_MONTH));
 				}
 			};
 			return new DatePickerDialog(getActivity(), mDateListener,
@@ -124,18 +129,51 @@ public class MyDialogFragment extends DialogFragment {
 					mDateAndTime.get(Calendar.MONTH),
 					mDateAndTime.get(Calendar.DAY_OF_MONTH));
 
-			// Pick time
-		case R.string.ui_dialog_pick_time:
-			TimePickerDialog.OnTimeSetListener mTimeListener = new OnTimeSetListener() {
+			// Pick start time
+		case R.string.ui_dialog_pick_start_time:
+			mTimeListener = new OnTimeSetListener() {
 				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 					mDateAndTime.set(Calendar.HOUR, hourOfDay);
 					mDateAndTime.set(Calendar.MINUTE, minute);
-					((CreateNewEventActivity) getActivity())
-							.onTimeSave(mDateAndTime);
+					((CreateNewEventActivity) getActivity()).onStartTimeSet(
+							hourOfDay, minute);
 				}
 			};
 			return new TimePickerDialog(getActivity(), mTimeListener,
-					mDateAndTime.get(Calendar.HOUR),
+					mDateAndTime.get(Calendar.HOUR_OF_DAY),
+					mDateAndTime.get(Calendar.MINUTE), false);
+
+			// Pick start date
+		case R.string.ui_dialog_pick_end_date:
+			mDateListener = new DatePickerDialog.OnDateSetListener() {
+				public void onDateSet(DatePicker view, int year,
+						int monthOfYear, int dayOfMonth) {
+					mDateAndTime.set(Calendar.YEAR, year);
+					mDateAndTime.set(Calendar.MONTH, monthOfYear);
+					mDateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+					((CreateNewEventActivity) getActivity()).onEndDateSet(
+							mDateAndTime.get(Calendar.YEAR),
+							mDateAndTime.get(Calendar.MONTH),
+							mDateAndTime.get(Calendar.DAY_OF_MONTH));
+				}
+			};
+			return new DatePickerDialog(getActivity(), mDateListener,
+					mDateAndTime.get(Calendar.YEAR),
+					mDateAndTime.get(Calendar.MONTH),
+					mDateAndTime.get(Calendar.DAY_OF_MONTH));
+
+			// Pick start time
+		case R.string.ui_dialog_pick_end_time:
+			mTimeListener = new OnTimeSetListener() {
+				public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+					mDateAndTime.set(Calendar.HOUR, hourOfDay);
+					mDateAndTime.set(Calendar.MINUTE, minute);
+					((CreateNewEventActivity) getActivity()).onEndTimeSet(
+							hourOfDay, minute);
+				}
+			};
+			return new TimePickerDialog(getActivity(), mTimeListener,
+					mDateAndTime.get(Calendar.HOUR_OF_DAY),
 					mDateAndTime.get(Calendar.MINUTE), false);
 		default:
 			return null;

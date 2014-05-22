@@ -48,8 +48,7 @@ public class EditProfileActivity extends Activity {
 
 	private UserEntry mUserEntry;
 	private UserEntryDbHelper mUserEntryDbHelper;
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -274,6 +273,10 @@ public class EditProfileActivity extends Activity {
 			mKey = getString(R.string.preference_key_edit_profile_activity_profile_email);
 			mValue = mPrefs.getString(mKey, "");
 			((EditText) findViewById(R.id.editProfileEmail)).setText(mValue);
+			// if (!mValue.isEmpty()){
+			// ((EditText)
+			// findViewById(R.id.editProfileEmail)).setFocusable(false);
+			// }
 
 			// Load the profile gender
 			mKey = getString(R.string.preference_key_edit_profile_activity_profile_gender);
@@ -383,44 +386,82 @@ public class EditProfileActivity extends Activity {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
-		
-		// Only for demo purpose, we save the profile to UserEntry and show it in the Contacts
+
+		// Only for demo purpose, we save the profile to UserEntry and show it
+		// in the Contacts
 		mUserEntry = new UserEntry();
-		
-		mValue = (String) ((EditText) findViewById(R.id.editProfileFirstName))
-				.getText().toString();
-		mUserEntry.setFirstName(mValue);
-		
-		mValue = (String) ((EditText) findViewById(R.id.editProfileLastName))
-				.getText().toString();
-		mUserEntry.setLastName(mValue);
-		
-		mValue = (String) ((EditText) findViewById(R.id.editProfileEmail))
-				.getText().toString();
-		mUserEntry.setEmail(mValue);
-		
-		mIntValue = mRadioGroup.indexOfChild(findViewById(mRadioGroup
-				.getCheckedRadioButtonId()));
-		mUserEntry.setGender(mIntValue);
-		
-		mIntValue = Integer.parseInt((String)((EditText) findViewById(R.id.editProfileClass))
-				.getText().toString());
-		mUserEntry.setClassYear(mIntValue);
-		
-		mValue = (String) ((EditText) findViewById(R.id.editProfileMajor))
-				.getText().toString();
-		mUserEntry.setMajor(mValue);
-		
-		mValue = (String) ((EditText) findViewById(R.id.editProfileBio))
-				.getText().toString();
-		mUserEntry.setBio(mValue);
-		
+
+		try {
+			mValue = (String) ((EditText) findViewById(R.id.editProfileFirstName))
+					.getText().toString();
+			mUserEntry.setFirstName(mValue);
+		} catch (Exception e) {
+			mValue = "";
+			mUserEntry.setFirstName(mValue);
+		}
+
+		try {
+			mValue = (String) ((EditText) findViewById(R.id.editProfileLastName))
+					.getText().toString();
+
+			mUserEntry.setLastName(mValue);
+		} catch (Exception e) {
+			mValue = "";
+			mUserEntry.setLastName(mValue);
+		}
+
+		try {
+			mValue = (String) ((EditText) findViewById(R.id.editProfileEmail))
+					.getText().toString();
+			mUserEntry.setEmail(mValue);
+		} catch (Exception e) {
+			mValue = "";
+			mUserEntry.setEmail(mValue);
+		}
+
+		try {
+			mIntValue = mRadioGroup.indexOfChild(findViewById(mRadioGroup
+					.getCheckedRadioButtonId()));
+			mUserEntry.setGender(mIntValue);
+		} catch (Exception e) {
+			mIntValue = 0;
+			mUserEntry.setGender(mIntValue);
+		}
+
+		try {
+			mIntValue = Integer
+					.parseInt((String) ((EditText) findViewById(R.id.editProfileClass))
+							.getText().toString());
+			mUserEntry.setClassYear(mIntValue);
+		} catch (Exception e) {
+			mIntValue = 1769;
+			mUserEntry.setClassYear(mIntValue);
+		}
+
+		try {
+			mValue = (String) ((EditText) findViewById(R.id.editProfileMajor))
+					.getText().toString();
+			mUserEntry.setMajor(mValue);
+		} catch (Exception e) {
+			mValue = "";
+			mUserEntry.setMajor(mValue);
+		}
+
+		try {
+			mValue = (String) ((EditText) findViewById(R.id.editProfileBio))
+					.getText().toString();
+			mUserEntry.setBio(mValue);
+		} catch (Exception e) {
+			mValue = "";
+			mUserEntry.setBio(mValue);
+		}
+
 		mUserEntry.setProfilePhoto(mByteArray);
-		
+
 		mUserEntryDbHelper = new UserEntryDbHelper(this);
 		mUserEntryDbHelper.insertEntry(mUserEntry);
 		mUserEntryDbHelper.close();
-		
+
 	}
 
 }

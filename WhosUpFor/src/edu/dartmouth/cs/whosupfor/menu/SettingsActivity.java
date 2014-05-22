@@ -77,12 +77,10 @@ public class SettingsActivity extends ListActivity {
 
 			String entry = mEntries.get(position);
 
-			// Set image
-
-			// Get first and last name
+			// Set settings list name
 			mHolder.mName.setText(entry);
 
-			// Set delete button
+			// Add sliding view for Notification
 			if (!entry.equals("Notification")) {
 				mHolder.mButton.setVisibility(View.GONE);
 			}

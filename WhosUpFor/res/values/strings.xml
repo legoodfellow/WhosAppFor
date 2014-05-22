@@ -35,18 +35,18 @@
     <string name="ui_edit_profile_activity_user_last_name">Last Name(required):</string>
     <string name="ui_edit_profile_activity_user_last_name_hint">Your last name here</string>
     <string name="ui_edit_profile_activity_user_email">Email(required):</string>
-    <string name="ui_edit_profile_activity_user_email_hint">Your email address here</string>
+    <string name="ui_edit_profile_activity_user_email_hint">e.g : abc@dartmouth.edu</string>
     <string name="ui_edit_profile_activity_user_phone">Phone:</string>
     <string name="ui_edit_profile_activity_user_phone_hint">Your phone number here</string>
     <string name="ui_edit_profile_activity_user_gender">Gender:</string>
     <string name="ui_edit_profile_activity_user_gender_female">Female</string>
     <string name="ui_edit_profile_activity_user_gender_male">Male</string>
     <string name="ui_edit_profile_activity_user_class">Class:</string>
-    <string name="ui_edit_profile_activity_user_class_hint">e.g.: 2012</string>
+    <string name="ui_edit_profile_activity_user_class_hint">e.g : 1769</string>
     <string name="ui_edit_profile_activity_user_major">Major:</string>
-    <string name="ui_edit_profile_activity_user_major_hint">Your major here</string>
+    <string name="ui_edit_profile_activity_user_major_hint">e.g : CS</string>
     <string name="ui_edit_profile_activity_user_bio">Bio</string>
-    <string name="ui_edit_profile_activity_user_bio_hint">e.g.: Andrew is awesome</string>
+    <string name="ui_edit_profile_activity_user_bio_hint">e.g : Andrew is awesome</string>
 
     <!-- Shared_Preference -->
     <string name="preference_name_edit_profile_activity">account_profile_shared_preference</string>
@@ -62,6 +62,7 @@
 
     <!-- Button -->
     <string name="ui_btn_save">Save</string>
+    <string name="ui_btn_post">Post</string>
     <string name="ui_btn_cancel">Cancel</string>
     <string name="ui_btn_event_type_food">Food</string>
     <string name="ui_btn_event_type_sports">Sports</string>
@@ -87,8 +88,10 @@
 
     <!-- Dialog -->
     <string name="ui_dialog_profile_photo">Select profile image</string>
-    <string name="ui_dialog_pick_date">Pick date</string>
-    <string name="ui_dialog_pick_time">Pick time</string>
+    <string name="ui_dialog_pick_start_date">Pick start date</string>
+    <string name="ui_dialog_pick_start_time">Pick start time</string>
+    <string name="ui_dialog_pick_end_date">Pick end date</string>
+    <string name="ui_dialog_pick_end_time">Pick end time</string>
     <string name="ui_dialog_ok">OK</string>
     <string name="ui_dialog_cancel">Cancel</string>
 
@@ -108,7 +111,6 @@
     <string name="title_activity_contacts">Contacts</string>
     <string name="ui_contacts_activity_contacts">Contacts</string>
     <string name="ui_contacts_activity_delete">delete</string>
-    
 
     <!-- Settings_Activity -->
     <string name="title_activity_settings">Settings</string>

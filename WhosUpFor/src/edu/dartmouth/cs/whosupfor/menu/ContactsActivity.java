@@ -105,7 +105,8 @@ public class ContactsActivity extends ListActivity {
 						.findViewById(R.id.contactListItemUserProfileImage);
 				mHolder.mName = (TextView) convertView
 						.findViewById(R.id.contactListItemUserName);
-				mHolder.mButton = (Button) convertView.findViewById(R.id.contactListItemDelete);
+				mHolder.mButton = (Button) convertView
+						.findViewById(R.id.contactListItemDelete);
 				// set tag of convertView to the holder
 				convertView.setTag(mHolder);
 			}// if it's exist convertView then consume it
@@ -116,23 +117,29 @@ public class ContactsActivity extends ListActivity {
 			UserEntry entry = mEntries.get(position);
 
 			// Set image
-			mByteArray = entry.getProfilePhoto();
-			ByteArrayInputStream bis = new ByteArrayInputStream(mByteArray);
-			Bitmap bp = BitmapFactory.decodeStream(bis);
-			mHolder.mImage.setImageBitmap(bp);
+			try {
+				mByteArray = entry.getProfilePhoto();
+				ByteArrayInputStream bis = new ByteArrayInputStream(mByteArray);
+				Bitmap bp = BitmapFactory.decodeStream(bis);
+				mHolder.mImage.setImageBitmap(bp);
+			} catch (Exception e) {
+				mHolder.mImage = (ImageView) convertView
+						.findViewById(R.id.contactListItemUserProfileImage);
+			}
 
 			// Get first and last name
-			String firstName = entry.getFirstName();
-			String lastName = entry.getLastName();
-			mHolder.mName.setText(firstName + " " + lastName);
-			
+			try {
+				String firstName = entry.getFirstName();
+				String lastName = entry.getLastName();
+				mHolder.mName.setText(firstName + " " + lastName);
+			} catch (Exception e) {
+				mHolder.mName.setText("unknown");
+			}
+
 			// Set delete button
-//			if(entry.getFirstName().equals("Aaron")){
-//				mHolder.mButton.setVisibility(View.GONE);
-//			}
-			
-			
-			
+			// if(entry.getFirstName().equals("Aaron")){
+			// mHolder.mButton.setVisibility(View.GONE);
+			// }
 
 			// Log.d(TAG, "getView() finished");
 			return convertView;

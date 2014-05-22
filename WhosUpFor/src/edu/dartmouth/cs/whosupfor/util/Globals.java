@@ -15,13 +15,14 @@ public class Globals {
 	public static final int REQUEST_CODE_CROP_PHOTO = 2;
 
 	// Key
-	public static final String KEY_EVENT_TYPE = "eventType";
+	// public static final String KEY_EVENT_TYPE = "eventType";
 
 	// CreateNewEventActivity
 	public static final int PICK_DATE = 1;
 	public static final int PICK_TIME = 2;
 
 	// EventEntry
+	public static final String DATE_FORMAT = "HH:mm:ss MMM d yyyy";
 	public static final String DATE_FORMAT_NOW = "MMM dd, yyyy";
 	public static final String TIME_FORMAT_NOW = "HH:mm:ss";
 
@@ -31,21 +32,19 @@ public class Globals {
 
 	public static final String TABLE_NAME_EVENT_ENTRIES = "eventEntryTable";
 	public static final String KEY_EVENT_ROWID = "event_id";
-	public static final String KEY_INPUT_TYPE = "inputType";
-	public static final String KEY_ACTIVITY_TYPE = "activityType";
-	public static final String KEY_DATE = "date";
-	public static final String KEY_TIME = "time";
-	public static final String KEY_DURATION = "duration";
-	public static final String KEY_DISTANCE = "distance";
-	public static final String KEY_AVG_PACE = "pace";
-	public static final String KEY_AVG_SPEED = "speed";
-	public static final String KEY_CALORIES = "calories";
-	public static final String KEY_CLIMB = "climb";
-	public static final String KEY_HEARTRATE = "heartRate";
-	public static final String KEY_COMMENT = "comment";
-	public static final String KEY_PRIVACY = "privacy";
-	public static final String KEY_GPS_DATA = "gps";
-	
+	public static final String KEY_EVENT_EMAIL = "event_email";
+	public static final String KEY_EVENT_TYPE = "event_type";
+	public static final String KEY_EVENT_TITLE = "event_title";
+	public static final String KEY_EVENT_LOCATION = "event_location";
+	public static final String KEY_EVENT_TIME_STAMP = "event_time_stamp";
+	public static final String KEY_EVENT_START_DATE = "event_start_date";
+	public static final String KEY_EVENT_START_TIME = "event_Start_time";
+	public static final String KEY_EVENT_END_DATE = "event_end_date";
+	public static final String KEY_EVENT_END_TIME = "event_end_time";
+	public static final String KEY_EVENT_DETAIL = "event_detail";
+	public static final String KEY_EVENT_ATTENDEES = "event_attendees";
+	public static final String KEY_EVENT_CIRCLE = "event_circle";
+
 	public static final String TABLE_NAME_USER_ENTRIES = "userEntryTable";
 	public static final String KEY_USER_ROWID = "user_id";
 	public static final String KEY_USER_FIRST_NAME = "user_first_name";
@@ -69,9 +68,9 @@ public class Globals {
 
 	// Boolean
 	public static boolean HAS_PROFILE_IMAGE = false;
-	
+
 	// SettingsActivity
 	public static final String[] SETTINGS_ARRAY = { "Notification", "Privacy",
-		"Like us on Facebook", "Like us on Twitter", "About", "Donations" };
+			"Like us on Facebook", "Like us on Twitter", "About", "Donations" };
 
 }

@@ -20,8 +20,7 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 			Globals.KEY_USER_MAJOR, Globals.KEY_USER_PASSWORD,
 			Globals.KEY_USER_PROFILE_PHOTO };
 
-	// private static final String DATABASE_NAME = "myrun.db";
-	// private static final int DATABASE_VERSION = 1;
+
 	// SQL query to create the table for the first time
 	// Data types are defined below
 	public static final String CREATE_TABLE_ENTRIES = "CREATE TABLE IF NOT EXISTS "
@@ -52,8 +51,7 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 	 * @param context
 	 */
 	public UserEntryDbHelper(Context context) {
-		// DATABASE_NAME is, of course the name of the mDatabase, which is
-		// defined as a tring constant
+		// DATABASE_NAME is defined as a string constant
 		// DATABASE_VERSION is the version of mDatabase, which is defined as an
 		// integer constant
 		super(context, Globals.DATABASE_NAME, null, Globals.DATABASE_VERSION);
@@ -125,20 +123,20 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public UserEntry fetchEntryByIndex(long rowId) {
-		UserEntry exerciseEntry = new UserEntry();
+		UserEntry mUserEntry = new UserEntry();
 		mDatabase = getReadableDatabase();
 		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES,
 				allColumns, Globals.KEY_USER_ROWID + "=" + rowId, null, null,
 				null, null);
 		if (cursor.moveToFirst()) {
-			// convert the cursor to an ExerciseEntry object
-			exerciseEntry = cursorToUserEntry(cursor);
+			// convert the cursor to an UserEntry object
+			mUserEntry = cursorToUserEntry(cursor);
 		}
 
 		cursor.close();
 		mDatabase.close();
 
-		return exerciseEntry;
+		return mUserEntry;
 	}
 
 	/**

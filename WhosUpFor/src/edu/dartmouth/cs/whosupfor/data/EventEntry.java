@@ -3,7 +3,6 @@ package edu.dartmouth.cs.whosupfor.data;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,15 +10,15 @@ import org.json.JSONObject;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 /**
- * ADT for storing event entry data
- * using email as the unique user id
+ * ADT for storing event entry data using email as the unique user id
  * 
  * @author Aaron Jun Yang
  * 
  */
 public class EventEntry {
 	private Long mDbId; // Database mDbId of the entry
-//	private String mOrganizerId; // User id of the person who created this event
+	// private String mOrganizerId; // User id of the person who created this
+	// event
 	private String mEmail;
 	private int mEventType; // eg: Food, Study, Movie....
 	private String mEventTitle; // Brief description of the event (“Dinner”,
@@ -27,13 +26,15 @@ public class EventEntry {
 	private String mLocation; // The organizer’s text description of the
 								// location (“Boloco”, “Sudikoff”, etc) (GPS
 								// data might be added for v2)
-	private Date mTimeStamp; // Automatically generated timestamp in
-								// milliseconds
-								// of when the event was created
-	private String mStartDate; // Event start date
-	private String mStartTime; // Event start time
-	private String mEndDate; // Event end date
-	private String mEndTime; // Event end time
+	private Calendar mTimeStamp; // Automatically generated timestamp in
+									// milliseconds
+									// of when the event was created
+	private Calendar mStartDateTime;
+	private Calendar mEndDateTime;
+	// private String mStartDate; // Event start date
+	// private String mStartTime; // Event start time
+	// private String mEndDate; // Event end date
+	// private String mEndTime; // Event end time
 	private String mDetail; // The organizer’s comment with event details
 	private ArrayList<String> mAttendees; // List of attendee IDs
 	private int mCircle; // Indicates which friend circle can view the event (
@@ -49,11 +50,13 @@ public class EventEntry {
 		this.mEventTitle = " ";
 		this.mEmail = " ";
 		this.mLocation = " ";
-		this.mTimeStamp = Calendar.getInstance().getTime();
-		this.mStartDate = sdf.format(Calendar.getInstance().getTime());
-		this.mStartTime = stf.format(Calendar.getInstance().getTime());
-		this.mEndDate = sdf.format(Calendar.getInstance().getTime());
-		this.mEndTime = stf.format(Calendar.getInstance().getTime());
+		this.mStartDateTime = Calendar.getInstance();
+		this.mEndDateTime = Calendar.getInstance();
+		this.mTimeStamp = Calendar.getInstance();
+		// this.mStartDate = sdf.format(Calendar.getInstance().getTime());
+		// this.mStartTime = stf.format(Calendar.getInstance().getTime());
+		// this.mEndDate = sdf.format(Calendar.getInstance().getTime());
+		// this.mEndTime = stf.format(Calendar.getInstance().getTime());
 		this.mDetail = " ";
 		this.mAttendees = new ArrayList<String>();
 		this.mCircle = -1;
@@ -70,8 +73,8 @@ public class EventEntry {
 			mDbId = obj.getLong("mDbId");
 			mEventType = obj.getInt("inputType");
 
-			mStartDate = obj.getString("date");
-			mStartTime = obj.getString("time");
+			// mStartDate = obj.getString("date");
+			// mStartTime = obj.getString("time");
 
 		} catch (JSONException e) {
 			return null;
@@ -91,8 +94,8 @@ public class EventEntry {
 			obj.put("mDbId", mDbId);
 			obj.put("inputType", mEventType);
 
-			obj.put("dateTime", mStartDate);
-			obj.put("time", mStartTime);
+			// obj.put("dateTime", mStartDate);
+			// obj.put("time", mStartTime);
 
 		} catch (JSONException e) {
 			return null;
@@ -116,7 +119,7 @@ public class EventEntry {
 
 	/**
 	 * Set email
-	 *  
+	 * 
 	 * @param organizerId
 	 */
 	public void setEmail(String email) {
@@ -166,60 +169,126 @@ public class EventEntry {
 		return mLocation;
 	}
 
-	/**
-	 * Set time stamp
-	 * 
-	 * @param timeStamp
-	 */
-	public void setTimeStamp(Date timeStamp) {
-		mTimeStamp = timeStamp;
-	}
-
-	public Date getTimeStamp() {
-		return mTimeStamp;
+	public Calendar getDateTime() {
+		return mStartDateTime;
 	}
 
 	/**
-	 * Set Start date and time
+	 * Get start data and time and render them in the text view
 	 * 
-	 * @param startDate
+	 * @return
 	 */
-	public void setStartDate(String startDate) {
-		mStartDate = startDate;
+	public long getStartDateTimeInMillis() {
+		return mStartDateTime.getTimeInMillis();
 	}
 
-	public String getStartDate() {
-		return mStartDate;
+	/**
+	 * Get end data and time and render them in the text view
+	 * 
+	 * @return
+	 */
+	public long getEndDateTimeInMillis() {
+		return mEndDateTime.getTimeInMillis();
 	}
 
-	public void setStartTime(String startTime) {
-		mStartTime = startTime;
+	public void setDateTime(Calendar dateTime) {
+		this.mStartDateTime = dateTime;
+
 	}
 
-	public String getStartTime() {
-		return mStartTime;
+	public void setDateTime(long timestamp) {
+		this.mStartDateTime.setTimeInMillis(timestamp);
+
+	}
+
+	/**
+	 * Set start date and time
+	 * 
+	 * @param year
+	 * @param monthOfYear
+	 * @param dayOfMonth
+	 */
+	public void setStartDate(int year, int monthOfYear, int dayOfMonth) {
+		mStartDateTime.set(year, monthOfYear, dayOfMonth);
+	}
+
+	public void setStartTime(int hourOfDay, int minute) {
+		mStartDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		mStartDateTime.set(Calendar.MINUTE, minute);
+		mStartDateTime.set(Calendar.SECOND, 0);
 	}
 
 	/**
 	 * Set end date and time
 	 * 
-	 * @param endDatena
+	 * @param year
+	 * @param monthOfYear
+	 * @param dayOfMonth
 	 */
-	public void setEndDate(String endDate) {
-		mStartDate = endDate;
+	public void setEndDate(int year, int monthOfYear, int dayOfMonth) {
+		mEndDateTime.set(year, monthOfYear, dayOfMonth);
 	}
 
-	public String getEndDate() {
-		return mStartDate;
+	public void setEndTime(int hourOfDay, int minute) {
+		mEndDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+		mEndDateTime.set(Calendar.MINUTE, minute);
+		mEndDateTime.set(Calendar.SECOND, 0);
 	}
 
-	public void setEndTime(String endTime) {
-		mStartTime = endTime;
+	/**
+	 * Set time stamp
+	 * 
+	 * @param timeStamp
+	 */
+	public void setTimeStamp(Calendar timeStamp) {
+		mTimeStamp = timeStamp;
 	}
 
-	public String getEndTime() {
-		return mStartTime;
+	public long getTimeStamp() {
+		return mTimeStamp.getTimeInMillis();
 	}
+
+	// /**
+	// * Set Start date and time
+	// *
+	// * @param startDate
+	// */
+	// public void setStartDate(String startDate) {
+	// mStartDate = startDate;
+	// }
+	//
+	// public String getStartDate() {
+	// return mStartDate;
+	// }
+	//
+	// public void setStartTime(String startTime) {
+	// mStartTime = startTime;
+	// }
+	//
+	// public String getStartTime() {
+	// return mStartTime;
+	// }
+	//
+	// /**
+	// * Set end date and time
+	// *
+	// * @param endDatena
+	// */
+	// public void setEndDate(String endDate) {
+	// mStartDate = endDate;
+	// }
+	//
+	// public String getEndDate() {
+	// return mStartDate;
+	// }
+	//
+	// public void setEndTime(String endTime) {
+	// mStartTime = endTime;
+	// }
+	//
+	// public String getEndTime() {
+	// return mStartTime;
+	// }
 
 	/**
 	 * Set comment
