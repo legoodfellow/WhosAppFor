@@ -69,5 +69,9 @@ public class Globals {
 
 	// Boolean
 	public static boolean HAS_PROFILE_IMAGE = false;
+	
+	// SettingsActivity
+	public static final String[] SETTINGS_ARRAY = { "Notification", "Privacy",
+		"Like us on Facebook", "Like us on Twitter", "About", "Donations" };
 
 }

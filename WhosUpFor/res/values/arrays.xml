@@ -19,5 +19,19 @@
         <item>CS65</item>
         <item>Public</item>
     </string-array>
+    
+    <!-- Settings_Activity -->
+    <string-array name="ui_settings_activity_settings_list1">
+        <item>Notifications</item>
+    </string-array>
 
+    <string-array name="ui_settings_activity_settings_list2">
+        <item>Privacy</item>
+        <item>Like us on Facebook</item>
+        <item>Like us on Twitter</item>
+        <item>About</item>
+        <item>Donations</item>
+    </string-array>
+    
+    
 </resources>

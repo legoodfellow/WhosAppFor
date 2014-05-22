@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.dartmouth.cs.whosupfor.R;
@@ -104,6 +105,7 @@ public class ContactsActivity extends ListActivity {
 						.findViewById(R.id.contactListItemUserProfileImage);
 				mHolder.mName = (TextView) convertView
 						.findViewById(R.id.contactListItemUserName);
+				mHolder.mButton = (Button) convertView.findViewById(R.id.contactListItemDelete);
 				// set tag of convertView to the holder
 				convertView.setTag(mHolder);
 			}// if it's exist convertView then consume it
@@ -123,6 +125,14 @@ public class ContactsActivity extends ListActivity {
 			String firstName = entry.getFirstName();
 			String lastName = entry.getLastName();
 			mHolder.mName.setText(firstName + " " + lastName);
+			
+			// Set delete button
+//			if(entry.getFirstName().equals("Aaron")){
+//				mHolder.mButton.setVisibility(View.GONE);
+//			}
+			
+			
+			
 
 			// Log.d(TAG, "getView() finished");
 			return convertView;
@@ -133,6 +143,7 @@ public class ContactsActivity extends ListActivity {
 		private class ViewHolder {
 			ImageView mImage;
 			TextView mName;
+			Button mButton;
 		}
 
 	}

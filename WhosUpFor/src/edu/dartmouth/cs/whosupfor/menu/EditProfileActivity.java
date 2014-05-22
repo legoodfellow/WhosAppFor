@@ -393,7 +393,7 @@ public class EditProfileActivity extends Activity {
 		
 		mValue = (String) ((EditText) findViewById(R.id.editProfileLastName))
 				.getText().toString();
-		mUserEntry.setFirstName(mValue);
+		mUserEntry.setLastName(mValue);
 		
 		mValue = (String) ((EditText) findViewById(R.id.editProfileEmail))
 				.getText().toString();

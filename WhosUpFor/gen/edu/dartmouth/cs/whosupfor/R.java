@@ -18,6 +18,10 @@ public final class R {
         /**  Main_Activity 
          */
         public static final int ui_main_activity_dialog_profile_image_array=0x7f040000;
+        /**  Settings_Activity 
+         */
+        public static final int ui_settings_activity_settings_list1=0x7f040003;
+        public static final int ui_settings_activity_settings_list2=0x7f040004;
     }
     public static final class attr {
     }
@@ -37,7 +41,7 @@ public final class R {
         public static final int icon_selfies=0x7f020002;
     }
     public static final class id {
-        public static final int action_settings=0x7f09002d;
+        public static final int action_settings=0x7f09002f;
         public static final int activitySelectNewEventTypeBtnAddNew=0x7f09001a;
         public static final int activitySelectNewEventTypeBtnFood=0x7f090015;
         public static final int activitySelectNewEventTypeBtnMovie=0x7f090018;
@@ -46,7 +50,7 @@ public final class R {
         public static final int activitySelectNewEventTypeBtnStudy=0x7f090017;
         public static final int btnNewsFeedFragmentFilter=0x7f09002a;
         public static final int btnNewsFeedFragmentPostEvent=0x7f09002b;
-        public static final int button1=0x7f09001e;
+        public static final int contactListItemDelete=0x7f09001e;
         public static final int contactListItemUserName=0x7f09001d;
         public static final int contactListItemUserProfileImage=0x7f09001c;
         public static final int createNewEventActivitySpinnerWhos=0x7f090000;
@@ -81,12 +85,14 @@ public final class R {
         public static final int fragmentFilterDialogRadioEventType=0x7f09001f;
         public static final int fragmentFilterDialogRadioEventTypeFood=0x7f090020;
         public static final int imageNewsFeedFragmentProfile=0x7f090029;
-        public static final int menuitem_add_contacts=0x7f09002c;
-        public static final int menuitem_contacts=0x7f09002f;
-        public static final int menuitem_logout=0x7f090031;
-        public static final int menuitem_profile=0x7f09002e;
-        public static final int menuitem_settings=0x7f090030;
+        public static final int menuitem_add_contacts=0x7f09002e;
+        public static final int menuitem_contacts=0x7f090031;
+        public static final int menuitem_logout=0x7f090033;
+        public static final int menuitem_profile=0x7f090030;
+        public static final int menuitem_settings=0x7f090032;
         public static final int pager=0x7f090014;
+        public static final int settingsListItemName=0x7f09002c;
+        public static final int settingsSwitch=0x7f09002d;
     }
     public static final class layout {
         public static final int activity_contacts=0x7f030000;
@@ -99,6 +105,7 @@ public final class R {
         public static final int contact_list_item=0x7f030007;
         public static final int fragment_filter_dialog=0x7f030008;
         public static final int news_feed_fragment=0x7f030009;
+        public static final int settings_list_item=0x7f03000a;
     }
     public static final class menu {
         public static final int contacts=0x7f080000;
@@ -134,11 +141,13 @@ public final class R {
         /**  Edit_Profile_Activity 
          */
         public static final int title_activity_edit_profile=0x7f060011;
-        public static final int title_activity_login=0x7f060055;
+        public static final int title_activity_login=0x7f06005c;
         /**  Select_New_Event_Type_Activity 
          */
         public static final int title_activity_select_new_event_type=0x7f06000b;
-        public static final int title_activity_settings=0x7f060054;
+        /**  Settings_Activity 
+         */
+        public static final int title_activity_settings=0x7f060055;
         public static final int ui_btn_cancel=0x7f06002f;
         public static final int ui_btn_event_type_add_new=0x7f060035;
         public static final int ui_btn_event_type_food=0x7f060030;
@@ -150,6 +159,7 @@ public final class R {
          */
         public static final int ui_btn_save=0x7f06002e;
         public static final int ui_contacts_activity_contacts=0x7f060053;
+        public static final int ui_contacts_activity_delete=0x7f060054;
         public static final int ui_create_new_event_activity_comments=0x7f060041;
         public static final int ui_create_new_event_activity_comments_hint=0x7f060042;
         public static final int ui_create_new_event_activity_date=0x7f06003a;
@@ -215,6 +225,12 @@ public final class R {
          */
         public static final int ui_news_feed_fragment_btn_filter=0x7f060009;
         public static final int ui_news_feed_fragment_btn_post=0x7f06000a;
+        public static final int ui_settings_activity_about=0x7f060058;
+        public static final int ui_settings_activity_donations=0x7f060059;
+        public static final int ui_settings_activity_like_us_on_facebook=0x7f06005a;
+        public static final int ui_settings_activity_like_us_on_twitter=0x7f06005b;
+        public static final int ui_settings_activity_notifications=0x7f060056;
+        public static final int ui_settings_activity_privacy=0x7f060057;
         public static final int ui_tabname_going=0x7f060008;
         public static final int ui_tabname_my_post=0x7f060007;
         public static final int ui_tabname_news_feed=0x7f060006;

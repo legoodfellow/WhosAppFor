@@ -107,7 +107,17 @@
     <!-- Contacts_Activity -->
     <string name="title_activity_contacts">Contacts</string>
     <string name="ui_contacts_activity_contacts">Contacts</string>
+    <string name="ui_contacts_activity_delete">delete</string>
+    
+
+    <!-- Settings_Activity -->
     <string name="title_activity_settings">Settings</string>
+    <string name="ui_settings_activity_notifications">Notifications</string>
+    <string name="ui_settings_activity_privacy">Privacy</string>
+    <string name="ui_settings_activity_about">About</string>
+    <string name="ui_settings_activity_donations">Donations</string>
+    <string name="ui_settings_activity_like_us_on_facebook">Like us on Facebook</string>
+    <string name="ui_settings_activity_like_us_on_twitter">Like us on Twitter</string>
     <string name="title_activity_login">Login</string>
 
 </resources>

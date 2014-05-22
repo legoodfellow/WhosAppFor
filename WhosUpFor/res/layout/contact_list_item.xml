@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/employee"
     android:layout_width="fill_parent"
     android:layout_height="60dp"
@@ -10,6 +10,7 @@
         android:id="@+id/contactListItemUserProfileImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_centerVertical="true"
         android:layout_margin="5dp"
         android:src="@drawable/ic_launcher" />
 
@@ -17,20 +18,20 @@
         android:id="@+id/contactListItemUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:gravity="left"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="50dp"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/contactListItemDelete"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="40dp"
         android:layout_height="20dp"
-        android:layout_marginRight="5dp"
-        android:layout_gravity="center_vertical"
-        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="5dp"
         android:background="@drawable/button_shape"
-        android:text="delete" />
+        android:text="@string/ui_contacts_activity_delete" />
 
-</LinearLayout>
+</RelativeLayout>
