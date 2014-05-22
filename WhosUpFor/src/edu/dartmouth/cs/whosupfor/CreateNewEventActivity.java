@@ -44,14 +44,21 @@ public class CreateNewEventActivity extends Activity {
 
 		switch (view.getId()) {
 		case R.id.createNewEventActivityTextStarts:
-			dialogId = R.string.ui_dialog_pick_start_date;
+			// Display time dialog
+			dialogId = R.string.ui_dialog_pick_start_time;
+			disDialog(dialogId);
 
+			// Display date dialog
+			dialogId = R.string.ui_dialog_pick_start_date;
 			disDialog(dialogId);
 			break;
 
 		case R.id.createNewEventActivityTextEnds:
+			// Display time dialog
+			dialogId = R.string.ui_dialog_pick_end_time;
+			disDialog(dialogId);
+			// Display date dialog
 			dialogId = R.string.ui_dialog_pick_end_date;
-			;
 			disDialog(dialogId);
 			break;
 
@@ -59,7 +66,7 @@ public class CreateNewEventActivity extends Activity {
 		case R.id.createNewEventActivitybtnSave:
 
 			postNewEvent();
-			
+
 			intent = new Intent(mContext, MainActivity.class);
 			startActivity(intent);
 			break;
@@ -98,9 +105,9 @@ public class CreateNewEventActivity extends Activity {
 	public void onStartDateSet(int year, int monthOfYear, int dayOfMonth) {
 		mEventEntry.setStartDate(year, monthOfYear, dayOfMonth);
 
-		DialogFragment newFragment = MyDialogFragment
-				.newInstance(R.string.ui_dialog_pick_start_time);
-		newFragment.show(getFragmentManager(), "dialog");
+		// DialogFragment newFragment = MyDialogFragment
+		// .newInstance(R.string.ui_dialog_pick_start_time);
+		// newFragment.show(getFragmentManager(), "dialog");
 	}
 
 	public void onStartTimeSet(int hourOfDay, int minute) {
@@ -123,9 +130,9 @@ public class CreateNewEventActivity extends Activity {
 	public void onEndDateSet(int year, int monthOfYear, int dayOfMonth) {
 		mEventEntry.setEndDate(year, monthOfYear, dayOfMonth);
 
-		DialogFragment newFragment = MyDialogFragment
-				.newInstance(R.string.ui_dialog_pick_end_time);
-		newFragment.show(getFragmentManager(), "dialog");
+		// DialogFragment newFragment = MyDialogFragment
+		// .newInstance(R.string.ui_dialog_pick_end_time);
+		// newFragment.show(getFragmentManager(), "dialog");
 	}
 
 	public void onEndTimeSet(int hourOfDay, int minute) {
@@ -141,7 +148,7 @@ public class CreateNewEventActivity extends Activity {
 	/**
 	 * Save eventEntry data and send it to GCM
 	 */
-	private void postNewEvent(){
-		
+	private void postNewEvent() {
+
 	}
 }
