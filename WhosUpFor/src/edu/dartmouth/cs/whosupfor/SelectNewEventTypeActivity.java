@@ -79,7 +79,7 @@ public class SelectNewEventTypeActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 			// Remember the event type
 			extra.putInt(Globals.KEY_EVENT_TYPE,
-					R.id.activitySelectNewEventTypeBtnFood);
+					Globals.EVENT_TYPE_FOOD);
 			break;
 		// Sports
 		case R.id.activitySelectNewEventTypeBtnSports:
@@ -87,7 +87,7 @@ public class SelectNewEventTypeActivity extends Activity {
 					getString(R.id.activitySelectNewEventTypeBtnSports),
 					Toast.LENGTH_SHORT).show();
 			extra.putInt(Globals.KEY_EVENT_TYPE,
-					R.id.activitySelectNewEventTypeBtnSports);
+					Globals.EVENT_TYPE_SPORTS);
 			break;
 		// Study
 		case R.id.activitySelectNewEventTypeBtnStudy:
@@ -95,7 +95,7 @@ public class SelectNewEventTypeActivity extends Activity {
 					getString(R.id.activitySelectNewEventTypeBtnStudy),
 					Toast.LENGTH_SHORT).show();
 			extra.putInt(Globals.KEY_EVENT_TYPE,
-					R.id.activitySelectNewEventTypeBtnStudy);
+					Globals.EVENT_TYPE_STUDY);
 			break;
 		// Movie
 		case R.id.activitySelectNewEventTypeBtnMovie:
@@ -103,7 +103,7 @@ public class SelectNewEventTypeActivity extends Activity {
 					getString(R.id.activitySelectNewEventTypeBtnMovie),
 					Toast.LENGTH_SHORT).show();
 			extra.putInt(Globals.KEY_EVENT_TYPE,
-					R.id.activitySelectNewEventTypeBtnMovie);
+					Globals.EVENT_TYPE_MOVIE);
 			break;
 		// Party
 		case R.id.activitySelectNewEventTypeBtnParty:
@@ -111,15 +111,15 @@ public class SelectNewEventTypeActivity extends Activity {
 					getString(R.id.activitySelectNewEventTypeBtnParty),
 					Toast.LENGTH_SHORT).show();
 			extra.putInt(Globals.KEY_EVENT_TYPE,
-					R.id.activitySelectNewEventTypeBtnParty);
+					Globals.EVENT_TYPE_PARTY);
 			break;
 		// New Event Type
 		case R.id.activitySelectNewEventTypeBtnAddNew:
 			Toast.makeText(this,
 					getString(R.id.activitySelectNewEventTypeBtnAddNew),
 					Toast.LENGTH_SHORT).show();
-			extra.putInt(Globals.KEY_EVENT_TYPE,
-					R.id.activitySelectNewEventTypeBtnAddNew);
+//			extra.putInt(Globals.KEY_EVENT_TYPE,
+//					R.id.activitySelectNewEventTypeBtnAddNew);
 			break;
 
 		default:

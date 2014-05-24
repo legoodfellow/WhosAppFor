@@ -1,11 +1,14 @@
 package edu.dartmouth.cs.whosupfor.data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import edu.dartmouth.cs.whosupfor.util.Globals;
 
 /**
- * ADT for storing user entry data
- * using email address as the unique user id
+ * ADT for storing user entry data using email address as the unique user id
  * 
- *
+ * 
  */
 public class UserEntry {
 
@@ -31,6 +34,57 @@ public class UserEntry {
 		this.mMajor = " ";
 		this.mPassword = " ";
 		this.mProfilePhoto = new byte[0];
+	}
+
+	/**
+	 * Get the json file from web and convert it back to ExerciseEntry
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public JSONObject fromJSONObject(JSONObject obj) {
+		try {
+			mDbId = obj.getLong(Globals.KEY_USER_ROWID);
+			mFirstName = obj.getString(Globals.KEY_USER_FIRST_NAME);
+			mLastName = obj.getString(Globals.KEY_USER_LAST_NAME);
+			mEmail = obj.getString(Globals.KEY_USER_EMAIL);
+			mBio = obj.getString(Globals.KEY_USER_BIO);
+			mGender = obj.getInt(Globals.KEY_USER_GENDER);
+			mClassYear = obj.getInt(Globals.KEY_USER_CLASS_YEAR);
+			mMajor = obj.getString(Globals.KEY_USER_MAJOR);
+			mPassword = obj.getString(Globals.KEY_USER_PASSWORD);
+			mProfilePhoto = (byte[]) obj.get(Globals.KEY_USER_PROFILE_PHOTO);
+
+		} catch (JSONException e) {
+			return null;
+		}
+		return obj;
+	}
+
+	/**
+	 * Convert ExerciseEntry to JSON file upload it to web
+	 * 
+	 * @return
+	 */
+	public JSONObject toJSONObject() {
+		JSONObject obj = new JSONObject();
+
+		try {
+			obj.put(Globals.KEY_USER_ROWID, mDbId);
+			obj.put(Globals.KEY_USER_FIRST_NAME, mFirstName);
+			obj.put(Globals.KEY_USER_LAST_NAME, mLastName);
+			obj.put(Globals.KEY_USER_EMAIL, mEmail);
+			obj.put(Globals.KEY_USER_BIO, mBio);
+			obj.put(Globals.KEY_USER_GENDER, mGender);
+			obj.put(Globals.KEY_USER_CLASS_YEAR, mClassYear);
+			obj.put(Globals.KEY_USER_MAJOR, mMajor);
+			obj.put(Globals.KEY_USER_PASSWORD, mPassword);
+			obj.put(Globals.KEY_USER_PROFILE_PHOTO, mProfilePhoto);
+		} catch (JSONException e) {
+			return null;
+		}
+
+		return obj;
 	}
 
 	/**

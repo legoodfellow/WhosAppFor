@@ -20,6 +20,14 @@ public class Globals {
 	// CreateNewEventActivity
 	public static final int PICK_DATE = 1;
 	public static final int PICK_TIME = 2;
+	
+	// SelectNewEventTypeActivity
+	public static final int EVENT_TYPE_FOOD = 0;
+	public static final int EVENT_TYPE_SPORTS = 1;
+	public static final int EVENT_TYPE_STUDY = 2;
+	public static final int EVENT_TYPE_MOVIE = 3;
+	public static final int EVENT_TYPE_PARTY = 4;
+	
 
 	// EventEntry
 	public static final String DATE_FORMAT = "HH:mm:ss MMM d yyyy";
@@ -37,14 +45,13 @@ public class Globals {
 	public static final String KEY_EVENT_TITLE = "event_title";
 	public static final String KEY_EVENT_LOCATION = "event_location";
 	public static final String KEY_EVENT_TIME_STAMP = "event_time_stamp";
-	public static final String KEY_EVENT_START_DATE = "event_start_date";
-	public static final String KEY_EVENT_START_TIME = "event_Start_time";
-	public static final String KEY_EVENT_END_DATE = "event_end_date";
-	public static final String KEY_EVENT_END_TIME = "event_end_time";
+	public static final String KEY_EVENT_START_DATE_TIME = "event_start_date_time";
+	public static final String KEY_EVENT_END_DATE_TIME = "event_end_date_time";
 	public static final String KEY_EVENT_DETAIL = "event_detail";
 	public static final String KEY_EVENT_ATTENDEES = "event_attendees";
 	public static final String KEY_EVENT_CIRCLE = "event_circle";
 
+	// UserEntryDbHelper
 	public static final String TABLE_NAME_USER_ENTRIES = "userEntryTable";
 	public static final String KEY_USER_ROWID = "user_id";
 	public static final String KEY_USER_FIRST_NAME = "user_first_name";
@@ -56,6 +63,7 @@ public class Globals {
 	public static final String KEY_USER_MAJOR = "user_major";
 	public static final String KEY_USER_PASSWORD = "user_password";
 	public static final String KEY_USER_PROFILE_PHOTO = "user_profile_photo";
+	
 
 	// EditProfileActivity
 	public static final String IMG_INSTANCE_STATE_KEY = "saved_image";

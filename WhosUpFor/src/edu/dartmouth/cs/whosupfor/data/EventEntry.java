@@ -1,6 +1,5 @@
 package edu.dartmouth.cs.whosupfor.data;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -40,11 +39,6 @@ public class EventEntry {
 	private int mCircle; // Indicates which friend circle can view the event (
 							// e.g. 0 = public, 1 = friends)
 
-	private static final SimpleDateFormat sdf = new SimpleDateFormat(
-			Globals.DATE_FORMAT_NOW);
-	private static final SimpleDateFormat stf = new SimpleDateFormat(
-			Globals.TIME_FORMAT_NOW);
-
 	public EventEntry() {
 		this.mEventType = -1;
 		this.mEventTitle = " ";
@@ -68,14 +62,23 @@ public class EventEntry {
 	 * @param obj
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public JSONObject fromJSONObject(JSONObject obj) {
 		try {
-			mDbId = obj.getLong("mDbId");
-			mEventType = obj.getInt("inputType");
-
-			// mStartDate = obj.getString("date");
-			// mStartTime = obj.getString("time");
-
+			mDbId = obj.getLong(Globals.KEY_EVENT_ROWID);
+			mEmail = obj.getString(Globals.KEY_EVENT_EMAIL);
+			mEventType = obj.getInt(Globals.KEY_EVENT_TYPE);
+			mEventTitle = obj.getString(Globals.KEY_EVENT_TITLE);
+			mLocation = obj.getString(Globals.KEY_EVENT_LOCATION);
+			mTimeStamp = (Calendar) obj.get(Globals.KEY_EVENT_TIME_STAMP);
+			mStartDateTime = (Calendar) obj
+					.get(Globals.KEY_EVENT_START_DATE_TIME);
+			mStartDateTime = (Calendar) obj
+					.get(Globals.KEY_EVENT_END_DATE_TIME);
+			mDetail = obj.getString(Globals.KEY_EVENT_DETAIL);
+			mCircle = obj.getInt(Globals.KEY_EVENT_CIRCLE);
+			mAttendees = (ArrayList<String>) obj
+					.get(Globals.KEY_EVENT_ATTENDEES);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -91,12 +94,17 @@ public class EventEntry {
 		JSONObject obj = new JSONObject();
 
 		try {
-			obj.put("mDbId", mDbId);
-			obj.put("inputType", mEventType);
-
-			// obj.put("dateTime", mStartDate);
-			// obj.put("time", mStartTime);
-
+			obj.put(Globals.KEY_EVENT_ROWID, mDbId);
+			obj.put(Globals.KEY_EVENT_EMAIL, mEmail);
+			obj.put(Globals.KEY_EVENT_TYPE, mEventType);
+			obj.put(Globals.KEY_EVENT_TITLE, mEventTitle);
+			obj.put(Globals.KEY_EVENT_LOCATION, mLocation);
+			obj.put(Globals.KEY_EVENT_TIME_STAMP, mTimeStamp);
+			obj.put(Globals.KEY_EVENT_START_DATE_TIME, mStartDateTime);
+			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime);
+			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
+			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
+			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -191,10 +199,7 @@ public class EventEntry {
 		return mEndDateTime.getTimeInMillis();
 	}
 
-	public void setDateTime(Calendar dateTime) {
-		this.mStartDateTime = dateTime;
-
-	}
+	
 
 	public void setDateTime(long timestamp) {
 		this.mStartDateTime.setTimeInMillis(timestamp);
@@ -218,6 +223,11 @@ public class EventEntry {
 		mStartDateTime.set(Calendar.SECOND, 0);
 	}
 
+	public void setStartDateTime(Calendar dateTime) {
+		this.mStartDateTime = dateTime;
+
+	}
+	
 	/**
 	 * Set end date and time
 	 * 
@@ -233,6 +243,11 @@ public class EventEntry {
 		mEndDateTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
 		mEndDateTime.set(Calendar.MINUTE, minute);
 		mEndDateTime.set(Calendar.SECOND, 0);
+	}
+	
+	public void setEndDateTime(Calendar dateTime) {
+		this.mEndDateTime = dateTime;
+
 	}
 
 	/**
