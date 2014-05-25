@@ -7,10 +7,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
-public class EventEntryDbHelper extends SQLiteOpenHelper {
+public class EventEntryDbHelper extends SQLiteOpenHelper  {
 
 	private SQLiteDatabase mDatabase;
 
@@ -45,9 +44,9 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 			+ Globals.KEY_EVENT_DETAIL
 			+ " TEXT, "
 			+ Globals.KEY_EVENT_ATTENDEES
-			+ " BLOB "
+			+ " BLOB, "
 			+ Globals.KEY_EVENT_CIRCLE
-			+ " INTEGER NOT NULL, " + ");";
+			+ " INTEGER NOT NULL " + ");";
 
 	/**
 	 * Constructor
@@ -162,27 +161,32 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public ArrayList<EventEntry> fetchEntries() {
-		ArrayList<EventEntry> exerciseEntries = new ArrayList<EventEntry>();
+		ArrayList<EventEntry> eventEntries = new ArrayList<EventEntry>();
 
 		mDatabase = getReadableDatabase();
-		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_EVENT_ENTRIES, allColumns,
-				null, null, null, null, null);
+		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_EVENT_ENTRIES,
+				allColumns, null, null, null, null, null);
 		cursor.moveToFirst();
 
 		while (!cursor.isAfterLast()) {
 			// Helper method to get entry information from the mDatabase
 			EventEntry mEventEntry = cursorToEventEntry(cursor);
-//			Log.d(Globals.TAG_DATABASE, "get exercise entry = "
-//					+ cursorToExerciseEntry(cursor).toString());
-			exerciseEntries.add(mEventEntry);
+			// Log.d(Globals.TAG_DATABASE, "get exercise entry = "
+			// + cursorToExerciseEntry(cursor).toString());
+			eventEntries.add(mEventEntry);
 			cursor.moveToNext();
 		}
 		cursor.close();
 		mDatabase.close();
-		return exerciseEntries;
+		return eventEntries;
 
 	}
 
+	/**
+	 * Helper method to get eventEntry data
+	 * @param cursor
+	 * @return
+	 */
 	private EventEntry cursorToEventEntry(Cursor cursor) {
 
 		EventEntry mEventEntry = new EventEntry();
@@ -198,24 +202,16 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 				.getColumnIndex(Globals.KEY_EVENT_TITLE)));
 		mEventEntry.setLocation(cursor.getString(cursor
 				.getColumnIndex(Globals.KEY_EVENT_LOCATION)));
-		mEventEntry.setStartDateTime(cursor.get((cursor
+		mEventEntry.setTimeStamp(cursor.getLong(cursor
 				.getColumnIndex(Globals.KEY_EVENT_TIME_STAMP)));
-		mEventEntry.setDistance(cursor.getDouble(cursor
-				.getColumnIndex(Globals.KEY_DISTANCE)));
-		mEventEntry.setAvgPace(cursor.getDouble(cursor
-				.getColumnIndex(Globals.KEY_AVG_PACE)));
-		mEventEntry.setAvgSpeed(cursor.getDouble(cursor
-				.getColumnIndex(Globals.KEY_AVG_SPEED)));
-		mEventEntry.setCalorie(cursor.getInt(cursor
-				.getColumnIndex(Globals.KEY_CALORIES)));
-		mEventEntry.setClimb(cursor.getDouble(cursor
-				.getColumnIndex(Globals.KEY_CLIMB)));
-		mEventEntry.setHeartRate(cursor.getInt(cursor
-				.getColumnIndex(Globals.KEY_HEARTRATE)));
-		mEventEntry.setComment(cursor.getString(cursor
-				.getColumnIndex(Globals.KEY_COMMENT)));
-		mEventEntry.setGPSData(cursor.getBlob(cursor
-				.getColumnIndex(Globals.KEY_GPS_DATA)));
+		mEventEntry.setStartDateTime(cursor.getLong(cursor
+				.getColumnIndex(Globals.KEY_EVENT_START_DATE_TIME)));
+		mEventEntry.setEndDateTime(cursor.getLong(cursor
+				.getColumnIndex(Globals.KEY_EVENT_END_DATE_TIME)));
+		mEventEntry.setDetail(cursor.getString(cursor
+				.getColumnIndex(Globals.KEY_EVENT_DETAIL)));
+		mEventEntry.setCircle(cursor.getInt(cursor
+				.getColumnIndex(Globals.KEY_EVENT_CIRCLE)));
 
 		return mEventEntry;
 	}
@@ -225,9 +221,9 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 	 */
 	public void onUpgrade(SQLiteDatabase database, int oldVersion,
 			int newVersion) {
-//		Log.w(ExerciseEntryDbHelper.class.getName(),
-//				"Upgrading mDatabase from version " + oldVersion + " to "
-//						+ newVersion + ", which will destroy all old data");
+		// Log.w(ExerciseEntryDbHelper.class.getName(),
+		// "Upgrading mDatabase from version " + oldVersion + " to "
+		// + newVersion + ", which will destroy all old data");
 		database.execSQL("DROP TABLE IF EXISTS ");
 		onCreate(database);
 	}

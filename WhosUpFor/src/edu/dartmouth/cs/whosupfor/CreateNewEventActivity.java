@@ -1,17 +1,25 @@
 package edu.dartmouth.cs.whosupfor;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.data.EventEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.gcm.ServerUtilities;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.MyDialogFragment;
 import edu.dartmouth.cs.whosupfor.util.Utils;
@@ -33,9 +41,10 @@ public class CreateNewEventActivity extends Activity {
 		// Get mHelperContext
 		mContext = getApplicationContext();
 
-		// mEventEntryDbHelper = new EventEntryDbHelper(mContext);
+		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
 		mEventEntry = new EventEntry();
 
+		// Set event organizer email address
 		// Get the shared preference
 		String mKey = getString(R.string.preference_name_edit_profile_activity);
 		SharedPreferences mPrefs = getSharedPreferences(mKey, MODE_PRIVATE);
@@ -43,8 +52,8 @@ public class CreateNewEventActivity extends Activity {
 		mKey = getString(R.string.preference_key_edit_profile_activity_profile_email);
 		mValue = mPrefs.getString(mKey, "");
 		mEventEntry.setEmail(mValue);
-		
-		// Get event type
+
+		// Set event type
 		Bundle extra = getIntent().getExtras();
 		mEventEntry.setEventType(extra.getInt(Globals.KEY_EVENT_TYPE));
 
@@ -113,8 +122,10 @@ public class CreateNewEventActivity extends Activity {
 
 	}
 
+	// -----------------------------------------------------------------------------------------
+	// Start date and time
 	/**
-	 * Handle the Save call back from MyDialogFrag Set start date and time
+	 * Handle the Save call back from MyDialogFrag Set start date
 	 * 
 	 * @param year
 	 * @param monthOfYear
@@ -128,6 +139,12 @@ public class CreateNewEventActivity extends Activity {
 		// newFragment.show(getFragmentManager(), "dialog");
 	}
 
+	/**
+	 * Handle the Save call back from MyDialogFrag Set start time
+	 * 
+	 * @param hourOfDay
+	 * @param minute
+	 */
 	public void onStartTimeSet(int hourOfDay, int minute) {
 		mEventEntry.setStartTime(hourOfDay, minute);
 
@@ -138,8 +155,10 @@ public class CreateNewEventActivity extends Activity {
 		dateTimeView.setText(dateString);
 	}
 
+	// ------------------------------------------------------------------------------------
+	// End date and time
 	/**
-	 * Handle the Save call back from MyDialogFrag Set end date and time
+	 * Handle the Save call back from MyDialogFrag Set end date
 	 * 
 	 * @param year
 	 * @param monthOfYear
@@ -153,6 +172,12 @@ public class CreateNewEventActivity extends Activity {
 		// newFragment.show(getFragmentManager(), "dialog");
 	}
 
+	/**
+	 * Handle the Save call back from MyDialogFrag Set end time
+	 * 
+	 * @param hourOfDay
+	 * @param minute
+	 */
 	public void onEndTimeSet(int hourOfDay, int minute) {
 		mEventEntry.setEndTime(hourOfDay, minute);
 
@@ -162,6 +187,8 @@ public class CreateNewEventActivity extends Activity {
 				mEventEntry.getEndDateTimeInMillis(), mContext);
 		dateTimeView.setText(dateString);
 	}
+
+	// --------------------------------------------------------------------------------------
 
 	/**
 	 * Save eventEntry data and send it to GCM
@@ -188,7 +215,7 @@ public class CreateNewEventActivity extends Activity {
 
 		// EventLocation
 		try {
-			mValue = (String) ((EditText)findViewById(R.id.createNewEventActivityTextLocation))
+			mValue = (String) ((EditText) findViewById(R.id.createNewEventActivityTextLocation))
 					.getText().toString();
 		} catch (Exception e) {
 			mValue = "";
@@ -197,11 +224,58 @@ public class CreateNewEventActivity extends Activity {
 
 		// EventComments
 		try {
-			mValue = (String) ((EditText)findViewById(R.id.createNewEventActivityTextComments))
+			mValue = (String) ((EditText) findViewById(R.id.createNewEventActivityTextComments))
 					.getText().toString();
 		} catch (Exception e) {
 			mValue = "";
 		}
 		mEventEntry.setDetail(mValue);
+
+		// EventTimeStamp
+		mEventEntry.setTimeStamp(System.currentTimeMillis());
+		
+		// Save it to database
+		mEventEntryDbHelper.insertEntry(mEventEntry);
+		mEventEntryDbHelper.close();
+
+		// -------------------------------------------------------------------------------
+		// GCM
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.put(mEventEntry.toJSONObject());
+		String msg = jsonArray.toString();
+		postMsg(msg);
 	}
+
+	private void postMsg(String msg) {
+		new AsyncTask<String, Void, String>() {
+
+			@Override
+			protected String doInBackground(String... arg0) {
+				Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+						"postMsg().doInBackground() got called");
+				String url = Globals.SERVER_ADDR + "/post.do";
+				String res = "";
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("post_text", arg0[0]);
+				params.put("from", "phone");
+				try {
+					res = ServerUtilities.post(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			protected void onPostExecute(String res) {
+				// mPostText.setText("");
+				// refreshPostHistory();
+			}
+
+		}.execute(msg);
+		Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+				"postMsg().doInBackground() got called");
+	}
+
 }

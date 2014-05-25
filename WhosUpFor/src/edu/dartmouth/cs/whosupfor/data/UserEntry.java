@@ -37,7 +37,7 @@ public class UserEntry {
 	}
 
 	/**
-	 * Get the json file from web and convert it back to ExerciseEntry
+	 * Get the json file from web and convert it back to UserEntry
 	 * 
 	 * @param obj
 	 * @return
@@ -62,7 +62,7 @@ public class UserEntry {
 	}
 
 	/**
-	 * Convert ExerciseEntry to JSON file upload it to web
+	 * Convert UserEntry to JSON file upload it to web
 	 * 
 	 * @return
 	 */

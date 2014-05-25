@@ -7,6 +7,8 @@ public class Globals {
 
 	// LOG
 	public static final String TAG_MAIN_ACTIVITY = "MainActivity";
+	public static final String TAG_CREATE_NEW_EVENT_ACTIVITY = "CreateNewEventActivity";
+	public static final String TAG_NEWS_FEED_FRAGMENT = "NewsFeedFragment";
 
 	// MainActivity
 	public static final String TAB_KEY_INDEX = "tab_key";
@@ -36,6 +38,7 @@ public class Globals {
 
 	// EventEntryDbHelper
 	public static final String DATABASE_NAME = "whosupfor.db";
+	public static final String DATABASE_NAME_2 = "whosupfor2.db";
 	public static final int DATABASE_VERSION = 1;
 
 	public static final String TABLE_NAME_EVENT_ENTRIES = "eventEntryTable";
@@ -80,5 +83,12 @@ public class Globals {
 	// SettingsActivity
 	public static final String[] SETTINGS_ARRAY = { "Notification", "Privacy",
 			"Like us on Facebook", "Like us on Twitter", "About", "Donations" };
+	
+	// GCM
+	public static final String SERVER_ADDR = "http://10.31.239.242";
+	public static final String SENDER_ID = "424192184423";
+	public static final String PROPERTY_REG_ID = "registration_id";
+	public static final String PROPERTY_APP_VERSION = "appVersion";
+	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 }

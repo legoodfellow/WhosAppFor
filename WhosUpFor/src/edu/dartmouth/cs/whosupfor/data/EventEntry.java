@@ -181,24 +181,7 @@ public class EventEntry {
 		return mStartDateTime;
 	}
 
-	/**
-	 * Get start data and time and render them in the text view
-	 * 
-	 * @return
-	 */
-	public long getStartDateTimeInMillis() {
-		return mStartDateTime.getTimeInMillis();
-	}
-
-	/**
-	 * Get end data and time and render them in the text view
-	 * 
-	 * @return
-	 */
-	public long getEndDateTimeInMillis() {
-		return mEndDateTime.getTimeInMillis();
-	}
-
+	
 	
 
 	public void setDateTime(long timestamp) {
@@ -206,6 +189,8 @@ public class EventEntry {
 
 	}
 
+	//-------------------------------------------------------------------
+	// Start date and time
 	/**
 	 * Set start date and time
 	 * 
@@ -228,6 +213,24 @@ public class EventEntry {
 
 	}
 	
+	public void setStartDateTime(long timestamp) {
+		this.mStartDateTime.setTimeInMillis(timestamp);
+
+	}
+	
+	/**
+	 * Get start data and time and render them in the text view
+	 * 
+	 * @return
+	 */
+	public long getStartDateTimeInMillis() {
+		return mStartDateTime.getTimeInMillis();
+	}
+
+	
+	//-----------------------------------------------------------
+	// End date and time
+	
 	/**
 	 * Set end date and time
 	 * 
@@ -249,14 +252,31 @@ public class EventEntry {
 		this.mEndDateTime = dateTime;
 
 	}
+	
+	public void setEndDateTime(long timestamp) {
+		this.mEndDateTime.setTimeInMillis(timestamp);
 
+	}
+	
+	/**
+	 * Get end data and time and render them in the text view
+	 * 
+	 * @return
+	 */
+	public long getEndDateTimeInMillis() {
+		return mEndDateTime.getTimeInMillis();
+	}
+
+	
+	//---------------------------------------------------------
+	// Timestamp
 	/**
 	 * Set time stamp
 	 * 
 	 * @param timeStamp
 	 */
-	public void setTimeStamp(Calendar timeStamp) {
-		mTimeStamp = timeStamp;
+	public void setTimeStamp(long timeStamp) {
+		this.mTimeStamp.setTimeInMillis(timeStamp);
 	}
 
 	public long getTimeStamp() {
