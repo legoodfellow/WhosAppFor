@@ -20,10 +20,10 @@ public class EventEntry {
 	// event
 	private String mEmail;
 	private int mEventType; // eg: Food, Study, Movie....
-	private String mEventTitle; // Brief description of the event (“Dinner”,
-								// “Studying for CS65”, “Playing frisbee”, etc.)
-	private String mLocation; // The organizer’s text description of the
-								// location (“Boloco”, “Sudikoff”, etc) (GPS
+	private String mEventTitle; // Brief description of the event ("Dinner",
+								// "Studying for CS65", "Playing frisbee", etc.)
+	private String mLocation; // The organizer's text description of the
+								// location ("Boloco", "Sudikoff", etc) (GPS
 								// data might be added for v2)
 	private Calendar mTimeStamp; // Automatically generated timestamp in
 									// milliseconds
@@ -34,7 +34,7 @@ public class EventEntry {
 	// private String mStartTime; // Event start time
 	// private String mEndDate; // Event end date
 	// private String mEndTime; // Event end time
-	private String mDetail; // The organizer’s comment with event details
+	private String mDetail; // The organizer's comment with event details
 	private ArrayList<String> mAttendees; // List of attendee IDs
 	private int mCircle; // Indicates which friend circle can view the event (
 							// e.g. 0 = public, 1 = friends)
@@ -278,6 +278,10 @@ public class EventEntry {
 	public void setTimeStamp(long timeStamp) {
 		this.mTimeStamp.setTimeInMillis(timeStamp);
 	}
+	
+	public void setTimeStamp(Calendar timeStamp) {
+		mTimeStamp = timeStamp;
+	}
 
 	public long getTimeStamp() {
 		return mTimeStamp.getTimeInMillis();
@@ -350,4 +354,25 @@ public class EventEntry {
 	public int getCircle() {
 		return mCircle;
 	}
+
+	/**
+	 * Set attendees
+	 * 
+	 * @param attendees
+	 */
+	public void setAttendees(ArrayList<String> attendees) {
+		mAttendees = attendees;
+	}
+
+	public ArrayList<String> getAttendees() {
+		return mAttendees;
+	}
+	
+	public void addAttendee(String attendee) {
+		if (mAttendees != null){
+			mAttendees.add(attendee);
+		}
+		
+	}
+
 }
