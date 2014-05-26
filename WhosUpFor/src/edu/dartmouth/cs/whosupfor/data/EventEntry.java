@@ -350,4 +350,13 @@ public class EventEntry {
 	public int getCircle() {
 		return mCircle;
 	}
+	
+	public ArrayList<String> getAttendees() {
+		return mAttendees;
+	
+	}
+
+	public void setAttendees(ArrayList<String> attendees) {
+		this.mAttendees = attendees;
+	}
 }

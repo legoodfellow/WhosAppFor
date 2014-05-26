@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.Utils;
 
@@ -23,10 +24,15 @@ public class EventDetailsActivity extends Activity {
 		if (extras != null) {
 			
 
-			((EditText) findViewById(R.id.eventDetailActivityTextType))
+			// Event type
+			((TextView) findViewById(R.id.eventDetailActivityTextType))
 					.setText(Utils.getEventType(
 							extras.getInt(Globals.KEY_EVENT_TYPE)));
-
+			//
+			((EditText) findViewById(R.id.eventDetailActivityTextTypeTitle))
+			.setText(extras.getString(Globals.KEY_EVENT_TITLE));
+			
+			
 			
 		}
 	}
