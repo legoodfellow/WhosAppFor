@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.server.data.EventDatastore;
-import edu.dartmouth.cs.whosupfor.server.data.EventEntity;
 
 public class GetHistoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -18,12 +18,12 @@ public class GetHistoryServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
-		ArrayList<EventEntity> eventList = EventDatastore.query();
+		ArrayList<EventEntry> eventList = EventDatastore.query();
 
 		PrintWriter out = resp.getWriter();
-		for (EventEntity entity : eventList) {
+		for (EventEntry event : eventList) {
 			//TODO: output event
-			out.append(entity.getEventTitle() + "\n");
+			out.append(event.getEventTitle() + "\n");
 		}
 		
 		//TODO: user history?

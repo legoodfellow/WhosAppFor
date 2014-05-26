@@ -1,8 +1,5 @@
 package edu.dartmouth.cs.whosupfor.server.data;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 public class UserEntity {
 	public static String ENTITY_KIND_PARENT = "UserParent";
 	public static String ENTITY_PARENT_KEY = ENTITY_KIND_PARENT;

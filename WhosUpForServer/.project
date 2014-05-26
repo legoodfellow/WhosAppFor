@@ -3,6 +3,7 @@
 	<name>WhosUpForServer</name>
 	<comment></comment>
 	<projects>
+		<project>WhosUpFor</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -32,6 +33,11 @@
 		</buildCommand>
 		<buildCommand>
 			<name>com.google.appengine.eclipse.core.enhancerbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.wst.validation.validationbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>

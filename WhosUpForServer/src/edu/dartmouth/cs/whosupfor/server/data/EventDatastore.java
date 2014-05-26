@@ -1,7 +1,6 @@
 package edu.dartmouth.cs.whosupfor.server.data;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -10,15 +9,22 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Transaction;
+
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
+import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class EventDatastore {
 	private static final DatastoreService mDatastore = DatastoreServiceFactory
 			.getDatastoreService();
 
 	private static Key getParentKey() {
-		return KeyFactory.createKey(EventEntity.ENTITY_KIND_PARENT,
-				EventEntity.ENTITY_PARENT_KEY);
+		return KeyFactory.createKey(DataGlobals.ENTITY_KIND_EVENT_PARENT,
+				DataGlobals.ENTITY_EVENT_PARENT_KEY);
 	}
 
 	private static void createParentEntity() {
@@ -27,7 +33,7 @@ public class EventDatastore {
 		mDatastore.put(entity);
 	}
 
-	public static boolean add(EventEntity event) {
+	public static boolean add(EventEntry event) {
 		Key parentKey = getParentKey();
 		try {
 			mDatastore.get(parentKey);
@@ -35,56 +41,120 @@ public class EventDatastore {
 			createParentEntity();
 		}
 
-		Entity entity = new Entity(EventEntity.ENTITY_KIND_EVENT,
-				event.getDbId(), parentKey);
-
-		entity.setProperty(EventEntity.FIELD_NAME_ID, event.getDbId());
-		entity.setProperty(EventEntity.FIELD_NAME_EMAIL, event.getEmail());
-		entity.setProperty(EventEntity.FIELD_NAME_EVENT_TITLE, event.getEventTitle());
-		entity.setProperty(EventEntity.FIELD_NAME_EVENT_TYPE, event.getEventType());
-		entity.setProperty(EventEntity.FIELD_NAME_LOCATION, event.getLocation());
-		entity.setProperty(EventEntity.FIELD_NAME_TIMESTAMP, event.getTimeStamp());
-		entity.setProperty(EventEntity.FIELD_NAME_START_DATE_TIME, event.getStartDateTime());
-		entity.setProperty(EventEntity.FIELD_NAME_END_DATE_TIME, event.getEndDateTime());
-		entity.setProperty(EventEntity.FIELD_NAME_DETAILS, event.getDetail());
-		entity.setProperty(EventEntity.FIELD_NAME_ATTENDEES, event.getAttendees());
-		entity.setProperty(EventEntity.FIELD_NAME_CIRCLE, event.getCircle());
+		Entity entity = new Entity(DataGlobals.ENTITY_KIND_EVENT,
+				event.getID(), parentKey);
+		
+		setEntityFromEventEntry(entity, event);
 		
 		mDatastore.put(entity);
 
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static ArrayList<EventEntity> query() {
-		ArrayList<EventEntity> resultList = new ArrayList<EventEntity>();
+	public static boolean update(EventEntry event) {
+		Entity result = null;
+		try {
+			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
+					DataGlobals.ENTITY_KIND_EVENT, event.getID()));
+			
+			setEntityFromEventEntry(result, event);
 
-		Query query = new Query(EventEntity.ENTITY_KIND_EVENT);
+			mDatastore.put(result);
+		} catch (Exception ex) {
+		}
+		return false;
+	}
+
+	public static boolean delete(long id) {
+		// query
+		Filter filter = new FilterPredicate(Globals.KEY_EVENT_ROWID,
+				FilterOperator.EQUAL, id);
+
+		Query query = new Query(Globals.KEY_EVENT_ROWID);
+		query.setFilter(filter);
+
+		PreparedQuery pq = mDatastore.prepare(query);
+
+		Entity result = pq.asSingleEntity();
+		boolean ret = false;
+		if (result != null) {
+			// delete
+			mDatastore.delete(result.getKey());
+			ret = true;
+		}
+
+		return ret;
+	}
+
+	public static EventEntry getEventById(long id, Transaction txn) {
+		Entity result = null;
+		try {
+			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
+					DataGlobals.ENTITY_KIND_EVENT, id));
+		} catch (Exception ex) {
+		}
+
+		return getEventEntryFromEntity(result);
+	}
+
+	public static ArrayList<EventEntry> query() {
+		ArrayList<EventEntry> resultList = new ArrayList<EventEntry>();
+
+		Query query = new Query(DataGlobals.ENTITY_KIND_EVENT);
 		query.setFilter(null);
 		query.setAncestor(getParentKey());
-		query.addSort(EventEntity.FIELD_NAME_TIMESTAMP, SortDirection.ASCENDING);
+		query.addSort(Globals.KEY_EVENT_TIME_STAMP, SortDirection.ASCENDING);
 		PreparedQuery pq = mDatastore.prepare(query);
 
 		for (Entity entity : pq.asIterable()) {
-			EventEntity event = new EventEntity();
-			event.setDbId((Long)entity.getProperty(EventEntity.FIELD_NAME_ID));
-			event.setEmail((String) entity.getProperty(EventEntity.FIELD_NAME_EMAIL));
-			event.setEventTitle((String) entity.getProperty(EventEntity.FIELD_NAME_EVENT_TITLE));
-			event.setEventType((int) entity.getProperty(EventEntity.FIELD_NAME_EVENT_TYPE));
-			event.setLocation((String) entity.getProperty(EventEntity.FIELD_NAME_LOCATION));
-			event.setTimeStamp((Calendar) entity.getProperty(EventEntity.FIELD_NAME_TIMESTAMP));
-			event.setStartDateTime((Calendar) entity.getProperty(EventEntity.FIELD_NAME_START_DATE_TIME));
-			event.setEndDateTime((Calendar) entity.getProperty(EventEntity.FIELD_NAME_END_DATE_TIME));
-			event.setDetail((String) entity.getProperty(EventEntity.FIELD_NAME_DETAILS));
-			Object attendeesProperty = entity.getProperty(EventEntity.FIELD_NAME_ATTENDEES);
-			if (attendeesProperty instanceof ArrayList<?>) {
-				event.setAttendees((ArrayList<String>) attendeesProperty);
-			}
-			event.setCircle((int) entity.getProperty(EventEntity.FIELD_NAME_CIRCLE));
+			EventEntry event = getEventEntryFromEntity(entity);
 				
 			resultList.add(event);
 		}
 		return resultList;
+	}
+	
+	private static void setEntityFromEventEntry(Entity entity, EventEntry event){
+		if (entity == null) {
+			return;
+		}
+		
+		entity.setProperty(Globals.KEY_EVENT_ROWID, event.getID());
+		entity.setProperty(Globals.KEY_EVENT_EMAIL, event.getEmail());
+		entity.setProperty(Globals.KEY_EVENT_TITLE, event.getEventTitle());
+		entity.setProperty(Globals.KEY_EVENT_TYPE, event.getEventType());
+		entity.setProperty(Globals.KEY_EVENT_LOCATION, event.getLocation());
+		entity.setProperty(Globals.KEY_EVENT_TIME_STAMP, event.getTimeStamp());
+		entity.setProperty(Globals.KEY_EVENT_START_DATE_TIME, event.getStartDateTimeInMillis());
+		entity.setProperty(Globals.KEY_EVENT_END_DATE_TIME, event.getEndDateTimeInMillis());
+		entity.setProperty(Globals.KEY_EVENT_DETAIL, event.getDetail());
+		entity.setProperty(Globals.KEY_EVENT_ATTENDEES, event.getAttendees());
+		entity.setProperty(Globals.KEY_EVENT_CIRCLE, event.getCircle());
+	}
+	
+	private static EventEntry getEventEntryFromEntity(Entity entity){
+		if (entity == null) {
+			return null;
+		}
+		
+		EventEntry event = new EventEntry();
+		event.setID((long) entity.getProperty(Globals.KEY_EVENT_ROWID));
+		event.setEmail((String) entity.getProperty(Globals.KEY_EVENT_EMAIL));
+		event.setEventTitle((String) entity.getProperty(Globals.KEY_EVENT_TITLE));
+		event.setEventType((int) entity.getProperty(Globals.KEY_EVENT_TYPE));
+		event.setLocation((String) entity.getProperty(Globals.KEY_EVENT_LOCATION));
+		event.setTimeStamp((long) entity.getProperty(Globals.KEY_EVENT_TIME_STAMP));
+		event.setStartDateTime((long) entity.getProperty(Globals.KEY_EVENT_START_DATE_TIME));
+		event.setEndDateTime((long) entity.getProperty(Globals.KEY_EVENT_END_DATE_TIME));
+		event.setDetail((String) entity.getProperty(Globals.KEY_EVENT_DETAIL));
+		Object attendeesProperty = entity.getProperty(Globals.KEY_EVENT_ATTENDEES);
+		if (attendeesProperty instanceof ArrayList<?>) {
+			for (int i=1; i < ((ArrayList<?>) attendeesProperty).size(); i++) {
+			event.addAttendee((String) ((ArrayList<?>) attendeesProperty).get(i));
+			}
+		}
+		event.setCircle((int) entity.getProperty(Globals.KEY_EVENT_CIRCLE));
+		return event;
 	}
 
 }

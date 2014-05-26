@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.dartmouth.cs.whosupfor.server.data.RegDatastore;
-import edu.dartmouth.cs.whosupfor.gcm.Message;
-import edu.dartmouth.cs.whosupfor.gcm.Sender;
 
 /**
  * Servlet that adds a new message to all registered devices.
