@@ -37,8 +37,8 @@ public class Globals {
 	public static final String TIME_FORMAT_NOW = "HH:mm:ss";
 
 	// EventEntryDbHelper
-	public static final String DATABASE_NAME = "whosupfor.db";
-	public static final String DATABASE_NAME_2 = "whosupfor2.db";
+	public static final String DATABASE_NAME_EVENT = "whosupforevent.db";
+	public static final String DATABASE_NAME_USER = "whosupforuser.db";
 	public static final int DATABASE_VERSION = 1;
 
 	public static final String TABLE_NAME_EVENT_ENTRIES = "eventEntryTable";

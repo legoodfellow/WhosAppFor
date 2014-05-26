@@ -54,7 +54,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="edu.dartmouth.cs.whosupfor.SelectNewEventTypeActivity"
             android:label="@string/title_activity_select_new_event_type"
@@ -63,7 +62,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
-        
         <activity
             android:name="edu.dartmouth.cs.whosupfor.menu.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
@@ -72,7 +70,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
-        
         <activity
             android:name="edu.dartmouth.cs.whosupfor.menu.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -81,7 +78,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
-        
         <activity
             android:name="edu.dartmouth.cs.whosupfor.menu.ContactsActivity"
             android:label="@string/title_activity_contacts"
@@ -90,12 +86,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
         </activity>
-        
         <activity
             android:name="edu.dartmouth.cs.whosupfor.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
-        
         <activity
             android:name="edu.dartmouth.cs.whosupfor.CreateNewEventActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -105,7 +99,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.dartmouth.cs.whosupfor.SelectNewEventTypeActivity" />
         </activity>
-        
+
         <receiver
             android:name="edu.dartmouth.cs.whosupfor.gcm.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -118,7 +112,15 @@
         </receiver>
 
         <service android:name="edu.dartmouth.cs.whosupfor.gcm.GcmIntentService" />
-    
+
+        <activity
+            android:name="edu.dartmouth.cs.whosupfor.EventDetailsActivity"
+            android:label="@string/title_activity_event_details"
+            android:parentActivityName="edu.dartmouth.cs.whosupfor.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.dartmouth.cs.whosupfor.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -42,7 +42,7 @@ public class UserEntry {
 	 * @param obj
 	 * @return
 	 */
-	public JSONObject fromJSONObject(JSONObject obj) {
+	public void fromJSONObject(JSONObject obj) {
 		try {
 			mDbId = obj.getLong(Globals.KEY_USER_ROWID);
 			mFirstName = obj.getString(Globals.KEY_USER_FIRST_NAME);
@@ -56,9 +56,9 @@ public class UserEntry {
 			mProfilePhoto = (byte[]) obj.get(Globals.KEY_USER_PROFILE_PHOTO);
 
 		} catch (JSONException e) {
-			return null;
+			
 		}
-		return obj;
+		
 	}
 
 	/**

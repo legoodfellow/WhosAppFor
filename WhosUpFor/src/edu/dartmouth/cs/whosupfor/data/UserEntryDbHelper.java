@@ -54,7 +54,7 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 		// DATABASE_NAME is defined as a string constant
 		// DATABASE_VERSION is the version of mDatabase, which is defined as an
 		// integer constant
-		super(context, Globals.DATABASE_NAME, null, Globals.DATABASE_VERSION);
+		super(context, Globals.DATABASE_NAME_USER, null, Globals.DATABASE_VERSION);
 	}
 
 	/**

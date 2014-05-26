@@ -8,15 +8,20 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.util.Log;
-import edu.dartmouth.cs.whosupfor.R;
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class ServerUtilities {
@@ -33,8 +38,7 @@ public class ServerUtilities {
 	 * message using the 'from' address in the message.
 	 */
 	public static void sendRegistrationIdToBackend(Context context, String regId) {
-		String serverUrl = Globals.SERVER_ADDR
-				+ "/register";
+		String serverUrl = Globals.SERVER_ADDR + "/register";
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("regId", regId);
 
@@ -79,10 +83,76 @@ public class ServerUtilities {
 	 * @throws IOException
 	 *             propagated from POST.
 	 */
-	public static String post(String endpoint, Map<String, String> params)
-			throws IOException {
-		Log.d(TAG,
-				"ServerUtilities.java, post(),  called ");
+	// public static String post(String endpoint, Map<String, String> params)
+	// throws IOException {
+	// Log.d(TAG,
+	// "ServerUtilities.java, post(),  called ");
+	// URL url;
+	//
+	// try {
+	// url = new URL(endpoint);
+	// } catch (MalformedURLException e) {
+	// throw new IllegalArgumentException("invalid url: " + endpoint);
+	// }
+	//
+	// StringBuilder bodyBuilder = new StringBuilder();
+	// Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
+	//
+	// // constructs the POST body using the parameters
+	// while (iterator.hasNext()) {
+	// Entry<String, String> param = iterator.next();
+	// bodyBuilder.append(param.getKey()).append('=')
+	// .append(param.getValue());
+	// if (iterator.hasNext()) {
+	// bodyBuilder.append('&');
+	// }
+	// }
+	//
+	// String body = bodyBuilder.toString();
+	// byte[] bytes = body.getBytes();
+	// HttpURLConnection conn = null;
+	//
+	// try {
+	// conn = (HttpURLConnection) url.openConnection();
+	// conn.setDoOutput(true);
+	// conn.setUseCaches(false);
+	// conn.setFixedLengthStreamingMode(bytes.length);
+	// conn.setRequestMethod("POST");
+	// conn.setRequestProperty("Content-Type",
+	// "application/x-www-form-urlencoded;charset=UTF-8");
+	// // post the request
+	// OutputStream out = conn.getOutputStream();
+	// out.write(bytes);
+	// out.close();
+	// // handle the response
+	// int status = conn.getResponseCode();
+	// if (status != 200) {
+	// throw new IOException("Post failed with error code " + status);
+	// }
+	//
+	// // Get Response
+	// InputStream is = conn.getInputStream();
+	// BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+	// String line;
+	// StringBuffer response = new StringBuffer();
+	//
+	// while ((line = rd.readLine()) != null) {
+	// response.append(line);
+	// response.append('\n');
+	// }
+	// rd.close();
+	// return response.toString();
+	//
+	// } finally {
+	// if (conn != null) {
+	// conn.disconnect();
+	// }
+	// }
+	// }
+
+	public static ArrayList<EventEntry> post(String endpoint,
+			Map<String, String> params) throws IOException {
+		Log.d(TAG, "ServerUtilities.java, post(),  called ");
 		URL url;
 
 		try {
@@ -130,19 +200,61 @@ public class ServerUtilities {
 			InputStream is = conn.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			String line;
-			StringBuffer response = new StringBuffer();
-			
+			// StringBuffer response = new StringBuffer();
+			String finalString = "";
+
 			while ((line = rd.readLine()) != null) {
-				response.append(line);
-				response.append('\n');
+				// response.append(line);
+				// response.append('\n');
+				finalString += line;
 			}
 			rd.close();
-			return response.toString();
+
+			ArrayList<EventEntry> eventEntries = new ArrayList<EventEntry>();
+
+			try {
+				eventEntries = parseStringToEventEntry(finalString);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return eventEntries;
 
 		} finally {
 			if (conn != null) {
 				conn.disconnect();
 			}
 		}
+	}
+
+	/**
+	 * Helper method to parse string value to json object to eventEntry object
+	 * 
+	 * @param result
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<EventEntry> parseStringToEventEntry(String result)
+			throws JSONException {
+		ArrayList<EventEntry> eventEntries = new ArrayList<EventEntry>();
+		EventEntry eventEntry = new EventEntry();
+		JSONObject jsonObj;
+
+		// Convert string to json array
+		JSONArray jsonArray = new JSONArray(result);
+
+		// Convert json object to eventEntry object
+		for (int i = 0; i < jsonArray.length(); i++) {
+			jsonObj = jsonArray.getJSONObject(i);
+			try {
+				eventEntry.fromJSONObject(jsonObj);
+				eventEntries.add(eventEntry);
+			} catch (Exception e) {
+
+			}
+		}
+
+		return eventEntries;
 	}
 }

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import edu.dartmouth.cs.whosupfor.R;
 import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.util.Globals;
 
 /**
  * Add or delete contacts, edit circles
@@ -40,14 +42,15 @@ public class ContactsActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_contacts);
 
-		mUserEntryDbHelper = new UserEntryDbHelper(this);
-		mUserEntryDbHelper.getWritableDatabase();
+		mContext = getApplicationContext();
+		mUserEntryDbHelper = new UserEntryDbHelper(mContext);
+		mUserEntryDbHelper.getReadableDatabase();
 
 		mUserEntries = mUserEntryDbHelper.fetchEntries();
 
-		mContactsEntriesAdapter = new ContactsEntriesAdapter(this, mUserEntries);
+		Log.d(Globals.TAG_MAIN_ACTIVITY, "hah");
 
-		mContext = getApplicationContext();
+		mContactsEntriesAdapter = new ContactsEntriesAdapter(this, mUserEntries);
 
 		mUserEntryDbHelper.close();
 		setListAdapter(mContactsEntriesAdapter);

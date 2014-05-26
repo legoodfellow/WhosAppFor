@@ -18,9 +18,9 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -103,11 +103,10 @@ public class NewsFeedFragment extends ListFragment {
 		mMessageUpdateReceiver = new MyBroadcastReceiver();
 
 		mContext.registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
-		refreshPostHistory();
-		
+
 		// For test purpose
 		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
-		mEventEntryDbHelper.getWritableDatabase();
+		mEventEntryDbHelper.getReadableDatabase();
 
 		mEventEntries = mEventEntryDbHelper.fetchEntries();
 
@@ -116,6 +115,8 @@ public class NewsFeedFragment extends ListFragment {
 		mEventEntryDbHelper.close();
 		setListAdapter(mEventEntriesAdapter);
 
+		// Refresh list view
+		// refreshPostHistory();
 		super.onResume();
 	}
 
@@ -126,13 +127,39 @@ public class NewsFeedFragment extends ListFragment {
 		super.onPause();
 	}
 
+	// private void refreshPostHistory() {
+	// new AsyncTask<Void, Void, String>() {
+	//
+	// @Override
+	// protected String doInBackground(Void... arg0) {
+	// String url = Globals.SERVER_ADDR + "/get_history.do";
+	// String res = "";
+	// Map<String, String> params = new HashMap<String, String>();
+	// try {
+	// res = ServerUtilities.post(url, params);
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	//
+	// return res;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(String res) {
+	// if (!res.equals("")) {
+	// // mHistoryText.setText(res);
+	// }
+	// }
+	//
+	// }.execute();
+	// }
 	private void refreshPostHistory() {
-		new AsyncTask<Void, Void, String>() {
+		new AsyncTask<Void, Void, ArrayList<EventEntry>>() {
 
 			@Override
-			protected String doInBackground(Void... arg0) {
+			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
 				String url = Globals.SERVER_ADDR + "/get_history.do";
-				String res = "";
+				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
 				try {
 					res = ServerUtilities.post(url, params);
@@ -144,9 +171,21 @@ public class NewsFeedFragment extends ListFragment {
 			}
 
 			@Override
-			protected void onPostExecute(String res) {
-				if (!res.equals("")) {
-					// mHistoryText.setText(res);
+			protected void onPostExecute(ArrayList<EventEntry> res) {
+				if (!res.isEmpty() || res.size() != 0) {
+					// Update database
+					mEventEntryDbHelper.getReadableDatabase();
+					mEventEntryDbHelper.removeAllEntries();
+					for (EventEntry eventEntry : res) {
+						mEventEntryDbHelper.insertEntry(eventEntry);
+					}
+					mEventEntryDbHelper.close();
+
+					// Update listview of events
+					mEventEntriesAdapter = new EventEntriesAdapter(mContext,
+							res);
+					setListAdapter(mEventEntriesAdapter);
+
 				}
 			}
 
@@ -167,9 +206,15 @@ public class NewsFeedFragment extends ListFragment {
 	// UI
 
 	/**
-	 * Helper class for setting up arrayAdapter
+	 * Helper class for setting up arrayAdapter It gets called every time
+	 * NewFeedFragment is created, resumed or the broadcast receiver receives a
+	 * new update message from the server.
 	 * 
+	 * When NewFeedFragment is created or resumed, it retrieves event entries
+	 * from local database and display them in the listview
 	 * 
+	 * When the broadcast receiver receives a new update message, it retrieves
+	 * event entries from cloud datastore and update listView
 	 */
 	private class EventEntriesAdapter extends ArrayAdapter<EventEntry> {
 
@@ -178,6 +223,12 @@ public class NewsFeedFragment extends ListFragment {
 		private LayoutInflater mLayoutInflater = LayoutInflater.from(this
 				.getContext());
 
+		/**
+		 * Constructor
+		 * 
+		 * @param context
+		 * @param entries
+		 */
 		public EventEntriesAdapter(Context context,
 				ArrayList<EventEntry> entries) {
 			super(context, R.layout.event_list_item, entries);
@@ -190,10 +241,10 @@ public class NewsFeedFragment extends ListFragment {
 
 			ViewHolder mHolder;
 
-			// if it's not create convertView yet create new one and consume it
+			// if it's not created convertView yet create new one and consume it
 			if (convertView == null) {
-				convertView = mLayoutInflater.inflate(
-						R.layout.event_list_item, null);
+				convertView = mLayoutInflater.inflate(R.layout.event_list_item,
+						null);
 				// get new ViewHolder
 				mHolder = new ViewHolder();
 
@@ -207,7 +258,8 @@ public class NewsFeedFragment extends ListFragment {
 						.findViewById(R.id.eventListItemEventType);
 				mHolder.mEventDataTime = (TextView) convertView
 						.findViewById(R.id.eventListItemStartDateTime);
-
+				mHolder.mEventTitle = (TextView) convertView
+						.findViewById(R.id.eventListItemEventTitle);
 				// set tag of convertView to the holder
 				convertView.setTag(mHolder);
 			}// if it's exist convertView then consume it
@@ -215,6 +267,7 @@ public class NewsFeedFragment extends ListFragment {
 				mHolder = (ViewHolder) convertView.getTag();
 			}
 
+			// Get eventEntry data
 			EventEntry entry = mEntries.get(position);
 
 			// // Set image
@@ -227,8 +280,7 @@ public class NewsFeedFragment extends ListFragment {
 			// mHolder.mImage = (ImageView) convertView
 			// .findViewById(R.id.contactListItemUserProfileImage);
 			// }
-			
-			
+
 			// Load the profile image from internal storage
 			try {
 				FileInputStream fis = mHelperContext
@@ -260,25 +312,37 @@ public class NewsFeedFragment extends ListFragment {
 			mKey = getString(R.string.preference_key_edit_profile_activity_profile_last_name);
 			String mLastName = mPrefs.getString(mKey, "");
 			mHolder.mName.setText(mFirstName + " " + mLastName);
-			
+
 			// Set Event type
-			String[] EventType = {"Food", "Sports", "Study", "Movie", "Party"};
-			try{
+			String[] EventType = { "Food", "Sports", "Study", "Movie", "Party" };
+			try {
 				int eventType = entry.getEventType();
 				String result = EventType[eventType];
 				mHolder.mEventType.setText(result);
-			}catch(Exception e){
-				
+			} catch (Exception e) {
+
 			}
-			
-			try{
+
+			// Set event start date and time
+			try {
 				long dateTime = entry.getStartDateTimeInMillis();
 				String result = Utils.parseTime(dateTime, mContext);
 				mHolder.mEventDataTime.setText(result);
+			} catch (Exception e) {
+
+			}
+			
+			// Set event title
+			try{
+				String eventTitle = entry.getEventTitle();
+				mHolder.mEventTitle.setText(eventTitle);
 			}catch(Exception e){
 				
 			}
-			// Set date and time
+		
+
+			// Set onClick listener
+			convertView.setOnClickListener(new OnItemClickListener(position));
 
 			// Set delete button
 			// if(entry.getFirstName().equals("Aaron")){
@@ -286,8 +350,72 @@ public class NewsFeedFragment extends ListFragment {
 			// }
 
 			// Log.d(TAG, "getView() finished");
+
 			return convertView;
 
+		}
+
+		/**
+		 * Helper class OnItemClickListener, hanlde the click on list item In
+		 * order to keep strong consistent, instead of just passing the position
+		 * idx and letting EventDetailActivity use that idx to retrieve
+		 * eventEntry data from local database, we send bundle object to the
+		 * EventDetailActivity.
+		 * 
+		 * The reason is that before EventDetailActivity is called and the view
+		 * is displayed, the broadcast receiver may receive new update request
+		 * and update the database thus the position idx will be directed to
+		 * wrong entry data
+		 * 
+		 * @author Aaron Jun Yang
+		 * 
+		 */
+		private class OnItemClickListener implements OnClickListener {
+
+			private int mPosition;
+
+			public OnItemClickListener(int position) {
+				mPosition = position;
+			}
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Bundle extras = new Bundle();
+				int mIntValue = -1;
+				String mValue = " ";
+				Intent intent = new Intent();
+
+				// Write row id into extras.
+				extras.putLong(Globals.KEY_EVENT_ROWID, mEntries.get(mPosition)
+						.getID());
+				// Event type
+				mIntValue = mEntries.get(mPosition).getEventType();
+				extras.putInt(Globals.KEY_EVENT_TYPE, mIntValue);
+				// Event title
+				mValue = mEntries.get(mPosition).getEventTitle();
+				extras.putString(Globals.KEY_EVENT_TITLE, mValue);
+				// Event location
+				mValue = mEntries.get(mPosition).getLocation();
+				extras.putString(Globals.KEY_EVENT_LOCATION, mValue);
+				// Event start date and time, end date and time
+				long dateTime = mEntries.get(mPosition)
+						.getStartDateTimeInMillis();
+				mValue = Utils.parseTime(dateTime, mContext);
+				extras.putString(Globals.KEY_EVENT_START_DATE_TIME, mValue);
+				dateTime = mEntries.get(mPosition).getEndDateTimeInMillis();
+				mValue = Utils.parseTime(dateTime, mContext);
+				extras.putString(Globals.KEY_EVENT_END_DATE_TIME, mValue);
+				// Event detail
+				mValue = mEntries.get(mPosition).getDetail();
+				extras.putString(Globals.KEY_EVENT_DETAIL, mValue);
+
+				// Fire intent to EventDetailActivity
+				intent.setClass(mContext, EventDetailsActivity.class);
+				intent.putExtras(extras);
+				startActivity(intent);
+
+			}
 		}
 
 		// ViewHolder class that hold over ListView Item
@@ -296,9 +424,12 @@ public class NewsFeedFragment extends ListFragment {
 			TextView mName;
 			TextView mEventType;
 			TextView mEventDataTime;
+			TextView mEventTitle;
 		}
 
 	}
+
+	// --------------------------------------------------------------------------------
 
 	/**
 	 * Helper method to setup post button listener

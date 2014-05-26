@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.whosupfor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -246,15 +247,47 @@ public class CreateNewEventActivity extends Activity {
 		postMsg(msg);
 	}
 
+//	private void postMsg(String msg) {
+//		new AsyncTask<String, Void, String>() {
+//
+//			@Override
+//			protected String doInBackground(String... arg0) {
+//				Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+//						"postMsg().doInBackground() got called");
+//				String url = Globals.SERVER_ADDR + "/post.do";
+//				String res = "";
+//				Map<String, String> params = new HashMap<String, String>();
+//				params.put("post_text", arg0[0]);
+//				params.put("from", "phone");
+//				try {
+//					res = ServerUtilities.post(url, params);
+//				} catch (Exception ex) {
+//					ex.printStackTrace();
+//				}
+//
+//				return res;
+//			}
+//
+//			@Override
+//			protected void onPostExecute(String res) {
+//				// mPostText.setText("");
+//				// refreshPostHistory();
+//			}
+//
+//		}.execute(msg);
+//		Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+//				"postMsg().doInBackground() got called");
+//	}
+//	
 	private void postMsg(String msg) {
-		new AsyncTask<String, Void, String>() {
+		new AsyncTask<String, Void, ArrayList<EventEntry>>() {
 
 			@Override
-			protected String doInBackground(String... arg0) {
+			protected ArrayList<EventEntry> doInBackground(String... arg0) {
 				Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
 						"postMsg().doInBackground() got called");
 				String url = Globals.SERVER_ADDR + "/post.do";
-				String res = "";
+				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("post_text", arg0[0]);
 				params.put("from", "phone");
@@ -268,7 +301,7 @@ public class CreateNewEventActivity extends Activity {
 			}
 
 			@Override
-			protected void onPostExecute(String res) {
+			protected void onPostExecute(ArrayList<EventEntry> res) {
 				// mPostText.setText("");
 				// refreshPostHistory();
 			}

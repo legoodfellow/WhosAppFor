@@ -63,7 +63,7 @@ public class EventEntry {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public JSONObject fromJSONObject(JSONObject obj) {
+	public void fromJSONObject(JSONObject obj) {
 		try {
 			mDbId = obj.getLong(Globals.KEY_EVENT_ROWID);
 			mEmail = obj.getString(Globals.KEY_EVENT_EMAIL);
@@ -80,9 +80,9 @@ public class EventEntry {
 			mAttendees = (ArrayList<String>) obj
 					.get(Globals.KEY_EVENT_ATTENDEES);
 		} catch (JSONException e) {
-			return null;
+			
 		}
-		return obj;
+		
 	}
 
 	/**

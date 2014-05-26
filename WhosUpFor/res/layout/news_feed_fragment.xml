@@ -30,9 +30,9 @@
                 android:id="@+id/btnNewsFeedFragmentFilter"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:background="@drawable/button_shape"
                 android:text="@string/ui_news_feed_fragment_btn_filter" />
 
@@ -40,9 +40,9 @@
                 android:id="@+id/btnNewsFeedFragmentPostEvent"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:background="@drawable/button_shape"
                 android:text="@string/ui_news_feed_fragment_btn_post" />
         </LinearLayout>
@@ -52,7 +52,7 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
     </ListView>
 
 </LinearLayout>
