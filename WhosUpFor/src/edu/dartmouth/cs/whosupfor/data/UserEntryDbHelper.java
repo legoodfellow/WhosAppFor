@@ -155,20 +155,67 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 
 		for (String attendee : attendees) {
 			cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES,
-					allColumns, Globals.KEY_USER_EMAIL + " like ?", new String[] {attendee + "%"}, null,
-					null, null, null);
+					allColumns, Globals.KEY_USER_EMAIL + " like ?",
+					new String[] { attendee + "%" }, null, null, null, null);
 			if (cursor.moveToFirst()) {
 				// convert the cursor to an UserEntry object
 				mUserEntry = cursorToUserEntry(cursor);
 				mUserEntries.add(mUserEntry);
 			}
-			
+
 		}
 
 		mDatabase.close();
 		return mUserEntries;
 	}
 
+	/**
+	 * Query entry by eventEntry
+	 * 
+	 * @param attendees
+	 * @return
+	 */
+	public UserEntry fetchEntriesByEventEntry(EventEntry eventEntry) {
+		UserEntry mUserEntry = new UserEntry();
+		String mEmail = eventEntry.getEmail(); 
+		mDatabase = getReadableDatabase();
+		Cursor cursor = null;
+
+		cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES, allColumns,
+				Globals.KEY_USER_EMAIL + " like ?", new String[] { mEmail
+						+ "%" }, null, null, null, null);
+		if (cursor.moveToFirst()) {
+			// convert the cursor to an UserEntry object
+			mUserEntry = cursorToUserEntry(cursor);
+		}
+
+		mDatabase.close();
+		return mUserEntry;
+	}
+
+	/**
+	 * Query entry by email
+	 * 
+	 * @param attendees
+	 * @return
+	 */
+	public UserEntry fetchEntriesByEmail(String email) {
+		UserEntry mUserEntry = new UserEntry();
+		mDatabase = getReadableDatabase();
+		Cursor cursor = null;
+
+		cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES, allColumns,
+				Globals.KEY_USER_EMAIL + " like ?", new String[] { email
+						+ "%" }, null, null, null, null);
+		if (cursor.moveToFirst()) {
+			// convert the cursor to an UserEntry object
+			mUserEntry = cursorToUserEntry(cursor);
+		}
+
+		mDatabase.close();
+		return mUserEntry;
+	}
+	
 	/**
 	 * Query the entire table, return all rows
 	 * 

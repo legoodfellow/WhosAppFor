@@ -1,5 +1,6 @@
 package edu.dartmouth.cs.whosupfor;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.data.EventEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.data.UserEntry;
+import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
 import edu.dartmouth.cs.whosupfor.gcm.ServerUtilities;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.MyDialogFragment;
@@ -44,8 +47,11 @@ public class NewsFeedFragment extends ListFragment {
 	private MyBroadcastReceiver mMessageUpdateReceiver;
 
 	private EventEntryDbHelper mEventEntryDbHelper;
+	private UserEntryDbHelper mUserEntryDbHelper;
 	private ArrayList<EventEntry> mEventEntries;
 	private EventEntriesAdapter mEventEntriesAdapter;
+
+	private byte[] mByteArray;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,6 +102,8 @@ public class NewsFeedFragment extends ListFragment {
 		// Get eventEntrie information from local database and populate the
 		// event list
 		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
+		mUserEntryDbHelper = new UserEntryDbHelper(mContext);
+		mUserEntryDbHelper.getReadableDatabase();
 		mEventEntryDbHelper.getReadableDatabase();
 		mEventEntries = mEventEntryDbHelper.fetchEntries();
 		mEventEntryDbHelper.close();
@@ -104,8 +112,10 @@ public class NewsFeedFragment extends ListFragment {
 		mEventEntriesAdapter = new EventEntriesAdapter(mContext, mEventEntries);
 		setListAdapter(mEventEntriesAdapter);
 
+		mUserEntryDbHelper.close();
+
 		// Refresh list view
-		refreshPostHistory();
+//		refreshPostHistory();
 		super.onResume();
 	}
 
@@ -128,6 +138,7 @@ public class NewsFeedFragment extends ListFragment {
 				String url = Globals.SERVER_ADDR + "/get_history.do";
 				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
+				params.put("task_type", "get_events");
 				// Get ArrayList<EventEntry> from datastore
 				try {
 					res = ServerUtilities.post(url, params);
@@ -146,7 +157,7 @@ public class NewsFeedFragment extends ListFragment {
 				if (!res.isEmpty() || res.size() != 0) {
 
 					// Update database
-					mEventEntryDbHelper.getReadableDatabase();
+					mEventEntryDbHelper.getWritableDatabase();
 					mEventEntryDbHelper.removeAllEntries();
 					for (EventEntry eventEntry : res) {
 						mEventEntryDbHelper.insertEntry(eventEntry);
@@ -250,48 +261,28 @@ public class NewsFeedFragment extends ListFragment {
 			// Get eventEntry data
 			EventEntry entry = mEntries.get(position);
 
-			// // Set image
-			// try {
-			// mByteArray = entry.getProfilePhoto();
-			// ByteArrayInputStream bis = new ByteArrayInputStream(mByteArray);
-			// Bitmap bp = BitmapFactory.decodeStream(bis);
-			// mHolder.mImage.setImageBitmap(bp);
-			// } catch (Exception e) {
-			// mHolder.mImage = (ImageView) convertView
-			// .findViewById(R.id.contactListItemUserProfileImage);
-			// }
+			UserEntry userEntry = mUserEntryDbHelper
+					.fetchEntriesByEventEntry(entry);
 
-			// Load the profile image from internal storage
+			// Set image
 			try {
-				FileInputStream fis = mHelperContext
-						.openFileInput(getString(R.string.preference_key_edit_profile_photo_file_name));
-				Bitmap bmap = BitmapFactory.decodeStream(fis);
-				mHolder.mImage.setImageBitmap(bmap);
-				fis.close();
-			} catch (IOException e) {
-				// Default profile photo if no photo saved before.
-				mHolder.mImage.setImageResource(R.drawable.icon_selfies);
+				mByteArray = userEntry.getProfilePhoto();
+				ByteArrayInputStream bis = new ByteArrayInputStream(mByteArray);
+				Bitmap bp = BitmapFactory.decodeStream(bis);
+				mHolder.mImage.setImageBitmap(bp);
+			} catch (Exception e) {
+				mHolder.mImage = (ImageView) convertView
+						.findViewById(R.id.contactListItemUserProfileImage);
 			}
 
-			// // Get first and last name
-			// try {
-			// String firstName = entry.get();
-			// String lastName = entry.getLastName();
-			// mHolder.mName.setText(firstName + " " + lastName);
-			// } catch (Exception e) {
-			// mHolder.mName.setText("unknown");
-			// }
-
-			String mKey = getString(R.string.preference_name_edit_profile_activity);
-			SharedPreferences mPrefs = mContext.getSharedPreferences(mKey,
-					mContext.MODE_PRIVATE);
-
-			// Load the profile name
-			mKey = getString(R.string.preference_key_edit_profile_activity_profile_first_name);
-			String mFirstName = mPrefs.getString(mKey, "");
-			mKey = getString(R.string.preference_key_edit_profile_activity_profile_last_name);
-			String mLastName = mPrefs.getString(mKey, "");
-			mHolder.mName.setText(mFirstName + " " + mLastName);
+			// Get first and last name
+			try {
+				String firstName = userEntry.getFirstName();
+				String lastName = userEntry.getLastName();
+				mHolder.mName.setText(firstName + " " + lastName);
+			} catch (Exception e) {
+				mHolder.mName.setText("unknown");
+			}
 
 			// Set Event type
 			try {
@@ -361,6 +352,25 @@ public class NewsFeedFragment extends ListFragment {
 				// Write row id into extras.
 				extras.putLong(Globals.KEY_EVENT_ROWID, mEntries.get(mPosition)
 						.getID());
+
+				// Get UserEntry
+				mUserEntryDbHelper.getReadableDatabase();
+				UserEntry userEntry = mUserEntryDbHelper
+						.fetchEntriesByEventEntry(mEntries.get(mPosition));
+
+				// Event Organizer name
+				mValue = userEntry.getFirstName() + " "
+						+ userEntry.getLastName();
+				extras.putString(Globals.KEY_USER_FIRST_NAME, mValue);
+
+				// Event Organizer profile image
+				try {
+					mByteArray = userEntry.getProfilePhoto();
+					extras.putByteArray(Globals.KEY_USER_PROFILE_PHOTO,
+							mByteArray);
+				} catch (Exception e) {
+
+				}
 
 				// Event type
 				mIntValue = mEntries.get(mPosition).getEventType();

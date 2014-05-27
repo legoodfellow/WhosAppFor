@@ -5,19 +5,23 @@ import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.menu.EditProfileActivity;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.Utils;
 
@@ -28,6 +32,7 @@ public class EventDetailsActivity extends ListActivity {
 	private ArrayList<String> mAttendees;
 	private ArrayList<UserEntry> mUserEntries;
 	private UserEntryDbHelper mUserEntryDbHelper;
+	private byte[] mByteArray;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,26 @@ public class EventDetailsActivity extends ListActivity {
 		if (extras != null) {
 
 			// Organizer profile photo and name
-			
+			try {
+				mByteArray = extras
+						.getByteArray(Globals.KEY_USER_PROFILE_PHOTO);
+				ByteArrayInputStream bis = new ByteArrayInputStream(mByteArray);
+				Bitmap bp = BitmapFactory.decodeStream(bis);
+				((ImageView) findViewById(R.id.eventDetailProfileImage))
+						.setImageBitmap(bp);
+			} catch (Exception e) {
+
+			}
+
+			// If it's my post, hide the radio group
+			if (extras.getInt("MY_POST") == 1) {
+				((RadioGroup) findViewById(R.id.eventDetailActivityRadioGroup))
+						.setVisibility(View.GONE);
+			}
+
+			// Event Organizer name
+			((TextView) findViewById(R.id.eventDetailActivityTextName))
+					.setText(extras.getString(Globals.KEY_USER_FIRST_NAME));
 
 			// Event type
 			((TextView) findViewById(R.id.eventDetailActivityTextType))
@@ -75,12 +99,13 @@ public class EventDetailsActivity extends ListActivity {
 			mAttendees = extras.getStringArrayList(Globals.KEY_EVENT_ATTENDEES);
 
 			mUserEntries = new ArrayList<UserEntry>();
-			
-			mAttendees.add("a@dali.dartmouth.edu");
-			mUserEntries = mUserEntryDbHelper.fetchEntriesByAttendees(mAttendees);
+
+			// mAttendees.add("a@dali.dartmouth.edu");
+			// mUserEntries =
+			// mUserEntryDbHelper.fetchEntriesByAttendees(mAttendees);
 
 			// test
-//			mUserEntries = mUserEntryDbHelper.fetchEntries();
+			mUserEntries = mUserEntryDbHelper.fetchEntries();
 
 			mAttendeesEntriesAdapter = new AttendeesEntriesAdapter(this,
 					mUserEntries);
@@ -159,11 +184,53 @@ public class EventDetailsActivity extends ListActivity {
 			mHolder.mButton.setVisibility(View.GONE);
 
 			// Set onClick listener
-//			convertView.setOnClickListener(new OnItemClickListener(position));
+			// convertView.setOnClickListener(new
+			// OnItemClickListener(position));
 
+			// Set onClick listener
+			convertView.setOnClickListener(new OnItemClickListener(position));
 			// Log.d(TAG, "getView() finished");
 			return convertView;
 
+		}
+
+		/**
+		 * Helper class OnItemClickListener, hanlde the click on list item
+		 * 
+		 * @author Aaron Jun Yang
+		 * 
+		 */
+		private class OnItemClickListener implements OnClickListener {
+
+			private int mPosition;
+
+			public OnItemClickListener(int position) {
+				mPosition = position;
+			}
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Bundle extras = new Bundle();
+				int mIntValue = -1;
+				String mValue = " ";
+				ArrayList<String> mAttendees = new ArrayList<String>();
+				Intent intent = new Intent();
+
+				// Write row id into extras.
+				extras.putLong(Globals.KEY_EVENT_ROWID, mEntries.get(mPosition)
+						.getID());
+
+				// Add user email
+				extras.putString(Globals.KEY_USER_EMAIL, mEntries
+						.get(mPosition).getEmail());
+
+				// Fire intent to EventDetailActivity
+				intent.setClass(mContext, EditProfileActivity.class);
+				intent.putExtras(extras);
+				startActivity(intent);
+
+			}
 		}
 
 		// ViewHolder class that hold over ListView Item

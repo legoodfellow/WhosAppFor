@@ -6,6 +6,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONArray;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -16,11 +21,13 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -31,6 +38,7 @@ import edu.dartmouth.cs.whosupfor.NewsFeedFragment;
 import edu.dartmouth.cs.whosupfor.R;
 import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.gcm.ServerUtilities;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.MyDialogFragment;
 
@@ -46,6 +54,7 @@ public class EditProfileActivity extends Activity {
 
 	public Context mContext;
 
+	private String mEmail;
 	private UserEntry mUserEntry;
 	private UserEntryDbHelper mUserEntryDbHelper;
 
@@ -57,18 +66,31 @@ public class EditProfileActivity extends Activity {
 		// Get imageView and context
 		mImageView = (ImageView) findViewById(R.id.editProfileImage);
 		mContext = getApplicationContext();
+		mUserEntryDbHelper = new UserEntryDbHelper(mContext);
 
-		if (savedInstanceState != null) {
-			// Get saved byteArray of Bitmap image
-			mByteArray = savedInstanceState
-					.getByteArray(Globals.IMG_INSTANCE_STATE_KEY);
-			mImageCaptureUri = savedInstanceState
-					.getParcelable(Globals.URI_INSTANCE_STATE_KEY);
+		Bundle extras = getIntent().getExtras();
+
+		try {
+			mEmail = extras.getString(Globals.KEY_USER_EMAIL);
+		} catch (Exception e) {
+
 		}
 
-		// Helper method to load saved data or handle orientation change
-		loadProfileData();
+		if (mEmail != null) {
+			loadOtherUserProfile();
+		}
 
+		else {
+			if (savedInstanceState != null) {
+				// Get saved byteArray of Bitmap image
+				mByteArray = savedInstanceState
+						.getByteArray(Globals.IMG_INSTANCE_STATE_KEY);
+				mImageCaptureUri = savedInstanceState
+						.getParcelable(Globals.URI_INSTANCE_STATE_KEY);
+			}
+			// Helper method to load saved data or handle orientation change
+			loadProfileData();
+		}
 	}
 
 	/**
@@ -219,15 +241,109 @@ public class EditProfileActivity extends Activity {
 	 * @param v
 	 */
 	public void onSaveClicked(View v) {
+		// Call helper method
 		saveProfileData();
 		Toast.makeText(mContext, Globals.TOAST_SAVE_MESSAGE, Toast.LENGTH_SHORT)
 				.show();
+
+		// -------------------------------------------------------------------------------
+		// GCM
+		JSONArray jsonArray = new JSONArray();
+		// Convert eventEntry to JSON object
+		jsonArray.put(mUserEntry.toJSONObject());
+		String msg = jsonArray.toString();
+		// Call helper method to send msg to Google Cloud
+		postMsg(msg);
 
 		Intent intent = new Intent(mContext, MainActivity.class);
 		startActivity(intent);
 
 	}
 
+	// ------------------------------------------------------------------------
+	// GCM
+	/**
+	 * Post new user profile to Google Cloud
+	 * 
+	 * @param msg
+	 *            : JSON string
+	 */
+	private void postMsg(String msg) {
+		new AsyncTask<String, Void, ArrayList<UserEntry>>() {
+
+			@Override
+			protected ArrayList<UserEntry> doInBackground(String... arg0) {
+				Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+						"postMsg().doInBackground() got called");
+				String url = Globals.SERVER_ADDR + "/post.do";
+				ArrayList<UserEntry> res = new ArrayList<UserEntry>();
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("post_text", arg0[0]);
+				params.put("task_type", "create_new_user");
+				try {
+					res = ServerUtilities.postUser(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			protected void onPostExecute(ArrayList<UserEntry> res) {
+				// mPostText.setText("");
+				refreshPostHistory();
+			}
+
+		}.execute(msg);
+		Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+				"postMsg().doInBackground() got called");
+	}
+
+	/**
+	 * Refresh event list
+	 */
+	private void refreshPostHistory() {
+		new AsyncTask<Void, Void, ArrayList<UserEntry>>() {
+
+			@Override
+			protected ArrayList<UserEntry> doInBackground(Void... arg0) {
+				// Call GetHistoryServlet on server side
+				String url = Globals.SERVER_ADDR + "/get_history.do";
+				ArrayList<UserEntry> res = new ArrayList<UserEntry>();
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("task_type", "get_users");
+				// Get ArrayList<EventEntry> from datastore
+				try {
+					res = ServerUtilities.postUser(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			/**
+			 * Update the userEntry in the local database
+			 */
+			protected void onPostExecute(ArrayList<UserEntry> res) {
+				if (!res.isEmpty() || res.size() != 0) {
+
+					// Update database
+					mUserEntryDbHelper.getWritableDatabase();
+					mUserEntryDbHelper.removeAllEntries();
+					for (UserEntry userEntry : res) {
+						mUserEntryDbHelper.insertEntry(userEntry);
+					}
+					mUserEntryDbHelper.close();
+				}
+			}
+		}.execute();
+	}
+
+	// -------------------------------------------------------------------------------------------------
+	// UI
 	/**
 	 * Cancel the activity and return to parent activity
 	 * 
@@ -237,6 +353,72 @@ public class EditProfileActivity extends Activity {
 		Toast.makeText(mContext, Globals.TOAST_CANCEL_MESSAGE,
 				Toast.LENGTH_SHORT).show();
 		finish();
+	}
+
+	private void loadOtherUserProfile() {
+		// Load user entry
+		mUserEntryDbHelper.getReadableDatabase();
+		UserEntry userEntry = new UserEntry();
+		userEntry = mUserEntryDbHelper.fetchEntriesByEmail(mEmail);
+		mUserEntryDbHelper.close();
+
+		// Setup the photo
+		mByteArray = userEntry.getProfilePhoto();
+		if (mByteArray != null) {
+			ByteArrayInputStream bis = new ByteArrayInputStream(mByteArray);
+			Bitmap bp = BitmapFactory.decodeStream(bis);
+			mImageView.setImageBitmap(bp);
+			mImageView.setClickable(false);
+		}
+
+		// Load the profile name
+		String mValue = userEntry.getFirstName();
+		((EditText) findViewById(R.id.editProfileFirstName)).setText(mValue);
+		((EditText) findViewById(R.id.editProfileFirstName))
+				.setFocusable(false);
+		mValue = userEntry.getLastName();
+		((EditText) findViewById(R.id.editProfileLastName)).setText(mValue);
+		((EditText) findViewById(R.id.editProfileLastName)).setFocusable(false);
+
+		// Load the profile email
+
+		mValue = userEntry.getEmail();
+		((EditText) findViewById(R.id.editProfileEmail)).setText(mValue);
+		((EditText) findViewById(R.id.editProfileEmail)).setFocusable(false);
+
+		// Load the profile gender
+		int mIntValue = userEntry.getGender();
+		// In case there isn't one saved before:
+		if (mIntValue >= 0) {
+			// Find the radio button that should be checked.
+			RadioButton radioBtn = (RadioButton) ((RadioGroup) findViewById(R.id.editProfileRadioGender))
+					.getChildAt(mIntValue);
+			// Check the button
+			radioBtn.setChecked(true);
+			radioBtn.setClickable(false);
+			((RadioButton) findViewById(R.id.editProfileRadioGenderF))
+					.setClickable(false);
+		}
+
+		// Load the profile class
+		mValue = String.valueOf(userEntry.getClassYear());
+		((EditText) findViewById(R.id.editProfileClass)).setText(mValue);
+		((EditText) findViewById(R.id.editProfileClass)).setFocusable(false);
+
+		// Load the profile major
+		mValue = userEntry.getMajor();
+		((EditText) findViewById(R.id.editProfileMajor)).setText(mValue);
+		((EditText) findViewById(R.id.editProfileMajor)).setFocusable(false);
+
+		// Load the profile bio
+		mValue = userEntry.getBio();
+		((EditText) findViewById(R.id.editProfileBio)).setText(mValue);
+		((EditText) findViewById(R.id.editProfileBio)).setFocusable(false);
+
+		((Button) findViewById(R.id.editProfileBtnSave))
+				.setVisibility(View.GONE);
+		((Button) findViewById(R.id.editProfileBtnCancel))
+				.setVisibility(View.GONE);
 	}
 
 	/**
@@ -458,9 +640,9 @@ public class EditProfileActivity extends Activity {
 
 		mUserEntry.setProfilePhoto(mByteArray);
 
-		mUserEntryDbHelper = new UserEntryDbHelper(this);
-		mUserEntryDbHelper.insertEntry(mUserEntry);
-		mUserEntryDbHelper.close();
+//		mUserEntryDbHelper.getWritableDatabase();
+//		mUserEntryDbHelper.insertEntry(mUserEntry);
+//		mUserEntryDbHelper.close();
 
 	}
 

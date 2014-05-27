@@ -105,7 +105,6 @@ public class MyDialogFragment extends DialogFragment {
 									RadioGroup mRadioGroup = (RadioGroup) getActivity().findViewById(R.id.fragmentFilterDialogRadioEventType);
 									int mIntValue = mRadioGroup.indexOfChild(getActivity().findViewById(mRadioGroup
 											.getCheckedRadioButtonId()));
-									((NewsFeedFragment)getFragmentManager().findFragmentById()).onFilterSelected(mIntValue);
 									
 								}
 							})

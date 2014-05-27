@@ -165,10 +165,10 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 		ArrayList<EventEntry> mEventEntries = new ArrayList<EventEntry>();
 		EventEntry mEventEntry = new EventEntry();
 		mDatabase = getReadableDatabase();
-		
-		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES, allColumns,
-				Globals.KEY_EVENT_TYPE + " like ?", new String[] { idx
-						+ "%" }, null, null, null, null);
+
+		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_EVENT_ENTRIES,
+				allColumns, Globals.KEY_EVENT_TYPE + " like ?",
+				new String[] { idx + "%" }, null, null, null, null);
 		if (cursor.moveToFirst()) {
 			// convert the cursor to an UserEntry object
 			mEventEntry = cursorToEventEntry(cursor);
@@ -179,6 +179,46 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 		return mEventEntries;
 	}
 
+	/**
+	 * Query my post entries by email
+	 * 
+	 * @param attendees
+	 * @return
+	 */
+	public ArrayList<EventEntry> fetchEntriesByEmail(String email) {
+		ArrayList<EventEntry> mEventEntries = new ArrayList<EventEntry>();
+		ArrayList<EventEntry> result = new ArrayList<EventEntry>();
+
+		mEventEntries = fetchEntries();
+		for (EventEntry eventEntry : mEventEntries) {
+			if (eventEntry.getEmail().equals(email)) {
+				result.add(eventEntry);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Query going entries by email
+	 * 
+	 * @param attendees
+	 * @return
+	 */
+	public ArrayList<EventEntry> fetchEntriesGoingByEmail(String email) {
+		ArrayList<EventEntry> mEventEntries = new ArrayList<EventEntry>();
+		ArrayList<EventEntry> result = new ArrayList<EventEntry>();
+
+		mEventEntries = fetchEntries();
+		for (EventEntry eventEntry : mEventEntries) {
+			if (eventEntry.getAttendees().contains(email)) {
+				result.add(eventEntry);
+			}
+		}
+
+		return result;
+	}
+	
 	/**
 	 * Query the entire table, return all rows
 	 * 

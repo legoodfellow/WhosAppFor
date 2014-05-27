@@ -85,7 +85,9 @@ public class Globals {
 			"Like us on Facebook", "Like us on Twitter", "About", "Donations" };
 	
 	// GCM
-	public static final String SERVER_ADDR = "http://10.31.237.233:8888";
+//	public static final String SERVER_ADDR = "http://10.31.238.127:8888";
+	public static final String SERVER_ADDR = "http://whosupfor.appspot.com";
+	
 //	public static final String SENDER_ID = "424192184423";
 	public static final String SENDER_ID = "141554009918";
 	public static final String PROPERTY_REG_ID = "registration_id";

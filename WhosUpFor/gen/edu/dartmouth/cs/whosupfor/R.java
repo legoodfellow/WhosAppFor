@@ -238,15 +238,15 @@ containing a value of this type.
         public static final int icon_selfies=0x7f02001e;
     }
     public static final class id {
-        public static final int action_settings=0x7f050044;
+        public static final int action_settings=0x7f050045;
         public static final int activitySelectNewEventTypeBtnAddNew=0x7f05002a;
         public static final int activitySelectNewEventTypeBtnFood=0x7f050025;
         public static final int activitySelectNewEventTypeBtnMovie=0x7f050028;
         public static final int activitySelectNewEventTypeBtnParty=0x7f050029;
         public static final int activitySelectNewEventTypeBtnSports=0x7f050026;
         public static final int activitySelectNewEventTypeBtnStudy=0x7f050027;
-        public static final int btnNewsFeedFragmentFilter=0x7f05003f;
-        public static final int btnNewsFeedFragmentPostEvent=0x7f050040;
+        public static final int btnNewsFeedFragmentFilter=0x7f050040;
+        public static final int btnNewsFeedFragmentPostEvent=0x7f050041;
         public static final int contactListItemDelete=0x7f05002e;
         public static final int contactListItemUserName=0x7f05002d;
         public static final int contactListItemUserProfileImage=0x7f05002c;
@@ -298,18 +298,19 @@ containing a value of this type.
         public static final int fragmentFilterDialogRadioEventType=0x7f050034;
         public static final int fragmentFilterDialogRadioEventTypeFood=0x7f050035;
         public static final int hybrid=0x7f050004;
-        public static final int imageNewsFeedFragmentProfile=0x7f05003e;
-        public static final int menuitem_add_contacts=0x7f050043;
-        public static final int menuitem_contacts=0x7f050046;
-        public static final int menuitem_logout=0x7f050048;
-        public static final int menuitem_profile=0x7f050045;
-        public static final int menuitem_settings=0x7f050047;
+        public static final int imageNewsFeedFragmentProfile=0x7f05003f;
+        public static final int menuitem_add_contacts=0x7f050044;
+        public static final int menuitem_contacts=0x7f050047;
+        public static final int menuitem_logout=0x7f050049;
+        public static final int menuitem_profile=0x7f050046;
+        public static final int menuitem_settings=0x7f050048;
+        public static final int newsFeedFirstLayout=0x7f05003e;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int pager=0x7f050024;
         public static final int satellite=0x7f050002;
-        public static final int settingsListItemName=0x7f050041;
-        public static final int settingsSwitch=0x7f050042;
+        public static final int settingsListItemName=0x7f050042;
+        public static final int settingsSwitch=0x7f050043;
         public static final int terrain=0x7f050003;
     }
     public static final class integer {
@@ -327,8 +328,9 @@ containing a value of this type.
         public static final int contact_list_item=0x7f030008;
         public static final int event_list_item=0x7f030009;
         public static final int fragment_filter_dialog=0x7f03000a;
-        public static final int news_feed_fragment=0x7f03000b;
-        public static final int settings_list_item=0x7f03000c;
+        public static final int my_post_fragment=0x7f03000b;
+        public static final int news_feed_fragment=0x7f03000c;
+        public static final int settings_list_item=0x7f03000d;
     }
     public static final class menu {
         public static final int contacts=0x7f0b0000;

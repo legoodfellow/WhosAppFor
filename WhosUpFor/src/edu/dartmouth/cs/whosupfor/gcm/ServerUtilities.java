@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 import edu.dartmouth.cs.whosupfor.data.EventEntry;
+import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class ServerUtilities {
@@ -72,17 +73,7 @@ public class ServerUtilities {
 
 	}
 
-	/**
-	 * Issue a POST request to the server.
-	 * 
-	 * @param endpoint
-	 *            POST address.
-	 * @param params
-	 *            request parameters.
-	 * 
-	 * @throws IOException
-	 *             propagated from POST.
-	 */
+
 	// public static String post(String endpoint, Map<String, String> params)
 	// throws IOException {
 	// Log.d(TAG,
@@ -150,6 +141,17 @@ public class ServerUtilities {
 	// }
 	// }
 
+	/**
+	 * Issue a POST request to the server.
+	 * 
+	 * @param endpoint
+	 *            POST address.
+	 * @param params
+	 *            request parameters.
+	 * 
+	 * @throws IOException
+	 *             propagated from POST.
+	 */
 	public static ArrayList<EventEntry> post(String endpoint,
 			Map<String, String> params) throws IOException {
 		Log.d(TAG, "ServerUtilities.java, post(),  called ");
@@ -256,5 +258,124 @@ public class ServerUtilities {
 		}
 
 		return eventEntries;
+	}
+	
+	/**
+	 * Issue a POST request to the server.
+	 * 
+	 * @param endpoint
+	 *            POST address.
+	 * @param params
+	 *            request parameters.
+	 * 
+	 * @throws IOException
+	 *             propagated from POST.
+	 */
+	public static ArrayList<UserEntry> postUser(String endpoint,
+			Map<String, String> params) throws IOException {
+		Log.d(TAG, "ServerUtilities.java, post(),  called ");
+		URL url;
+
+		try {
+			url = new URL(endpoint);
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException("invalid url: " + endpoint);
+		}
+
+		StringBuilder bodyBuilder = new StringBuilder();
+		Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
+
+		// constructs the POST body using the parameters
+		while (iterator.hasNext()) {
+			Entry<String, String> param = iterator.next();
+			bodyBuilder.append(param.getKey()).append('=')
+					.append(param.getValue());
+			if (iterator.hasNext()) {
+				bodyBuilder.append('&');
+			}
+		}
+
+		String body = bodyBuilder.toString();
+		byte[] bytes = body.getBytes();
+		HttpURLConnection conn = null;
+
+		try {
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setFixedLengthStreamingMode(bytes.length);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type",
+					"application/x-www-form-urlencoded;charset=UTF-8");
+			// post the request
+			OutputStream out = conn.getOutputStream();
+			out.write(bytes);
+			out.close();
+			// handle the response
+			int status = conn.getResponseCode();
+			if (status != 200) {
+				throw new IOException("Post failed with error code " + status);
+			}
+
+			// Get Response
+			InputStream is = conn.getInputStream();
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+			String line;
+			// StringBuffer response = new StringBuffer();
+			String finalString = "";
+
+			while ((line = rd.readLine()) != null) {
+				// response.append(line);
+				// response.append('\n');
+				finalString += line;
+			}
+			rd.close();
+			
+			ArrayList<UserEntry> userEntries = new ArrayList<UserEntry>();
+
+			try {
+				userEntries = parseStringToUserEntry(finalString);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return userEntries;
+
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
+		}
+	}
+	
+	/**
+	 * Helper method to parse string value to json object to userEntry object
+	 * 
+	 * @param result
+	 * @return
+	 * @throws JSONException
+	 */
+	public static ArrayList<UserEntry> parseStringToUserEntry(String result)
+			throws JSONException {
+		ArrayList<UserEntry> userEntries = new ArrayList<UserEntry>();
+		JSONObject jsonObj;
+
+		// Convert string to json array
+		JSONArray jsonArray = new JSONArray(result);
+
+		// Convert json object to eventEntry object
+		for (int i = 0; i < jsonArray.length(); i++) {
+			jsonObj = jsonArray.getJSONObject(i);
+			try {
+				UserEntry userEntry = new UserEntry();
+				userEntry.fromJSONObject(jsonObj);
+				userEntries.add(userEntry);
+			} catch (Exception e) {
+
+			}
+		}
+
+		return userEntries;
 	}
 }
