@@ -74,8 +74,13 @@ public class EventEntry {
 			mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
 			mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
 			mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
-//			mAttendees = (ArrayList<String>) obj
-//					.get(Globals.KEY_EVENT_ATTENDEES);
+			JSONArray attendees = obj.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
+			for (int i=0; i < attendees.length(); i++){
+				String attendee = attendees.optString(i, null);
+				if (attendee != null) {
+					mAttendees.add(attendee);
+				}
+			}
 	}
 
 	/**
@@ -97,7 +102,6 @@ public class EventEntry {
 			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
-//			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
 			mAttendees.add("test1@gmail.com");
 			mAttendees.add("test@gmail.com");
 			JSONArray attendees = new JSONArray();

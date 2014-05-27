@@ -63,6 +63,38 @@ public class EventDatastore {
 		}
 		return false;
 	}
+	
+	public static boolean addAttendee(long eventId, String attendee) {
+		try {
+			Entity result = getEntityById(eventId);
+			EventEntry event = getEventEntryFromEntity(result);
+			if (event != null) {
+				event.addAttendee(attendee);
+				setEntityFromEventEntry(result, event);
+				mDatastore.put(result);
+				return true;
+			}
+		} catch (Exception ex) {
+		}
+		return false;
+	}
+	
+	public static boolean deleteAttendee(long eventId, String attendee) {
+		try {
+			Entity result = getEntityById(eventId);
+			EventEntry event = getEventEntryFromEntity(result);
+			if (event != null) {
+				if (event.getAttendees().remove(attendee)) {
+					setEntityFromEventEntry(result, event);
+					mDatastore.put(result);
+					return true;
+				}
+			}
+		} catch (Exception ex) {
+		}
+		return false;
+	}
+
 
 	public static boolean delete(long id) {
 		// query
@@ -85,7 +117,7 @@ public class EventDatastore {
 		return ret;
 	}
 
-	public static EventEntry getEventById(long id, Transaction txn) {
+	public static Entity getEntityById(long id) {
 		Entity result = null;
 		try {
 			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
@@ -93,7 +125,17 @@ public class EventDatastore {
 		} catch (Exception ex) {
 		}
 
-		return getEventEntryFromEntity(result);
+		return result;
+	}
+	
+	public static EventEntry getEventById(long id) {
+		EventEntry result = null;
+		try {
+			result = getEventEntryFromEntity(getEntityById(id));
+		} catch (Exception ex) {
+		}
+
+		return result;
 	}
 
 	public static ArrayList<EventEntry> query() {
