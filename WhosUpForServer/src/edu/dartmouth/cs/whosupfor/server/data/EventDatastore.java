@@ -140,7 +140,7 @@ public class EventDatastore {
 		event.setID((long) entity.getProperty(Globals.KEY_EVENT_ROWID));
 		event.setEmail((String) entity.getProperty(Globals.KEY_EVENT_EMAIL));
 		event.setEventTitle((String) entity.getProperty(Globals.KEY_EVENT_TITLE));
-		event.setEventType((int) entity.getProperty(Globals.KEY_EVENT_TYPE));
+		event.setEventType((int) (long) entity.getProperty(Globals.KEY_EVENT_TYPE));
 		event.setLocation((String) entity.getProperty(Globals.KEY_EVENT_LOCATION));
 		event.setTimeStamp((long) entity.getProperty(Globals.KEY_EVENT_TIME_STAMP));
 		event.setStartDateTime((long) entity.getProperty(Globals.KEY_EVENT_START_DATE_TIME));
@@ -152,7 +152,7 @@ public class EventDatastore {
 			event.addAttendee((String) ((ArrayList<?>) attendeesProperty).get(i));
 			}
 		}
-		event.setCircle((int) entity.getProperty(Globals.KEY_EVENT_CIRCLE));
+		event.setCircle((int) (long) entity.getProperty(Globals.KEY_EVENT_CIRCLE));
 		return event;
 	}
 

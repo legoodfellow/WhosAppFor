@@ -105,7 +105,7 @@ public class NewsFeedFragment extends ListFragment {
 		setListAdapter(mEventEntriesAdapter);
 
 		// Refresh list view
-		// refreshPostHistory();
+		refreshPostHistory();
 		super.onResume();
 	}
 

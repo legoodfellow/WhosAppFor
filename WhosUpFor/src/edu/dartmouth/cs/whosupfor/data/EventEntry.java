@@ -34,7 +34,7 @@ public class EventEntry {
 	// private String mStartTime; // Event start time
 	// private String mEndDate; // Event end date
 	// private String mEndTime; // Event end time
-	private String mDetail; // The organizer’s comment with event details
+	private String mDetail; // The organizer's comment with event details
 	private ArrayList<String> mAttendees; // List of attendee IDs
 	private int mCircle; // Indicates which friend circle can view the event (
 							// e.g. 0 = public, 1 = friends)
@@ -62,27 +62,19 @@ public class EventEntry {
 	 * @param obj
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public void fromJSONObject(JSONObject obj) {
-		try {
-			mDbId = obj.getLong(Globals.KEY_EVENT_ROWID);
-			mEmail = obj.getString(Globals.KEY_EVENT_EMAIL);
-			mEventType = obj.getInt(Globals.KEY_EVENT_TYPE);
-			mEventTitle = obj.getString(Globals.KEY_EVENT_TITLE);
-			mLocation = obj.getString(Globals.KEY_EVENT_LOCATION);
-			mTimeStamp = (Calendar) obj.get(Globals.KEY_EVENT_TIME_STAMP);
-			mStartDateTime = (Calendar) obj
-					.get(Globals.KEY_EVENT_START_DATE_TIME);
-			mStartDateTime = (Calendar) obj
-					.get(Globals.KEY_EVENT_END_DATE_TIME);
-			mDetail = obj.getString(Globals.KEY_EVENT_DETAIL);
-			mCircle = obj.getInt(Globals.KEY_EVENT_CIRCLE);
-			mAttendees = (ArrayList<String>) obj
-					.get(Globals.KEY_EVENT_ATTENDEES);
-		} catch (JSONException e) {
-
-		}
-
+			mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
+			mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
+			mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
+			mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
+			mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
+			mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
+			mStartDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+			mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+			mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
+			mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
+//			mAttendees = (ArrayList<String>) obj
+//					.get(Globals.KEY_EVENT_ATTENDEES);
 	}
 
 	/**
@@ -367,6 +359,7 @@ public class EventEntry {
 		if (mAttendees != null) {
 			mAttendees.add(attendee);
 		}
-
+		
 	}
+
 }

@@ -1,15 +1,14 @@
 package edu.dartmouth.cs.whosupfor.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
@@ -28,26 +27,25 @@ public class PostServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
-		// Get JSON object
-		StringBuffer buffer = new StringBuffer();
-		String line = null;
-		try {
-			BufferedReader reader = req.getReader();
-			while ((line = reader.readLine()) != null)
-				buffer.append(line);
-		} catch (Exception e) {}
+		String postText = req.getParameter("post_text");
 
 		try {
-			JSONObject jsonObject = new JSONObject(buffer.toString());
-			if (jsonObject.has(Globals.KEY_EVENT_ROWID)) {
-				EventEntry event = jsonToEventEntry(jsonObject);
-				EventDatastore.add(event);
-			}
+			JSONArray jsonArray = new JSONArray(postText);
+			System.out.println("jsonArray: " + jsonArray.toString());
+			for (int i=0; i < jsonArray.length(); i++) {
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				if (jsonObject.has(Globals.KEY_EVENT_ROWID)) {
+					EventEntry event = jsonToEventEntry(jsonObject);
+					EventDatastore.add(event);
+				}
 
-			if (jsonObject.has(Globals.KEY_USER_ROWID)) {
-				UserEntry user = jsonToUserEntry(jsonObject);
-				UserDatastore.add(user);
+				if (jsonObject.has(Globals.KEY_USER_ROWID)) {
+					UserEntry user = jsonToUserEntry(jsonObject);
+					UserDatastore.add(user);
+				}
 			}
+			
+			resp.sendRedirect("/get_history.do");
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -75,10 +73,10 @@ public class PostServlet extends HttpServlet {
 			event.setLocation(eventJSON.optString(Globals.KEY_EVENT_LOCATION));
 			event.setDetail(eventJSON.optString(Globals.KEY_EVENT_DETAIL));
 			event.setCircle(eventJSON.optInt(Globals.KEY_EVENT_CIRCLE));
-			event.setTimeStamp((Calendar) eventJSON.opt(Globals.KEY_EVENT_TIME_STAMP));
-			event.setStartDateTime((Calendar) eventJSON.opt(Globals.KEY_EVENT_START_DATE_TIME));
-			event.setEndDateTime((Calendar) eventJSON.opt(Globals.KEY_EVENT_END_DATE_TIME));
-			event.setAttendees((ArrayList<String>) eventJSON.opt(Globals.KEY_EVENT_ATTENDEES));
+			event.setTimeStamp(eventJSON.optLong(Globals.KEY_EVENT_TIME_STAMP));
+			event.setStartDateTime(eventJSON.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+			event.setEndDateTime(eventJSON.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+			//event.setAttendees((ArrayList<String>) eventJSON.opt(Globals.KEY_EVENT_ATTENDEES));
 		}
 		return event;
 	}

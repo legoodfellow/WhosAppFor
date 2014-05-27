@@ -71,15 +71,15 @@ public class EventEntry {
 			mEventType = obj.getInt(Globals.KEY_EVENT_TYPE);
 			mEventTitle = obj.getString(Globals.KEY_EVENT_TITLE);
 			mLocation = obj.getString(Globals.KEY_EVENT_LOCATION);
-			mTimeStamp = (Calendar) obj.get(Globals.KEY_EVENT_TIME_STAMP);
-			mStartDateTime = (Calendar) obj
-					.get(Globals.KEY_EVENT_START_DATE_TIME);
-			mStartDateTime = (Calendar) obj
-					.get(Globals.KEY_EVENT_END_DATE_TIME);
+			mTimeStamp.setTimeInMillis(obj.getLong(Globals.KEY_EVENT_TIME_STAMP));
+			mStartDateTime.setTimeInMillis(obj
+					.getLong(Globals.KEY_EVENT_START_DATE_TIME));
+			mEndDateTime.setTimeInMillis(obj
+					.getLong(Globals.KEY_EVENT_END_DATE_TIME));
 			mDetail = obj.getString(Globals.KEY_EVENT_DETAIL);
 			mCircle = obj.getInt(Globals.KEY_EVENT_CIRCLE);
-			mAttendees = (ArrayList<String>) obj
-					.get(Globals.KEY_EVENT_ATTENDEES);
+//			mAttendees = (ArrayList<String>) obj
+//					.get(Globals.KEY_EVENT_ATTENDEES);
 		} catch (JSONException e) {
 			
 		}
@@ -100,9 +100,9 @@ public class EventEntry {
 			obj.put(Globals.KEY_EVENT_TYPE, mEventType);
 			obj.put(Globals.KEY_EVENT_TITLE, mEventTitle);
 			obj.put(Globals.KEY_EVENT_LOCATION, mLocation);
-			obj.put(Globals.KEY_EVENT_TIME_STAMP, mTimeStamp);
-			obj.put(Globals.KEY_EVENT_START_DATE_TIME, mStartDateTime);
-			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime);
+			obj.put(Globals.KEY_EVENT_TIME_STAMP, mTimeStamp.getTimeInMillis());
+			obj.put(Globals.KEY_EVENT_START_DATE_TIME, mStartDateTime.getTimeInMillis());
+			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
 			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);

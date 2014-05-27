@@ -209,7 +209,7 @@ public class ServerUtilities {
 				finalString += line;
 			}
 			rd.close();
-
+			
 			ArrayList<EventEntry> eventEntries = new ArrayList<EventEntry>();
 
 			try {
@@ -238,7 +238,6 @@ public class ServerUtilities {
 	public static ArrayList<EventEntry> parseStringToEventEntry(String result)
 			throws JSONException {
 		ArrayList<EventEntry> eventEntries = new ArrayList<EventEntry>();
-		EventEntry eventEntry = new EventEntry();
 		JSONObject jsonObj;
 
 		// Convert string to json array
@@ -248,6 +247,7 @@ public class ServerUtilities {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			jsonObj = jsonArray.getJSONObject(i);
 			try {
+				EventEntry eventEntry = new EventEntry();
 				eventEntry.fromJSONObject(jsonObj);
 				eventEntries.add(eventEntry);
 			} catch (Exception e) {
