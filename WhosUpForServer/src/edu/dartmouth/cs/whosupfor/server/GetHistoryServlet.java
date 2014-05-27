@@ -3,6 +3,7 @@ package edu.dartmouth.cs.whosupfor.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -65,6 +66,10 @@ public class GetHistoryServlet extends HttpServlet {
 			obj.put(Globals.KEY_EVENT_END_DATE_TIME, event.getEndDateTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, event.getDetail());
 			obj.put(Globals.KEY_EVENT_CIRCLE, event.getCircle());
+//			JSONArray attendees = new JSONArray();
+//			attendees.put(event.getAttendees());
+			//obj.put(Globals.KEY_EVENT_ATTENDEES, (Collection<?>) event.getAttendees());
+			
 			//obj.put(Globals.KEY_EVENT_ATTENDEES, event.getAttendees());
 		} catch (JSONException e) {
 			return null;

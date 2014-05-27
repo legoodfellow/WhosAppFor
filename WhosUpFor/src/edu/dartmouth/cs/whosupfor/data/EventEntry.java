@@ -3,6 +3,7 @@ package edu.dartmouth.cs.whosupfor.data;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -96,7 +97,14 @@ public class EventEntry {
 			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
-			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
+//			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
+			mAttendees.add("test1@gmail.com");
+			mAttendees.add("test@gmail.com");
+			JSONArray attendees = new JSONArray();
+			for (int i=0; i< mAttendees.size(); i++){
+				attendees.put(mAttendees.get(i));
+			}
+			obj.put(Globals.KEY_EVENT_ATTENDEES, attendees);
 		} catch (JSONException e) {
 			return null;
 		}

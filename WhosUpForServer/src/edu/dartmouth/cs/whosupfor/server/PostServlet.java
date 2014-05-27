@@ -45,7 +45,8 @@ public class PostServlet extends HttpServlet {
 				}
 			}
 			
-			resp.sendRedirect("/get_history.do");
+			
+			resp.sendRedirect("/sendmsg.do");
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -64,7 +65,8 @@ public class PostServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	public static EventEntry jsonToEventEntry(JSONObject eventJSON) {
 		EventEntry event = new EventEntry();
-
+		System.out.println(eventJSON);
+		
 		if (eventJSON != null) {
 			event.setID(eventJSON.optLong(Globals.KEY_EVENT_ROWID));
 			event.setEmail(eventJSON.optString(Globals.KEY_EVENT_EMAIL));
@@ -76,7 +78,13 @@ public class PostServlet extends HttpServlet {
 			event.setTimeStamp(eventJSON.optLong(Globals.KEY_EVENT_TIME_STAMP));
 			event.setStartDateTime(eventJSON.optLong(Globals.KEY_EVENT_START_DATE_TIME));
 			event.setEndDateTime(eventJSON.optLong(Globals.KEY_EVENT_END_DATE_TIME));
-			//event.setAttendees((ArrayList<String>) eventJSON.opt(Globals.KEY_EVENT_ATTENDEES));
+			JSONArray attendees = eventJSON.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
+			for (int i=0; i < attendees.length(); i++){
+				String attendee = attendees.optString(i, null);
+				if (attendee != null) {
+					event.addAttendee(attendee);
+				}
+			}
 		}
 		return event;
 	}

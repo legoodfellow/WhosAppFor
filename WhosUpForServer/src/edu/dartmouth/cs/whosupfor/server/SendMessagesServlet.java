@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.dartmouth.cs.whosupfor.gcm.Message;
+import edu.dartmouth.cs.whosupfor.gcm.Sender;
 import edu.dartmouth.cs.whosupfor.server.data.RegDatastore;
 
 /**
@@ -42,18 +44,16 @@ public class SendMessagesServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 		List<String> devices = RegDatastore.getDevices();
-
-		// TODO
 		
-//		Message message = new Message(devices);
-//		
-//
-//		// Have to hard-coding the API key when creating the Sender
-//		Sender sender = new Sender(Globals.GCMAPIKEY);
-//		// Send the message to device, at most retrying MAX_RETRY times
-//		sender.send(message, MAX_RETRY);
-//
-//		resp.sendRedirect("/query.do");
+		Message message = new Message(devices);
+		message.addData("message", "update");
+
+		// Have to hard-coding the API key when creating the Sender
+		Sender sender = new Sender(Globals.GCMAPIKEY);
+		// Send the message to device, at most retrying MAX_RETRY times
+		sender.send(message, MAX_RETRY);
+
+		resp.sendRedirect("/get_history.do");
 	}
 
 	@Override
