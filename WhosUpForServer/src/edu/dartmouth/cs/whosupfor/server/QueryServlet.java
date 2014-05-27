@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.server.data.EventDatastore;
+import edu.dartmouth.cs.whosupfor.server.data.EventEntry;
 
 
 public class QueryServlet extends HttpServlet {

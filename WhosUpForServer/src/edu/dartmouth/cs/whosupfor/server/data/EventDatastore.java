@@ -15,7 +15,6 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Transaction;
 
-import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class EventDatastore {
@@ -103,7 +102,7 @@ public class EventDatastore {
 		Query query = new Query(DataGlobals.ENTITY_KIND_EVENT);
 		query.setFilter(null);
 		query.setAncestor(getParentKey());
-		query.addSort(Globals.KEY_EVENT_TIME_STAMP, SortDirection.ASCENDING);
+		//query.addSort(Globals.KEY_EVENT_TIME_STAMP, SortDirection.ASCENDING);
 		PreparedQuery pq = mDatastore.prepare(query);
 
 		for (Entity entity : pq.asIterable()) {
