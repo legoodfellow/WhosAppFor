@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.CalendarContract.Attendees;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class UserEntryDbHelper extends SQLiteOpenHelper {
@@ -19,7 +20,6 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 			Globals.KEY_USER_GENDER, Globals.KEY_USER_CLASS_YEAR,
 			Globals.KEY_USER_MAJOR, Globals.KEY_USER_PASSWORD,
 			Globals.KEY_USER_PROFILE_PHOTO };
-
 
 	// SQL query to create the table for the first time
 	// Data types are defined below
@@ -54,7 +54,8 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 		// DATABASE_NAME is defined as a string constant
 		// DATABASE_VERSION is the version of mDatabase, which is defined as an
 		// integer constant
-		super(context, Globals.DATABASE_NAME_USER, null, Globals.DATABASE_VERSION);
+		super(context, Globals.DATABASE_NAME_USER, null,
+				Globals.DATABASE_VERSION);
 	}
 
 	/**
@@ -137,6 +138,35 @@ public class UserEntryDbHelper extends SQLiteOpenHelper {
 		mDatabase.close();
 
 		return mUserEntry;
+	}
+
+	/**
+	 * Query entries by attendees(their email address)
+	 * 
+	 * @param attendees
+	 * @return
+	 */
+	public ArrayList<UserEntry> fetchEntriesByAttendees(
+			ArrayList<String> attendees) {
+		ArrayList<UserEntry> mUserEntries = new ArrayList<UserEntry>();
+		UserEntry mUserEntry = new UserEntry();
+		mDatabase = getReadableDatabase();
+		Cursor cursor = null;
+
+		for (String attendee : attendees) {
+			cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES,
+					allColumns, Globals.KEY_USER_EMAIL + " like ?", new String[] {attendee + "%"}, null,
+					null, null, null);
+			if (cursor.moveToFirst()) {
+				// convert the cursor to an UserEntry object
+				mUserEntry = cursorToUserEntry(cursor);
+				mUserEntries.add(mUserEntry);
+			}
+			
+		}
+
+		mDatabase.close();
+		return mUserEntries;
 	}
 
 	/**

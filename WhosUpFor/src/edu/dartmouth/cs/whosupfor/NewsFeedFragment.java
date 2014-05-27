@@ -47,17 +47,6 @@ public class NewsFeedFragment extends ListFragment {
 	private ArrayList<EventEntry> mEventEntries;
 	private EventEntriesAdapter mEventEntriesAdapter;
 
-	// private BroadcastReceiver mMessageUpdateReceiver = new
-	// BroadcastReceiver() {
-	// @Override
-	// public void onReceive(Context context, Intent intent) {
-	// String msg = intent.getStringExtra("message");
-	// if (msg != null && msg.equals("update")) {
-	// refreshPostHistory();
-	// }
-	// }
-	// };
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -100,19 +89,19 @@ public class NewsFeedFragment extends ListFragment {
 		mMessageIntentFilter = new IntentFilter();
 		mMessageIntentFilter.addAction("GCM_NOTIFY");
 
+		// Create broadcast receiver and register it
 		mMessageUpdateReceiver = new MyBroadcastReceiver();
-
 		mContext.registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
 
-		// For test purpose
+		// Get eventEntrie information from local database and populate the
+		// event list
 		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
 		mEventEntryDbHelper.getReadableDatabase();
-
 		mEventEntries = mEventEntryDbHelper.fetchEntries();
-
-		mEventEntriesAdapter = new EventEntriesAdapter(mContext, mEventEntries);
-
 		mEventEntryDbHelper.close();
+
+		// Setup eventlist
+		mEventEntriesAdapter = new EventEntriesAdapter(mContext, mEventEntries);
 		setListAdapter(mEventEntriesAdapter);
 
 		// Refresh list view
@@ -127,40 +116,19 @@ public class NewsFeedFragment extends ListFragment {
 		super.onPause();
 	}
 
-	// private void refreshPostHistory() {
-	// new AsyncTask<Void, Void, String>() {
-	//
-	// @Override
-	// protected String doInBackground(Void... arg0) {
-	// String url = Globals.SERVER_ADDR + "/get_history.do";
-	// String res = "";
-	// Map<String, String> params = new HashMap<String, String>();
-	// try {
-	// res = ServerUtilities.post(url, params);
-	// } catch (Exception ex) {
-	// ex.printStackTrace();
-	// }
-	//
-	// return res;
-	// }
-	//
-	// @Override
-	// protected void onPostExecute(String res) {
-	// if (!res.equals("")) {
-	// // mHistoryText.setText(res);
-	// }
-	// }
-	//
-	// }.execute();
-	// }
+	/**
+	 * Refresh event list
+	 */
 	private void refreshPostHistory() {
 		new AsyncTask<Void, Void, ArrayList<EventEntry>>() {
 
 			@Override
 			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
+				// Call GetHistoryServlet on server side
 				String url = Globals.SERVER_ADDR + "/get_history.do";
 				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
+				// Get ArrayList<EventEntry> from datastore
 				try {
 					res = ServerUtilities.post(url, params);
 				} catch (Exception ex) {
@@ -171,8 +139,12 @@ public class NewsFeedFragment extends ListFragment {
 			}
 
 			@Override
+			/**
+			 * Update the event list and local database
+			 */
 			protected void onPostExecute(ArrayList<EventEntry> res) {
 				if (!res.isEmpty() || res.size() != 0) {
+
 					// Update database
 					mEventEntryDbHelper.getReadableDatabase();
 					mEventEntryDbHelper.removeAllEntries();
@@ -181,7 +153,7 @@ public class NewsFeedFragment extends ListFragment {
 					}
 					mEventEntryDbHelper.close();
 
-					// Update listview of events
+					// Update event list
 					mEventEntriesAdapter = new EventEntriesAdapter(mContext,
 							res);
 					setListAdapter(mEventEntriesAdapter);
@@ -192,6 +164,12 @@ public class NewsFeedFragment extends ListFragment {
 		}.execute();
 	}
 
+	/**
+	 * Broadcast Receiver
+	 * 
+	 * @author Aaron Jun Yang
+	 * 
+	 */
 	private class MyBroadcastReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -203,7 +181,7 @@ public class NewsFeedFragment extends ListFragment {
 	}
 
 	// -----------------------------------------------------------------------------------------
-	// UI
+	// ArrayAdapter
 
 	/**
 	 * Helper class for setting up arrayAdapter It gets called every time
@@ -243,6 +221,7 @@ public class NewsFeedFragment extends ListFragment {
 
 			// if it's not created convertView yet create new one and consume it
 			if (convertView == null) {
+
 				convertView = mLayoutInflater.inflate(R.layout.event_list_item,
 						null);
 				// get new ViewHolder
@@ -260,6 +239,7 @@ public class NewsFeedFragment extends ListFragment {
 						.findViewById(R.id.eventListItemStartDateTime);
 				mHolder.mEventTitle = (TextView) convertView
 						.findViewById(R.id.eventListItemEventTitle);
+
 				// set tag of convertView to the holder
 				convertView.setTag(mHolder);
 			}// if it's exist convertView then consume it
@@ -314,10 +294,9 @@ public class NewsFeedFragment extends ListFragment {
 			mHolder.mName.setText(mFirstName + " " + mLastName);
 
 			// Set Event type
-			String[] EventType = { "Food", "Sports", "Study", "Movie", "Party" };
 			try {
 				int eventType = entry.getEventType();
-				String result = EventType[eventType];
+				String result = Globals.EVENT_TYPE_ARRAY[eventType];
 				mHolder.mEventType.setText(result);
 			} catch (Exception e) {
 
@@ -331,28 +310,20 @@ public class NewsFeedFragment extends ListFragment {
 			} catch (Exception e) {
 
 			}
-			
+
 			// Set event title
-			try{
+			try {
 				String eventTitle = entry.getEventTitle();
 				mHolder.mEventTitle.setText(eventTitle);
-			}catch(Exception e){
-				
+			} catch (Exception e) {
+
 			}
-		
 
 			// Set onClick listener
 			convertView.setOnClickListener(new OnItemClickListener(position));
 
-			// Set delete button
-			// if(entry.getFirstName().equals("Aaron")){
-			// mHolder.mButton.setVisibility(View.GONE);
-			// }
-
 			// Log.d(TAG, "getView() finished");
-
 			return convertView;
-
 		}
 
 		/**
@@ -384,20 +355,25 @@ public class NewsFeedFragment extends ListFragment {
 				Bundle extras = new Bundle();
 				int mIntValue = -1;
 				String mValue = " ";
+				ArrayList<String> mAttendees = new ArrayList<String>();
 				Intent intent = new Intent();
 
 				// Write row id into extras.
 				extras.putLong(Globals.KEY_EVENT_ROWID, mEntries.get(mPosition)
 						.getID());
+
 				// Event type
 				mIntValue = mEntries.get(mPosition).getEventType();
 				extras.putInt(Globals.KEY_EVENT_TYPE, mIntValue);
+
 				// Event title
 				mValue = mEntries.get(mPosition).getEventTitle();
 				extras.putString(Globals.KEY_EVENT_TITLE, mValue);
+
 				// Event location
 				mValue = mEntries.get(mPosition).getLocation();
 				extras.putString(Globals.KEY_EVENT_LOCATION, mValue);
+
 				// Event start date and time, end date and time
 				long dateTime = mEntries.get(mPosition)
 						.getStartDateTimeInMillis();
@@ -406,9 +382,15 @@ public class NewsFeedFragment extends ListFragment {
 				dateTime = mEntries.get(mPosition).getEndDateTimeInMillis();
 				mValue = Utils.parseTime(dateTime, mContext);
 				extras.putString(Globals.KEY_EVENT_END_DATE_TIME, mValue);
+
 				// Event detail
 				mValue = mEntries.get(mPosition).getDetail();
 				extras.putString(Globals.KEY_EVENT_DETAIL, mValue);
+
+				// Event Attendees
+				mAttendees = mEntries.get(mPosition).getAttendees();
+				extras.putStringArrayList(Globals.KEY_EVENT_ATTENDEES,
+						mAttendees);
 
 				// Fire intent to EventDetailActivity
 				intent.setClass(mContext, EventDetailsActivity.class);
@@ -461,5 +443,51 @@ public class NewsFeedFragment extends ListFragment {
 			}
 		});
 	}
+
+	/**
+	 * When filter is selected, update the event list view
+	 * 
+	 * @param idx
+	 */
+	public void onFilterSelected(int idx) {
+
+		// Get eventEntrie information from local database and populate the
+		// event list
+		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
+		mEventEntryDbHelper.getReadableDatabase();
+		mEventEntries = mEventEntryDbHelper.fetchEntriesByEventType(idx);
+		mEventEntryDbHelper.close();
+
+		// Setup eventlist
+		mEventEntriesAdapter = new EventEntriesAdapter(mContext, mEventEntries);
+		setListAdapter(mEventEntriesAdapter);
+	}
+
+	// private void refreshPostHistory() {
+	// new AsyncTask<Void, Void, String>() {
+	//
+	// @Override
+	// protected String doInBackground(Void... arg0) {
+	// String url = Globals.SERVER_ADDR + "/get_history.do";
+	// String res = "";
+	// Map<String, String> params = new HashMap<String, String>();
+	// try {
+	// res = ServerUtilities.post(url, params);
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	//
+	// return res;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(String res) {
+	// if (!res.equals("")) {
+	// // mHistoryText.setText(res);
+	// }
+	// }
+	//
+	// }.execute();
+	// }
 
 }

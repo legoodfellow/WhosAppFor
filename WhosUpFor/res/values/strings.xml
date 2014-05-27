@@ -90,6 +90,18 @@
     <string name="title_activity_event_details">Who\'s Up For</string>
     <string name="ui_event_detail_activity_type">Event type</string>
     <string name="ui_event_detail_activity_type_hint">na</string>
+    <string name="ui_event_detail_activity_name">na</string>
+    <string name="ui_event_detail_activity_location">Location</string>
+    <string name="ui_event_detail_activity_location_detail">na</string>
+    <string name="ui_event_detail_activity_start_date_time">Start</string>
+    <string name="ui_event_detail_activity_start_date_time_detail">na</string>
+    <string name="ui_event_detail_activity_end_date_time">End</string>
+    <string name="ui_event_detail_activity_end_date_time_detail">na</string>
+    <string name="ui_event_detail_activity_detail">Detail</string>
+    <string name="ui_event_detail_activity_detail_hint"> </string>
+    <string name="ui_event_detail_activity_going">Going</string>
+    <string name="ui_event_detail_activity_not_going">Decline</string>
+    
 
     <!-- Dialog -->
     <string name="ui_dialog_profile_photo">Select profile image</string>

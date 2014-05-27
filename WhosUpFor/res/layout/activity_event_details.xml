@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical" >
+        android:baselineAligned="false" >
 
         <ImageView
             android:id="@+id/eventDetailProfileImage"
@@ -15,63 +16,171 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:onClick="onImageClicked"
             android:src="@drawable/icon_selfies" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/eventDetailActivityTextName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:text="@string/ui_event_detail_activity_name" />
+
+        <RadioGroup
+            android:id="@+id/eventDetailActivityRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:baselineAligned="false" >
+            android:layout_margin="5dp"
+            android:gravity="right"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/eventDetailActivityTextType"
+            <RadioButton
+                android:id="@+id/eventDetailActivityRadioGroupGoing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
-                android:text="@string/ui_event_detail_activity_type" />
+                android:layout_weight="1"
+                android:onClick="onClicked"
+                android:text="@string/ui_event_detail_activity_going" />
 
-            <EditText
-                android:id="@+id/eventDetailActivityTextTypeTitle"
-                android:layout_width="match_parent"
+            <RadioButton
+                android:id="@+id/eventDetailActivityRadioGroupNotGoing"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="@string/ui_event_detail_activity_type_hint"
-                android:inputType="textCapSentences"
-                android:singleLine="true" />
-        </LinearLayout>
-
-        <!-- <LinearLayout -->
-        <!-- android:layout_width="match_parent" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:layout_gravity="bottom" -->
-        <!-- android:gravity="bottom" > -->
-
-
-        <!-- <Button -->
-        <!-- android:id="@+id/createNewEventActivitybtnSave" -->
-        <!-- android:layout_width="wrap_content" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:layout_margin="5dp" -->
-        <!-- android:layout_weight="1" -->
-        <!-- android:background="@drawable/button_shape" -->
-        <!-- android:onClick="onClicked" -->
-        <!-- android:text="@string/ui_btn_post" /> -->
-
-
-        <!-- <Button -->
-        <!-- android:id="@+id/createNewEventActivitybtnCancel" -->
-        <!-- android:layout_width="wrap_content" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:layout_margin="5dp" -->
-        <!-- android:layout_weight="1" -->
-        <!-- android:background="@drawable/button_shape" -->
-        <!-- android:onClick="onClicked" -->
-        <!-- android:text="@string/ui_btn_cancel" /> -->
-        <!-- </LinearLayout> -->
+                android:layout_weight="1"
+                android:onClick="onClicked"
+                android:text="@string/ui_event_detail_activity_not_going" />
+        </RadioGroup>
     </LinearLayout>
 
-</ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
+
+        <TextView
+            android:id="@+id/eventDetailActivityTextType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:text="@string/ui_event_detail_activity_type" />
+
+        <EditText
+            android:id="@+id/eventDetailActivityTextTypeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/ui_event_detail_activity_type_hint"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:text="@string/ui_event_detail_activity_location" />
+
+        <EditText
+            android:id="@+id/eventDetailActivityTextTypeLocationDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/ui_event_detail_activity_location_detail"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:text="@string/ui_event_detail_activity_start_date_time" />
+
+        <EditText
+            android:id="@+id/eventDetailActivityTextStartDateTimeDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/ui_event_detail_activity_start_date_time_detail"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:text="@string/ui_event_detail_activity_end_date_time" />
+
+        <EditText
+            android:id="@+id/eventDetailActivityTextEndDateTimeDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/ui_event_detail_activity_end_date_time_detail"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp"
+            android:text="@string/ui_event_detail_activity_detail" />
+
+        <EditText
+            android:id="@+id/eventDetailActivityTextDetailHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:hint="@string/ui_event_detail_activity_detail_hint"
+            android:inputType="textCapSentences"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </ListView>
+
+</LinearLayout>

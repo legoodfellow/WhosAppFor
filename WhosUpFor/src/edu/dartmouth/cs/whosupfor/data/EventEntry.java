@@ -20,11 +20,11 @@ public class EventEntry {
 	// event
 	private String mEmail;
 	private int mEventType; // eg: Food, Study, Movie....
-	private String mEventTitle; // Brief description of the event (“Dinner”,
-								// “Studying for CS65”, “Playing frisbee”, etc.)
-	private String mLocation; // The organizer’s text description of the
-								// location (“Boloco”, “Sudikoff”, etc) (GPS
-								// data might be added for v2)
+	private String mEventTitle; // Brief description of the event ("Dinner",
+	// "Studying for CS65", "Playing frisbee", etc.)
+	private String mLocation; // The organizer's text description of the
+	// location ("Boloco", "Sudikoff", etc) (GPS
+	// data might be added for v2)
 	private Calendar mTimeStamp; // Automatically generated timestamp in
 									// milliseconds
 									// of when the event was created
@@ -80,9 +80,9 @@ public class EventEntry {
 			mAttendees = (ArrayList<String>) obj
 					.get(Globals.KEY_EVENT_ATTENDEES);
 		} catch (JSONException e) {
-			
+
 		}
-		
+
 	}
 
 	/**
@@ -99,9 +99,9 @@ public class EventEntry {
 			obj.put(Globals.KEY_EVENT_TYPE, mEventType);
 			obj.put(Globals.KEY_EVENT_TITLE, mEventTitle);
 			obj.put(Globals.KEY_EVENT_LOCATION, mLocation);
-			obj.put(Globals.KEY_EVENT_TIME_STAMP, mTimeStamp);
-			obj.put(Globals.KEY_EVENT_START_DATE_TIME, mStartDateTime);
-			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime);
+			obj.put(Globals.KEY_EVENT_TIME_STAMP, mTimeStamp.getTimeInMillis());
+			obj.put(Globals.KEY_EVENT_START_DATE_TIME, mStartDateTime.getTimeInMillis());
+			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
 			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
@@ -181,15 +181,12 @@ public class EventEntry {
 		return mStartDateTime;
 	}
 
-	
-	
-
 	public void setDateTime(long timestamp) {
 		this.mStartDateTime.setTimeInMillis(timestamp);
 
 	}
 
-	//-------------------------------------------------------------------
+	// -------------------------------------------------------------------
 	// Start date and time
 	/**
 	 * Set start date and time
@@ -212,12 +209,12 @@ public class EventEntry {
 		this.mStartDateTime = dateTime;
 
 	}
-	
+
 	public void setStartDateTime(long timestamp) {
 		this.mStartDateTime.setTimeInMillis(timestamp);
 
 	}
-	
+
 	/**
 	 * Get start data and time and render them in the text view
 	 * 
@@ -227,10 +224,9 @@ public class EventEntry {
 		return mStartDateTime.getTimeInMillis();
 	}
 
-	
-	//-----------------------------------------------------------
+	// -----------------------------------------------------------
 	// End date and time
-	
+
 	/**
 	 * Set end date and time
 	 * 
@@ -247,17 +243,17 @@ public class EventEntry {
 		mEndDateTime.set(Calendar.MINUTE, minute);
 		mEndDateTime.set(Calendar.SECOND, 0);
 	}
-	
+
 	public void setEndDateTime(Calendar dateTime) {
 		this.mEndDateTime = dateTime;
 
 	}
-	
+
 	public void setEndDateTime(long timestamp) {
 		this.mEndDateTime.setTimeInMillis(timestamp);
 
 	}
-	
+
 	/**
 	 * Get end data and time and render them in the text view
 	 * 
@@ -267,8 +263,7 @@ public class EventEntry {
 		return mEndDateTime.getTimeInMillis();
 	}
 
-	
-	//---------------------------------------------------------
+	// ---------------------------------------------------------
 	// Timestamp
 	/**
 	 * Set time stamp
@@ -277,6 +272,10 @@ public class EventEntry {
 	 */
 	public void setTimeStamp(long timeStamp) {
 		this.mTimeStamp.setTimeInMillis(timeStamp);
+	}
+
+	public void setTimeStamp(Calendar timeStamp) {
+		mTimeStamp = timeStamp;
 	}
 
 	public long getTimeStamp() {
@@ -350,13 +349,24 @@ public class EventEntry {
 	public int getCircle() {
 		return mCircle;
 	}
-	
-	public ArrayList<String> getAttendees() {
-		return mAttendees;
-	
+
+	/**
+	 * Set attendees
+	 * 
+	 * @param attendees
+	 */
+	public void setAttendees(ArrayList<String> attendees) {
+		mAttendees = attendees;
 	}
 
-	public void setAttendees(ArrayList<String> attendees) {
-		this.mAttendees = attendees;
+	public ArrayList<String> getAttendees() {
+		return mAttendees;
+	}
+
+	public void addAttendee(String attendee) {
+		if (mAttendees != null) {
+			mAttendees.add(attendee);
+		}
+
 	}
 }

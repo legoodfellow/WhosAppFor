@@ -192,7 +192,7 @@ public class CreateNewEventActivity extends Activity {
 	// --------------------------------------------------------------------------------------
 
 	/**
-	 * Save eventEntry data and send it to GCM
+	 * Save eventEntry data to local database and send it to Google Cloud
 	 */
 	private void postNewEvent(View view) {
 
@@ -234,51 +234,26 @@ public class CreateNewEventActivity extends Activity {
 
 		// EventTimeStamp
 		mEventEntry.setTimeStamp(System.currentTimeMillis());
-		
+
 		// Save it to database
-		mEventEntryDbHelper.insertEntry(mEventEntry);
+//		mEventEntryDbHelper.insertEntry(mEventEntry);
 		mEventEntryDbHelper.close();
 
 		// -------------------------------------------------------------------------------
 		// GCM
 		JSONArray jsonArray = new JSONArray();
+		// Convert eventEntry to JSON object
 		jsonArray.put(mEventEntry.toJSONObject());
 		String msg = jsonArray.toString();
+		// Call helper method to send msg to Google Cloud
 		postMsg(msg);
 	}
 
-//	private void postMsg(String msg) {
-//		new AsyncTask<String, Void, String>() {
-//
-//			@Override
-//			protected String doInBackground(String... arg0) {
-//				Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
-//						"postMsg().doInBackground() got called");
-//				String url = Globals.SERVER_ADDR + "/post.do";
-//				String res = "";
-//				Map<String, String> params = new HashMap<String, String>();
-//				params.put("post_text", arg0[0]);
-//				params.put("from", "phone");
-//				try {
-//					res = ServerUtilities.post(url, params);
-//				} catch (Exception ex) {
-//					ex.printStackTrace();
-//				}
-//
-//				return res;
-//			}
-//
-//			@Override
-//			protected void onPostExecute(String res) {
-//				// mPostText.setText("");
-//				// refreshPostHistory();
-//			}
-//
-//		}.execute(msg);
-//		Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
-//				"postMsg().doInBackground() got called");
-//	}
-//	
+	/**
+	 * Post new event to Google Cloud
+	 * 
+	 * @param msg :  JSON string
+	 */
 	private void postMsg(String msg) {
 		new AsyncTask<String, Void, ArrayList<EventEntry>>() {
 
@@ -290,7 +265,7 @@ public class CreateNewEventActivity extends Activity {
 				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("post_text", arg0[0]);
-				params.put("from", "phone");
+				params.put("task_type", "create_new_event");
 				try {
 					res = ServerUtilities.post(url, params);
 				} catch (Exception ex) {
@@ -310,5 +285,38 @@ public class CreateNewEventActivity extends Activity {
 		Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
 				"postMsg().doInBackground() got called");
 	}
+
+	// private void postMsg(String msg) {
+	// new AsyncTask<String, Void, String>() {
+	//
+	// @Override
+	// protected String doInBackground(String... arg0) {
+	// Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+	// "postMsg().doInBackground() got called");
+	// String url = Globals.SERVER_ADDR + "/post.do";
+	// String res = "";
+	// Map<String, String> params = new HashMap<String, String>();
+	// params.put("post_text", arg0[0]);
+	// params.put("from", "phone");
+	// try {
+	// res = ServerUtilities.post(url, params);
+	// } catch (Exception ex) {
+	// ex.printStackTrace();
+	// }
+	//
+	// return res;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(String res) {
+	// // mPostText.setText("");
+	// // refreshPostHistory();
+	// }
+	//
+	// }.execute(msg);
+	// Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+	// "postMsg().doInBackground() got called");
+	// }
+	//
 
 }

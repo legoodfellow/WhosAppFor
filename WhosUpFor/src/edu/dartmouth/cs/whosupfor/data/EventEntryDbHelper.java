@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
-public class EventEntryDbHelper extends SQLiteOpenHelper  {
+public class EventEntryDbHelper extends SQLiteOpenHelper {
 
 	private SQLiteDatabase mDatabase;
 
@@ -45,8 +45,7 @@ public class EventEntryDbHelper extends SQLiteOpenHelper  {
 			+ " TEXT, "
 			+ Globals.KEY_EVENT_ATTENDEES
 			+ " BLOB, "
-			+ Globals.KEY_EVENT_CIRCLE
-			+ " INTEGER NOT NULL " + ");";
+			+ Globals.KEY_EVENT_CIRCLE + " INTEGER NOT NULL " + ");";
 
 	/**
 	 * Constructor
@@ -57,7 +56,8 @@ public class EventEntryDbHelper extends SQLiteOpenHelper  {
 		// DATABASE_NAME is defined as a string constant
 		// DATABASE_VERSION is the version of mDatabase, which is defined as an
 		// integer constant
-		super(context, Globals.DATABASE_NAME_EVENT, null, Globals.DATABASE_VERSION);
+		super(context, Globals.DATABASE_NAME_EVENT, null,
+				Globals.DATABASE_VERSION);
 	}
 
 	/**
@@ -156,6 +156,30 @@ public class EventEntryDbHelper extends SQLiteOpenHelper  {
 	}
 
 	/**
+	 * Query entries by filter
+	 * 
+	 * @param attendees
+	 * @return
+	 */
+	public ArrayList<EventEntry> fetchEntriesByEventType(int idx) {
+		ArrayList<EventEntry> mEventEntries = new ArrayList<EventEntry>();
+		EventEntry mEventEntry = new EventEntry();
+		mDatabase = getReadableDatabase();
+		
+		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_USER_ENTRIES, allColumns,
+				Globals.KEY_EVENT_TYPE + " like ?", new String[] { idx
+						+ "%" }, null, null, null, null);
+		if (cursor.moveToFirst()) {
+			// convert the cursor to an UserEntry object
+			mEventEntry = cursorToEventEntry(cursor);
+			mEventEntries.add(mEventEntry);
+		}
+
+		mDatabase.close();
+		return mEventEntries;
+	}
+
+	/**
 	 * Query the entire table, return all rows
 	 * 
 	 * @return
@@ -184,6 +208,7 @@ public class EventEntryDbHelper extends SQLiteOpenHelper  {
 
 	/**
 	 * Helper method to get eventEntry data
+	 * 
 	 * @param cursor
 	 * @return
 	 */

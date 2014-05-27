@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import edu.dartmouth.cs.whosupfor.CreateNewEventActivity;
+import edu.dartmouth.cs.whosupfor.NewsFeedFragment;
 import edu.dartmouth.cs.whosupfor.R;
 import edu.dartmouth.cs.whosupfor.menu.EditProfileActivity;
 
@@ -99,7 +101,12 @@ public class MyDialogFragment extends DialogFragment {
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
-
+									// Save filter information
+									RadioGroup mRadioGroup = (RadioGroup) getActivity().findViewById(R.id.fragmentFilterDialogRadioEventType);
+									int mIntValue = mRadioGroup.indexOfChild(getActivity().findViewById(mRadioGroup
+											.getCheckedRadioButtonId()));
+									((NewsFeedFragment)getFragmentManager().findFragmentById()).onFilterSelected(mIntValue);
+									
 								}
 							})
 					.setNegativeButton(R.string.ui_dialog_cancel,
