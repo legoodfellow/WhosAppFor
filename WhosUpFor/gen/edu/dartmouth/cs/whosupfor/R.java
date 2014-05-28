@@ -339,8 +339,9 @@ containing a value of this type.
         public static final int event_details=0x7f0b0003;
         public static final int login=0x7f0b0004;
         public static final int main=0x7f0b0005;
-        public static final int select_new_event_type=0x7f0b0006;
-        public static final int settings=0x7f0b0007;
+        public static final int post=0x7f0b0006;
+        public static final int select_new_event_type=0x7f0b0007;
+        public static final int settings=0x7f0b0008;
     }
     public static final class string {
         public static final int action_settings=0x7f06001c;

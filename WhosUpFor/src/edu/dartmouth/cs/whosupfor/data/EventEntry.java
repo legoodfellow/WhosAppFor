@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,6 +71,7 @@ public class EventEntry {
 	 * @return
 	 */
 	public void fromJSONObject(JSONObject obj) {
+<<<<<<< HEAD
 		mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
 		mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
 		mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
@@ -84,6 +86,25 @@ public class EventEntry {
 		mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
 		// mAttendees = (ArrayList<String>) obj
 		// .get(Globals.KEY_EVENT_ATTENDEES);
+=======
+			mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
+			mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
+			mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
+			mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
+			mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
+			mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
+			mStartDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+			mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+			mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
+			mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
+			JSONArray attendees = obj.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
+			for (int i=0; i < attendees.length(); i++){
+				String attendee = attendees.optString(i, null);
+				if (attendee != null) {
+					mAttendees.add(attendee);
+				}
+			}
+>>>>>>> 0f8db71c53dc2b0876bf990693c43800f1cb6216
 	}
 
 	/**
@@ -107,7 +128,13 @@ public class EventEntry {
 					mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
-			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
+			mAttendees.add("test1@gmail.com");
+			mAttendees.add("test@gmail.com");
+			JSONArray attendees = new JSONArray();
+			for (int i=0; i< mAttendees.size(); i++){
+				attendees.put(mAttendees.get(i));
+			}
+			obj.put(Globals.KEY_EVENT_ATTENDEES, attendees);
 		} catch (JSONException e) {
 			return null;
 		}

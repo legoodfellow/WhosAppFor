@@ -65,7 +65,12 @@ public class GetHistoryServlet extends HttpServlet {
 			obj.put(Globals.KEY_EVENT_END_DATE_TIME, event.getEndDateTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, event.getDetail());
 			obj.put(Globals.KEY_EVENT_CIRCLE, event.getCircle());
-			//obj.put(Globals.KEY_EVENT_ATTENDEES, event.getAttendees());
+			JSONArray attendeesJSON = new JSONArray();
+			ArrayList<String> attendeesList = event.getAttendees();
+			for (int i=0; i< attendeesList.size(); i++){
+				attendeesJSON.put(attendeesList.get(i));
+			}
+			obj.put(Globals.KEY_EVENT_ATTENDEES, attendeesJSON);
 		} catch (JSONException e) {
 			return null;
 		}

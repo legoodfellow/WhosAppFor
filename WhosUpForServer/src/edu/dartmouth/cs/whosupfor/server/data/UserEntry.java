@@ -8,7 +8,6 @@ import edu.dartmouth.cs.whosupfor.util.Globals;
 /**
  * ADT for storing user entry data using email address as the unique user id
  * 
- * 
  */
 public class UserEntry {
 
