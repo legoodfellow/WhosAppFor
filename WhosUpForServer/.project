@@ -3,6 +3,7 @@
 	<name>WhosUpForServer</name>
 	<comment></comment>
 	<projects>
+		<project>Where_Am_I</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

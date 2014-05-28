@@ -7,16 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
+import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.server.data.DataGlobals;
 import edu.dartmouth.cs.whosupfor.server.data.EventDatastore;
-import edu.dartmouth.cs.whosupfor.server.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.server.data.UserDatastore;
-import edu.dartmouth.cs.whosupfor.server.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 
@@ -30,7 +29,8 @@ public class PostServlet extends HttpServlet {
 
 		String postText = req.getParameter(DataGlobals.POST_KEY_POST_TEXT);
 		String taskType = req.getParameter(DataGlobals.POST_KEY_TASK_TYPE);
-		
+		System.out.println(postText);
+		System.out.println(taskType);
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_EVENT)) {
 			createNewEvent(postText);
 			resp.sendRedirect("/send_event_update_msg.do");
@@ -42,7 +42,7 @@ public class PostServlet extends HttpServlet {
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_REPLY_GOING)) {
-			long eventId; // TODO: get eventID, eventually this will be string not long
+			String eventId; // TODO: get eventID, eventually this will be string not long
 			String attendee; // TODO: get attendee
 //			if (EventDatastore.addAttendee(eventId, attendee)) {
 //			resp.sendRedirect("/send_event_update_msg.do");
@@ -50,7 +50,7 @@ public class PostServlet extends HttpServlet {
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_REPLY_GOING)) {
-			long eventId; // TODO: get eventID, eventually this will be string not long
+			String eventId; // TODO: get eventID, eventually this will be string not long
 			String attendee; // TODO: get attendee
 //			if (EventDatastore.deleteAttendee(eventId, attendee)) {
 //				resp.sendRedirect("/send_event_update_msg.do");
@@ -79,7 +79,7 @@ public class PostServlet extends HttpServlet {
 			JSONArray jsonArray = new JSONArray(postText);
 			for (int i=0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				if (jsonObject.has(Globals.KEY_EVENT_ROWID)) {
+				if (jsonObject.has(Globals.KEY_EVENT_ID)) {
 					EventEntry event = jsonToEventEntry(jsonObject);
 					EventDatastore.add(event);
 				}
@@ -104,13 +104,11 @@ public class PostServlet extends HttpServlet {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static EventEntry jsonToEventEntry(JSONObject eventJSON) {
 		EventEntry event = new EventEntry();
-		System.out.println(eventJSON);
 		
 		if (eventJSON != null) {
-			event.setID(eventJSON.optLong(Globals.KEY_EVENT_ROWID));
+			event.setEventId(eventJSON.optString(Globals.KEY_EVENT_ID));
 			event.setEmail(eventJSON.optString(Globals.KEY_EVENT_EMAIL));
 			event.setEventType(eventJSON.optInt(Globals.KEY_EVENT_TYPE));
 			event.setEventTitle(eventJSON.optString(Globals.KEY_EVENT_TITLE));

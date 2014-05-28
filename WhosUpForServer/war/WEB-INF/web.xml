@@ -16,7 +16,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 	<servlet>
 		<servlet-name>get_event_history</servlet-name>
-		<servlet-class>edu.dartmouth.cs.whosupfor.server.GetHistoryServlet</servlet-class>
+		<servlet-class>edu.dartmouth.cs.whosupfor.server.GetEventHistoryServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>get_event_history</servlet-name>
@@ -43,7 +43,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 
 	<servlet>
 		<servlet-name>send_event_update_msg</servlet-name>
-		<servlet-class>edu.dartmouth.cs.whosupfor.server.SendMessagesServlet</servlet-class>
+		<servlet-class>edu.dartmouth.cs.whosupfor.server.SendEventUpdateMessageServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>send_event_update_msg</servlet-name>
@@ -52,7 +52,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	
 	<servlet>
 		<servlet-name>send_user_update_msg</servlet-name>
-		<servlet-class>edu.dartmouth.cs.whosupfor.server.SendMessagesServlet</servlet-class>
+		<servlet-class>edu.dartmouth.cs.whosupfor.server.SendUserUpdateMessageServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>send_user_update_msg</servlet-name>
@@ -69,7 +69,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>query.do</welcome-file>
+		<welcome-file>main.jsp</welcome-file>
 	</welcome-file-list>
 
 </web-app>

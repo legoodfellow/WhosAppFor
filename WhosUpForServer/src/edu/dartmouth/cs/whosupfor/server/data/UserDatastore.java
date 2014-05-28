@@ -14,6 +14,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Transaction;
 
+import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class UserDatastore {

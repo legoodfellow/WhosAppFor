@@ -13,8 +13,8 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.SortDirection;
-import com.google.appengine.api.datastore.Transaction;
 
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class EventDatastore {
@@ -41,7 +41,7 @@ public class EventDatastore {
 		}
 
 		Entity entity = new Entity(DataGlobals.ENTITY_KIND_EVENT,
-				event.getID(), parentKey);
+				event.getEventId(), parentKey);
 		
 		setEntityFromEventEntry(entity, event);
 		
@@ -54,7 +54,7 @@ public class EventDatastore {
 		Entity result = null;
 		try {
 			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
-					DataGlobals.ENTITY_KIND_EVENT, event.getID()));
+					DataGlobals.ENTITY_KIND_EVENT, event.getEventId()));
 			
 			setEntityFromEventEntry(result, event);
 
@@ -64,7 +64,7 @@ public class EventDatastore {
 		return false;
 	}
 	
-	public static boolean addAttendee(long eventId, String attendee) {
+	public static boolean addAttendee(String eventId, String attendee) {
 		try {
 			Entity result = getEntityById(eventId);
 			EventEntry event = getEventEntryFromEntity(result);
@@ -79,7 +79,7 @@ public class EventDatastore {
 		return false;
 	}
 	
-	public static boolean deleteAttendee(long eventId, String attendee) {
+	public static boolean deleteAttendee(String eventId, String attendee) {
 		try {
 			Entity result = getEntityById(eventId);
 			EventEntry event = getEventEntryFromEntity(result);
@@ -96,12 +96,12 @@ public class EventDatastore {
 	}
 
 
-	public static boolean delete(long id) {
+	public static boolean delete(String id) {
 		// query
-		Filter filter = new FilterPredicate(Globals.KEY_EVENT_ROWID,
+		Filter filter = new FilterPredicate(Globals.KEY_EVENT_ID,
 				FilterOperator.EQUAL, id);
 
-		Query query = new Query(Globals.KEY_EVENT_ROWID);
+		Query query = new Query(Globals.KEY_EVENT_ID);
 		query.setFilter(filter);
 
 		PreparedQuery pq = mDatastore.prepare(query);
@@ -117,7 +117,7 @@ public class EventDatastore {
 		return ret;
 	}
 
-	public static Entity getEntityById(long id) {
+	public static Entity getEntityById(String id) {
 		Entity result = null;
 		try {
 			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
@@ -128,7 +128,7 @@ public class EventDatastore {
 		return result;
 	}
 	
-	public static EventEntry getEventById(long id) {
+	public static EventEntry getEventById(String id) {
 		EventEntry result = null;
 		try {
 			result = getEventEntryFromEntity(getEntityById(id));
@@ -160,7 +160,7 @@ public class EventDatastore {
 			return;
 		}
 		
-		entity.setProperty(Globals.KEY_EVENT_ROWID, event.getID());
+		entity.setProperty(Globals.KEY_EVENT_ROWID, event.getEventId());
 		entity.setProperty(Globals.KEY_EVENT_EMAIL, event.getEmail());
 		entity.setProperty(Globals.KEY_EVENT_TITLE, event.getEventTitle());
 		entity.setProperty(Globals.KEY_EVENT_TYPE, event.getEventType());
@@ -179,7 +179,7 @@ public class EventDatastore {
 		}
 		
 		EventEntry event = new EventEntry();
-		event.setID((long) entity.getProperty(Globals.KEY_EVENT_ROWID));
+		event.setEventId((String) entity.getProperty(Globals.KEY_EVENT_ID));
 		event.setEmail((String) entity.getProperty(Globals.KEY_EVENT_EMAIL));
 		event.setEventTitle((String) entity.getProperty(Globals.KEY_EVENT_TITLE));
 		event.setEventType((int) (long) entity.getProperty(Globals.KEY_EVENT_TYPE));

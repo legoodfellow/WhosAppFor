@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.server.data.EventDatastore;
-import edu.dartmouth.cs.whosupfor.server.data.EventEntry;
 
 
 public class QueryServlet extends HttpServlet {
@@ -23,13 +23,7 @@ public class QueryServlet extends HttpServlet {
 		ArrayList<EventEntry> eventList = EventDatastore.query();
 		req.setAttribute("eventList", eventList);
 		
-		
-		//TODO: handle queries
-//		ArrayList<PostEntity> postList = PostDatastore.query();
-//		
-//		req.setAttribute("postList", postList);
-		
-		getServletContext().getRequestDispatcher("/main.jsp").forward(req, resp);
+		//getServletContext().getRequestDispatcher("/main.jsp").forward(req, resp);
 	}
 	
 	@Override

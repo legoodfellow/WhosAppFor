@@ -13,10 +13,8 @@ import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
-import edu.dartmouth.cs.whosupfor.server.data.EventDatastore;
-import edu.dartmouth.cs.whosupfor.server.data.EventEntry;
+import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.server.data.UserDatastore;
-import edu.dartmouth.cs.whosupfor.server.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class GetUserHistoryServlet extends HttpServlet {

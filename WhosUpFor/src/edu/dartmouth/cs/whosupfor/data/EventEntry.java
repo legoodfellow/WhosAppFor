@@ -32,8 +32,8 @@ public class EventEntry {
 	// location ("Boloco", "Sudikoff", etc) (GPS
 	// data might be added for v2)
 	private Calendar mTimeStamp; // Automatically generated timestamp in
-									// milliseconds
-									// of when the event was created
+	// milliseconds
+	// of when the event was created
 	private Calendar mStartDateTime;
 	private Calendar mEndDateTime;
 	// private String mStartDate; // Event start date
@@ -43,7 +43,7 @@ public class EventEntry {
 	private String mDetail; // The organizer's comment with event details
 	private ArrayList<String> mAttendees; // List of attendee IDs
 	private int mCircle; // Indicates which friend circle can view the event (
-							// e.g. 0 = public, 1 = friends)
+	// e.g. 0 = public, 1 = friends)
 	private String mEventId;
 
 	public EventEntry() {
@@ -71,40 +71,24 @@ public class EventEntry {
 	 * @return
 	 */
 	public void fromJSONObject(JSONObject obj) {
-<<<<<<< HEAD
 		mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
+		mEventId = obj.optString(Globals.KEY_EVENT_ID);
 		mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
 		mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
 		mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
 		mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
 		mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
-		mStartDateTime.setTimeInMillis(obj
-				.optLong(Globals.KEY_EVENT_START_DATE_TIME));
-		mEndDateTime.setTimeInMillis(obj
-				.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+		mStartDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+		mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
 		mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
 		mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
-		// mAttendees = (ArrayList<String>) obj
-		// .get(Globals.KEY_EVENT_ATTENDEES);
-=======
-			mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
-			mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
-			mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
-			mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
-			mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
-			mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
-			mStartDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_START_DATE_TIME));
-			mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
-			mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
-			mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
-			JSONArray attendees = obj.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
-			for (int i=0; i < attendees.length(); i++){
-				String attendee = attendees.optString(i, null);
-				if (attendee != null) {
-					mAttendees.add(attendee);
-				}
+		JSONArray attendees = obj.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
+		for (int i=0; i < attendees.length(); i++){
+			String attendee = attendees.optString(i, null);
+			if (attendee != null) {
+				mAttendees.add(attendee);
 			}
->>>>>>> 0f8db71c53dc2b0876bf990693c43800f1cb6216
+		}
 	}
 
 	/**
@@ -117,6 +101,7 @@ public class EventEntry {
 
 		try {
 			obj.put(Globals.KEY_EVENT_ROWID, mDbId);
+			obj.put(Globals.KEY_EVENT_ID, mEventId);
 			obj.put(Globals.KEY_EVENT_EMAIL, mEmail);
 			obj.put(Globals.KEY_EVENT_TYPE, mEventType);
 			obj.put(Globals.KEY_EVENT_TITLE, mEventTitle);
@@ -136,7 +121,8 @@ public class EventEntry {
 			}
 			obj.put(Globals.KEY_EVENT_ATTENDEES, attendees);
 		} catch (JSONException e) {
-			return null;
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return obj;
@@ -160,6 +146,10 @@ public class EventEntry {
 	 */
 	public void setEventId() {
 		mEventId = mEmail + String.valueOf(mTimeStamp.getTimeInMillis());
+	}
+
+	public void setEventId(String eventId) {
+		mEventId = eventId;
 	}
 
 	public String getEventId() {
