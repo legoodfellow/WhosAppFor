@@ -52,7 +52,6 @@ public class GetUserHistoryServlet extends HttpServlet {
 		JSONObject obj = new JSONObject();
 
 		try {
-			obj.put(Globals.KEY_EVENT_ROWID, user.getID());
 			obj.put(Globals.KEY_EVENT_EMAIL, user.getEmail());
 			obj.put(Globals.KEY_USER_FIRST_NAME, user.getFirstName());
 			obj.put(Globals.KEY_USER_LAST_NAME, user.getLastName());

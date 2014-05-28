@@ -37,7 +37,9 @@ public class PostServlet extends HttpServlet {
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_USER)) {
+			System.out.println("create new user");
 			createNewUser(postText);
+			System.out.println("new user created");
 			resp.sendRedirect("/send_user_update_msg.do");
 		}
 		
@@ -91,10 +93,13 @@ public class PostServlet extends HttpServlet {
 	
 	public void createNewUser(String postText) {
 		try {
+			System.out.println("try new user created");
 			JSONArray jsonArray = new JSONArray(postText);
 			for (int i=0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				if (jsonObject.has(Globals.KEY_USER_ROWID)) {
+				System.out.println("jsonobj: " + jsonObject);
+				if (jsonObject.has(Globals.KEY_USER_EMAIL)) {
+					System.out.println("add user");
 					UserEntry user = jsonToUserEntry(jsonObject);
 					UserDatastore.add(user);
 				}

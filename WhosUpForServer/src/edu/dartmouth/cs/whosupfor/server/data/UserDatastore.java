@@ -41,7 +41,7 @@ public class UserDatastore {
 		}
 
 		Entity entity = new Entity(DataGlobals.ENTITY_KIND_USER,
-				user.getID(), parentKey);
+				user.getEmail(), parentKey);
 
 		setEntityFromUserEntry(entity, user);
 		
@@ -54,7 +54,7 @@ public class UserDatastore {
 		Entity result = null;
 		try {
 			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
-					DataGlobals.ENTITY_KIND_USER, user.getID()));
+					DataGlobals.ENTITY_KIND_USER, user.getEmail()));
 			
 			setEntityFromUserEntry(result, user);
 
@@ -64,12 +64,12 @@ public class UserDatastore {
 		return false;
 	}
 	
-	public static boolean delete(long id) {
+	public static boolean delete(String email) {
 		// query
-		Filter filter = new FilterPredicate(Globals.KEY_USER_ROWID,
-				FilterOperator.EQUAL, id);
+		Filter filter = new FilterPredicate(Globals.KEY_USER_EMAIL,
+				FilterOperator.EQUAL, email);
 
-		Query query = new Query(Globals.KEY_USER_ROWID);
+		Query query = new Query(Globals.KEY_USER_EMAIL);
 		query.setFilter(filter);
 
 		PreparedQuery pq = mDatastore.prepare(query);
@@ -85,11 +85,11 @@ public class UserDatastore {
 		return ret;
 	}
 	
-	public static UserEntry getUserById(long id, Transaction txn) {
+	public static UserEntry getUserById(String email, Transaction txn) {
 		Entity result = null;
 		try {
 			result = mDatastore.get(KeyFactory.createKey(getParentKey(),
-					DataGlobals.ENTITY_KIND_USER, id));
+					DataGlobals.ENTITY_KIND_USER, email));
 		} catch (Exception ex) {
 		}
 
@@ -117,7 +117,6 @@ public class UserDatastore {
 			return;
 		}
 		
-		entity.setProperty(Globals.KEY_USER_ROWID, user.getID());
 		entity.setProperty(Globals.KEY_USER_EMAIL, user.getEmail());
 		entity.setProperty(Globals.KEY_USER_FIRST_NAME, user.getFirstName());
 		entity.setProperty(Globals.KEY_USER_LAST_NAME, user.getLastName());
@@ -135,7 +134,6 @@ public class UserDatastore {
 		}
 		
 		UserEntry user = new UserEntry();
-		user.setID((long) entity.getProperty(Globals.KEY_USER_ROWID));
 		user.setEmail((String) entity.getProperty(Globals.KEY_USER_EMAIL));
 		user.setFirstName((String) entity.getProperty(Globals.KEY_USER_FIRST_NAME));
 		user.setLastName((String) entity.getProperty(Globals.KEY_USER_LAST_NAME));
