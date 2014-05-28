@@ -45,20 +45,18 @@ public class PostServlet extends HttpServlet {
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_REPLY_GOING)) {
-			String eventId; // TODO: get eventID, eventually this will be string not long
-			String attendee; // TODO: get attendee
-//			if (EventDatastore.addAttendee(eventId, attendee)) {
-//			resp.sendRedirect("/send_event_update_msg.do");
-//			}
+			String eventId = req.getParameter("event_id");
+			String attendee = req.getParameter("user_email");
+			if (postText.equals("0")){
+				System.out.println("add");
+				EventDatastore.addAttendee(eventId, attendee);
+			}
+			if (postText.equals("1")) {
+				System.out.println("delete");
+				EventDatastore.deleteAttendee(eventId, attendee);
+			}
 		}
 		
-		if (taskType.equals(DataGlobals.TASK_TYPE_REPLY_GOING)) {
-			String eventId; // TODO: get eventID, eventually this will be string not long
-			String attendee; // TODO: get attendee
-//			if (EventDatastore.deleteAttendee(eventId, attendee)) {
-//				resp.sendRedirect("/send_event_update_msg.do");
-//			}
-		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_GET_EVENTS)) {
 			resp.sendRedirect("/get_event_history.do");

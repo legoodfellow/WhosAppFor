@@ -206,7 +206,7 @@ public class EventDetailsActivity extends ListActivity {
 
 				// Add params to be sent
 				params.put("post_text", arg0[0].toString());
-				params.put("task_type", "reply_going ");
+				params.put("task_type", "reply_going");
 				params.put("user_email", mEmail);
 				params.put("event_id", mEventId);
 

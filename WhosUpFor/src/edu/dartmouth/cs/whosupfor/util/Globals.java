@@ -86,7 +86,7 @@ public class Globals {
 	// GCM
 //	 public static final String SERVER_ADDR = "http://10.0.0.3:8888";
 
-	public static final String SERVER_ADDR = "http://10.31.227.124:8888";
+	public static final String SERVER_ADDR = "http://10.31.231.41:8888";
 //	public static final String SERVER_ADDR = "http://whosupfor.appspot.com";
 
 	// public static final String SENDER_ID = "424192184423";
