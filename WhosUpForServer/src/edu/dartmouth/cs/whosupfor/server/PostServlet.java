@@ -48,13 +48,12 @@ public class PostServlet extends HttpServlet {
 			String eventId = req.getParameter("event_id");
 			String attendee = req.getParameter("user_email");
 			if (postText.equals("0")){
-				System.out.println("add");
 				EventDatastore.addAttendee(eventId, attendee);
 			}
 			if (postText.equals("1")) {
-				System.out.println("delete");
 				EventDatastore.deleteAttendee(eventId, attendee);
 			}
+			resp.sendRedirect("/send_event_update_msg.do");
 		}
 		
 		
