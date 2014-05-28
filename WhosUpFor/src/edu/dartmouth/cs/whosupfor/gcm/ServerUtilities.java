@@ -28,7 +28,7 @@ import edu.dartmouth.cs.whosupfor.util.Globals;
 public class ServerUtilities {
 	private static final String TAG = "DemoAndroid";
 
-	private static final int MAX_ATTEMPTS = 5;
+	private static final int MAX_ATTEMPTS = 10;
 	private static final int BACKOFF_MILLI_SECONDS = 2000;
 	private static final Random random = new Random();
 

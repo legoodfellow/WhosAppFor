@@ -65,14 +65,6 @@ public class EventDetailsActivity extends ListActivity {
 		mUserEntryDbHelper.getReadableDatabase();
 		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
 
-		// Create broadcast receiver filter
-		mMessageIntentFilter = new IntentFilter();
-		mMessageIntentFilter.addAction("GCM_NOTIFY");
-
-		// Create broadcast receiver and register it
-		mMessageUpdateReceiver = new MyBroadcastReceiver();
-		registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
-
 		// Set event organizer email address
 		// Get the shared preference
 		String mKey = getString(R.string.preference_name_edit_profile_activity);
@@ -174,6 +166,25 @@ public class EventDetailsActivity extends ListActivity {
 		});
 
 		mUserEntryDbHelper.close();
+	}
+
+	@Override
+	public void onResume() {
+		// Create broadcast receiver filter
+		mMessageIntentFilter = new IntentFilter();
+		mMessageIntentFilter.addAction("GCM_NOTIFY");
+
+		// Create broadcast receiver and register it
+		mMessageUpdateReceiver = new MyBroadcastReceiver();
+		registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
+super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+
+		mContext.unregisterReceiver(mMessageUpdateReceiver);
+		super.onPause();
 	}
 
 	// ------------------------------------------------------------------------

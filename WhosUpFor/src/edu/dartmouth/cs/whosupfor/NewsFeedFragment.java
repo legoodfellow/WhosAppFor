@@ -113,8 +113,8 @@ public class NewsFeedFragment extends ListFragment {
 		mUserEntryDbHelper.close();
 
 		// Refresh list view
-		 refreshPostHistory();
-//		 refreshUserHistory();
+		refreshPostHistory();
+		// refreshUserHistory();
 		super.onResume();
 	}
 

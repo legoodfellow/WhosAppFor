@@ -59,8 +59,8 @@ public class GetUserHistoryServlet extends HttpServlet {
 			obj.put(Globals.KEY_USER_GENDER, user.getGender());
 			obj.put(Globals.KEY_USER_CLASS_YEAR, user.getClassYear());
 			obj.put(Globals.KEY_USER_MAJOR, user.getMajor());
-			obj.put(Globals.KEY_USER_PASSWORD, user.getPassword());
-			obj.put(Globals.KEY_USER_PROFILE_PHOTO, user.getProfilePhoto());
+//			obj.put(Globals.KEY_USER_PASSWORD, user.getPassword());
+//			obj.put(Globals.KEY_USER_PROFILE_PHOTO, user.getProfilePhotoInString());
 			
 		} catch (JSONException e) {
 			return null;

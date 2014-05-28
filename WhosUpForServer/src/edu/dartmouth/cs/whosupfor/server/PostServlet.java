@@ -18,7 +18,6 @@ import edu.dartmouth.cs.whosupfor.server.data.EventDatastore;
 import edu.dartmouth.cs.whosupfor.server.data.UserDatastore;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
-
 public class PostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static String ENTITY_KIND_KEY = "EntityKind";
@@ -31,36 +30,46 @@ public class PostServlet extends HttpServlet {
 		String taskType = req.getParameter(DataGlobals.POST_KEY_TASK_TYPE);
 		System.out.println(postText);
 		System.out.println(taskType);
-		
+
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_EVENT)) {
 			createNewEvent(postText);
 			resp.sendRedirect("/send_event_update_msg.do");
 		}
-		
+
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_USER)) {
 			System.out.println("create new user");
 			createNewUser(postText);
 			System.out.println("new user created");
 			resp.sendRedirect("/send_user_update_msg.do");
 		}
-		
+
 		if (taskType.equals(DataGlobals.TASK_TYPE_REPLY_GOING)) {
 			String eventId = req.getParameter("event_id");
 			String attendee = req.getParameter("user_email");
-			if (postText.equals("0")){
-				EventDatastore.addAttendee(eventId, attendee);
+			if (postText.equals("0")) {
+				System.out.println("add");
+				boolean result = EventDatastore.addAttendee(eventId, attendee);
+				if (result) {
+//					resp.sendRedirect("/get_event_history.do");
+					resp.sendRedirect("/send_event_update_msg.do");
+				}
 			}
 			if (postText.equals("1")) {
-				EventDatastore.deleteAttendee(eventId, attendee);
+				System.out.println("delete");
+				boolean result = EventDatastore.deleteAttendee(eventId,
+						attendee);
+
+				if (result) {
+					resp.sendRedirect("/send_event_update_msg.do");
+				}
 			}
-			resp.sendRedirect("/send_event_update_msg.do");
+
 		}
-		
-		
+
 		if (taskType.equals(DataGlobals.TASK_TYPE_GET_EVENTS)) {
 			resp.sendRedirect("/get_event_history.do");
 		}
-		
+
 		if (taskType.equals(DataGlobals.TASK_TYPE_GET_USERS)) {
 			resp.sendRedirect("/get_user_history.do");
 		}
@@ -73,11 +82,10 @@ public class PostServlet extends HttpServlet {
 		doPost(req, resp);
 	}
 
-	
 	public void createNewEvent(String postText) {
 		try {
 			JSONArray jsonArray = new JSONArray(postText);
-			for (int i=0; i < jsonArray.length(); i++) {
+			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				if (jsonObject.optString(Globals.KEY_EVENT_ID) != null) {
 					EventEntry event = jsonToEventEntry(jsonObject);
@@ -88,12 +96,12 @@ public class PostServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void createNewUser(String postText) {
 		try {
 			System.out.println("try new user created");
 			JSONArray jsonArray = new JSONArray(postText);
-			for (int i=0; i < jsonArray.length(); i++) {
+			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				System.out.println("jsonobj: " + jsonObject);
 				if (jsonObject.optString(Globals.KEY_USER_EMAIL) != null) {
@@ -109,7 +117,7 @@ public class PostServlet extends HttpServlet {
 
 	public static EventEntry jsonToEventEntry(JSONObject eventJSON) {
 		EventEntry event = new EventEntry();
-		
+
 		if (eventJSON != null) {
 			event.setEventId(eventJSON.optString(Globals.KEY_EVENT_ID));
 			event.setEmail(eventJSON.optString(Globals.KEY_EVENT_EMAIL));
@@ -119,10 +127,13 @@ public class PostServlet extends HttpServlet {
 			event.setDetail(eventJSON.optString(Globals.KEY_EVENT_DETAIL));
 			event.setCircle(eventJSON.optInt(Globals.KEY_EVENT_CIRCLE));
 			event.setTimeStamp(eventJSON.optLong(Globals.KEY_EVENT_TIME_STAMP));
-			event.setStartDateTime(eventJSON.optLong(Globals.KEY_EVENT_START_DATE_TIME));
-			event.setEndDateTime(eventJSON.optLong(Globals.KEY_EVENT_END_DATE_TIME));
-			JSONArray attendees = eventJSON.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
-			for (int i=0; i < attendees.length(); i++){
+			event.setStartDateTime(eventJSON
+					.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+			event.setEndDateTime(eventJSON
+					.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+			JSONArray attendees = eventJSON
+					.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
+			for (int i = 0; i < attendees.length(); i++) {
 				String attendee = attendees.optString(i, null);
 				if (attendee != null) {
 					event.addAttendee(attendee);
@@ -135,7 +146,7 @@ public class PostServlet extends HttpServlet {
 	public static UserEntry jsonToUserEntry(JSONObject userJSON) {
 		UserEntry user = new UserEntry();
 
-		if (userJSON != null){
+		if (userJSON != null) {
 			user.setID(userJSON.optLong(Globals.KEY_USER_ROWID));
 			user.setEmail(userJSON.optString(Globals.KEY_USER_EMAIL));
 			user.setFirstName(userJSON.optString(Globals.KEY_USER_FIRST_NAME));
@@ -144,8 +155,9 @@ public class PostServlet extends HttpServlet {
 			user.setGender(userJSON.optInt(Globals.KEY_USER_GENDER));
 			user.setClassYear(userJSON.optInt(Globals.KEY_USER_CLASS_YEAR));
 			user.setMajor(userJSON.optString(Globals.KEY_USER_MAJOR));
-//			user.setProfilePhoto(userJSON.optString(Globals.KEY_USER_PROFILE_PHOTO));
-//			user.setPassword(userJSON.optString(Globals.KEY_USER_PASSWORD));
+//			user.setProfilePhoto((String) userJSON
+//					.optString(Globals.KEY_USER_PROFILE_PHOTO));
+			// user.setPassword(userJSON.optString(Globals.KEY_USER_PASSWORD));
 		}
 		return user;
 	}

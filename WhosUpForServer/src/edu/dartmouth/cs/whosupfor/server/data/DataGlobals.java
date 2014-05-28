@@ -14,6 +14,7 @@ public class DataGlobals {
 	public static String POST_KEY_POST_TEXT = "post_text";
 	
 	public static String TASK_TYPE_REPLY_GOING = "reply_going";
+	public static String TASK_TYPE_REPLY_DECLINE = "reply_decline";
 	public static String TASK_TYPE_CREATE_NEW_EVENT = "create_new_event";
 	public static String TASK_TYPE_CREATE_NEW_USER = "create_new_user";
 	public static String TASK_TYPE_GET_EVENTS = "get_events";

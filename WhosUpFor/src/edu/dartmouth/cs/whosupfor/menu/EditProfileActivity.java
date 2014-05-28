@@ -395,9 +395,10 @@ public class EditProfileActivity extends Activity {
 					.getChildAt(mIntValue);
 			// Check the button
 			radioBtn.setChecked(true);
-			radioBtn.setClickable(false);
 			((RadioButton) findViewById(R.id.editProfileRadioGenderF))
 					.setClickable(false);
+			((RadioButton) findViewById(R.id.editProfileRadioGenderM))
+			.setClickable(false);
 		}
 
 		// Load the profile class
