@@ -2,13 +2,20 @@ package edu.dartmouth.cs.whosupfor;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,9 +25,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import edu.dartmouth.cs.whosupfor.data.EventEntry;
+import edu.dartmouth.cs.whosupfor.data.EventEntryDbHelper;
 import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.gcm.ServerUtilities;
 import edu.dartmouth.cs.whosupfor.menu.EditProfileActivity;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.Utils;
@@ -32,7 +43,13 @@ public class EventDetailsActivity extends ListActivity {
 	private ArrayList<String> mAttendees;
 	private ArrayList<UserEntry> mUserEntries;
 	private UserEntryDbHelper mUserEntryDbHelper;
+	private EventEntryDbHelper mEventEntryDbHelper;
 	private byte[] mByteArray;
+	private IntentFilter mMessageIntentFilter;
+	private String mEventId;
+	private String mEmail;
+
+	private MyBroadcastReceiver mMessageUpdateReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +60,29 @@ public class EventDetailsActivity extends ListActivity {
 
 		Bundle extras = getIntent().getExtras();
 
+		// Get database helpers
 		mUserEntryDbHelper = new UserEntryDbHelper(mContext);
 		mUserEntryDbHelper.getReadableDatabase();
+		mEventEntryDbHelper = new EventEntryDbHelper(mContext);
+
+		// Create broadcast receiver filter
+		mMessageIntentFilter = new IntentFilter();
+		mMessageIntentFilter.addAction("GCM_NOTIFY");
+
+		// Create broadcast receiver and register it
+		mMessageUpdateReceiver = new MyBroadcastReceiver();
+		registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
+
+		// Set event organizer email address
+		// Get the shared preference
+		String mKey = getString(R.string.preference_name_edit_profile_activity);
+		Log.d(Globals.TAG_MAIN_ACTIVITY, " ");
+		SharedPreferences mPrefs = getSharedPreferences(mKey, MODE_PRIVATE);
+		Log.d(Globals.TAG_MAIN_ACTIVITY, " ");
+		// Load the email and add it to event entry
+		mKey = getString(R.string.preference_key_edit_profile_activity_profile_email);
+		Log.d(Globals.TAG_MAIN_ACTIVITY, " ");
+		mEmail = mPrefs.getString(mKey, "");
 
 		if (extras != null) {
 
@@ -101,11 +139,14 @@ public class EventDetailsActivity extends ListActivity {
 			mUserEntries = new ArrayList<UserEntry>();
 
 			// mAttendees.add("a@dali.dartmouth.edu");
-			// mUserEntries =
-			// mUserEntryDbHelper.fetchEntriesByAttendees(mAttendees);
+			mUserEntries = mUserEntryDbHelper
+					.fetchEntriesByAttendees(mAttendees);
+
+			// Get EventId
+			mEventId = extras.getString(Globals.KEY_EVENT_ID);
 
 			// test
-			mUserEntries = mUserEntryDbHelper.fetchEntries();
+			// mUserEntries = mUserEntryDbHelper.fetchEntries();
 
 			mAttendeesEntriesAdapter = new AttendeesEntriesAdapter(this,
 					mUserEntries);
@@ -114,9 +155,165 @@ public class EventDetailsActivity extends ListActivity {
 
 		}
 
+		// Set up radio group listener and communicate with GCM
+		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.eventDetailActivityRadioGroup);
+		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+				if (checkedId == R.id.eventDetailActivityRadioGroupGoing) {
+					postMsg(Globals.GOING);
+				} else if (checkedId == R.id.eventDetailActivityRadioGroupNotGoing) {
+					postMsg(Globals.DECLINE);
+				}
+			}
+		});
+
 		mUserEntryDbHelper.close();
 	}
 
+	// ------------------------------------------------------------------------
+	// GCM
+	/**
+	 * Post GOING or DECLINE to Google Cloud
+	 * 
+	 * @param msg
+	 *            : JSON string
+	 */
+	private void postMsg(int msg) {
+		new AsyncTask<Integer, Void, ArrayList<EventEntry>>() {
+
+			@Override
+			protected ArrayList<EventEntry> doInBackground(Integer... arg0) {
+				// Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+				// "postMsg().doInBackground() got called");
+				String url = Globals.SERVER_ADDR + "/post.do";
+				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
+				Map<String, String> params = new HashMap<String, String>();
+
+				// // Load the profile email
+				// String mKey =
+				// getString(R.string.preference_name_edit_profile_activity);
+				// SharedPreferences mPrefs = getSharedPreferences(mKey,
+				// MODE_PRIVATE);
+				// mKey =
+				// getString(R.string.preference_key_edit_profile_activity_profile_email);
+				// mEmail = mPrefs.getString(mKey, "");
+
+				// Add params to be sent
+				params.put("post_text", arg0[0].toString());
+				params.put("task_type", "reply_going ");
+				params.put("user_email", mEmail);
+				params.put("event_id", mEventId);
+
+				try {
+					res = ServerUtilities.post(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			protected void onPostExecute(ArrayList<EventEntry> res) {
+				// mPostText.setText("");
+				// refreshPostHistory();
+			}
+
+		}.execute(msg);
+		// Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
+		// "postMsg().doInBackground() got called");
+	}
+
+	/**
+	 * Refresh event list
+	 */
+	private void refreshPostHistory() {
+		new AsyncTask<Void, Void, ArrayList<EventEntry>>() {
+
+			@Override
+			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
+				// Call GetHistoryServlet on server side
+				String url = Globals.SERVER_ADDR + "/get_history.do";
+				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
+
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("task_type", "get_events");
+
+				// Get ArrayList<EventEntry> from datastore
+				try {
+					res = ServerUtilities.post(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			/**
+			 * Update the event list and local database
+			 */
+			protected void onPostExecute(ArrayList<EventEntry> res) {
+				if (!res.isEmpty() || res.size() != 0) {
+
+					// Update database
+					mEventEntryDbHelper.getWritableDatabase();
+					mEventEntryDbHelper.removeAllEntries();
+					for (EventEntry eventEntry : res) {
+						mEventEntryDbHelper.insertEntry(eventEntry);
+					}
+
+					mUserEntryDbHelper.getReadableDatabase();
+
+					// Use the eventId to find the eventEntry and get its
+					// updated attendees
+					for (EventEntry eventEntry : res) {
+						if (eventEntry.getEventId().equals(mEventId)) {
+							mAttendees = eventEntry.getAttendees();
+						}
+					}
+
+					// Get user entries and rend them in the listView
+					mUserEntries = mUserEntryDbHelper
+							.fetchEntriesByAttendees(mAttendees);
+					mAttendeesEntriesAdapter = new AttendeesEntriesAdapter(
+							mContext, mUserEntries);
+					setListAdapter(mAttendeesEntriesAdapter);
+
+					mUserEntryDbHelper.close();
+					mEventEntryDbHelper.close();
+				}
+			}
+
+		}.execute();
+	}
+
+	/**
+	 * Broadcast Receiver
+	 * 
+	 * @author Aaron Jun Yang
+	 * 
+	 */
+	private class MyBroadcastReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String msg = intent.getStringExtra("message");
+			if (msg != null && msg.equals("update")) {
+				refreshPostHistory();
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------------------------------
+	// UI
+
+	/**
+	 * Helper method to set up the eventEntries arrayAdapter
+	 * 
+	 * @author Aaron Jun Yang
+	 * 
+	 */
 	private class AttendeesEntriesAdapter extends ArrayAdapter<UserEntry> {
 
 		private Context mHelperContext;
@@ -241,5 +438,8 @@ public class EventDetailsActivity extends ListActivity {
 		}
 
 	}
+
+	// -----------------------------------------------------------------------
+	// GCM
 
 }

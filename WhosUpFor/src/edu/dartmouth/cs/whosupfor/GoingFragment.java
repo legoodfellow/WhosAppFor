@@ -1,12 +1,18 @@
 package edu.dartmouth.cs.whosupfor;
+
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -20,10 +26,11 @@ import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.data.EventEntryDbHelper;
 import edu.dartmouth.cs.whosupfor.data.UserEntry;
 import edu.dartmouth.cs.whosupfor.data.UserEntryDbHelper;
+import edu.dartmouth.cs.whosupfor.gcm.ServerUtilities;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 import edu.dartmouth.cs.whosupfor.util.Utils;
 
-public class GoingFragment extends ListFragment{
+public class GoingFragment extends ListFragment {
 
 	private Context mContext;
 
@@ -34,6 +41,9 @@ public class GoingFragment extends ListFragment{
 	private ArrayList<EventEntry> mEventEntries;
 	private MyPostEntriesAdapter mMyPostEntriesAdapter;
 	private byte[] mByteArray;
+
+	private IntentFilter mMessageIntentFilter;
+	private MyBroadcastReceiver mMessageUpdateReceiver;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +62,13 @@ public class GoingFragment extends ListFragment{
 	// GCM
 	@Override
 	public void onResume() {
+		// Create broadcast receiver filter
+		mMessageIntentFilter = new IntentFilter();
+		mMessageIntentFilter.addAction("GCM_NOTIFY");
+
+		// Create broadcast receiver and register it
+		mMessageUpdateReceiver = new MyBroadcastReceiver();
+		mContext.registerReceiver(mMessageUpdateReceiver, mMessageIntentFilter);
 
 		// Get eventEntrie information from local database and populate the
 		// event list
@@ -69,16 +86,15 @@ public class GoingFragment extends ListFragment{
 
 		mEventEntries = new ArrayList<EventEntry>();
 
-		// Fetch going entries by user email
+		// test
 		mEventEntries = mEventEntryDbHelper.fetchEntriesGoingByEmail(mValue);
 		mEventEntryDbHelper.close();
 
-		// Create adapter
 		mMyPostEntriesAdapter = new MyPostEntriesAdapter(mContext,
 				mEventEntries);
+
 		setListAdapter(mMyPostEntriesAdapter);
 
-		
 		mUserEntryDbHelper.close();
 
 		super.onResume();
@@ -87,7 +103,73 @@ public class GoingFragment extends ListFragment{
 	@Override
 	public void onPause() {
 
+		mContext.unregisterReceiver(mMessageUpdateReceiver);
 		super.onPause();
+	}
+
+	/**
+	 * Refresh event list
+	 */
+	private void refreshPostHistory() {
+		new AsyncTask<Void, Void, ArrayList<EventEntry>>() {
+
+			@Override
+			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
+				// Call GetHistoryServlet on server side
+				String url = Globals.SERVER_ADDR + "/get_history.do";
+				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("task_type", "get_events");
+				// Get ArrayList<EventEntry> from datastore
+				try {
+					res = ServerUtilities.post(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			/**
+			 * Update the event list and local database
+			 */
+			protected void onPostExecute(ArrayList<EventEntry> res) {
+				if (!res.isEmpty() || res.size() != 0) {
+
+					// Update database
+					mEventEntryDbHelper.getWritableDatabase();
+					mEventEntryDbHelper.removeAllEntries();
+					for (EventEntry eventEntry : res) {
+						mEventEntryDbHelper.insertEntry(eventEntry);
+					}
+					mEventEntryDbHelper.close();
+
+					// Update event list
+					mMyPostEntriesAdapter = new MyPostEntriesAdapter(mContext,
+							res);
+					setListAdapter(mMyPostEntriesAdapter);
+
+				}
+			}
+
+		}.execute();
+	}
+
+	/**
+	 * Broadcast Receiver
+	 * 
+	 * @author Aaron Jun Yang
+	 * 
+	 */
+	private class MyBroadcastReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String msg = intent.getStringExtra("message");
+			if (msg != null && msg.equals("update_going")) {
+				refreshPostHistory();
+			}
+		}
 	}
 
 	// -----------------------------------------------------------------------------------------
@@ -252,13 +334,17 @@ public class GoingFragment extends ListFragment{
 				extras.putLong(Globals.KEY_EVENT_ROWID, mEntries.get(mPosition)
 						.getID());
 
+				// My post or other's post
+				extras.putInt("MY_POST", 1);
+
 				// Get UserEntry
 				mUserEntryDbHelper.getReadableDatabase();
 				UserEntry userEntry = mUserEntryDbHelper
 						.fetchEntriesByEventEntry(mEntries.get(mPosition));
 
 				// Event Organizer name
-				mValue = userEntry.getFirstName() + " " + userEntry.getLastName();
+				mValue = userEntry.getFirstName() + " "
+						+ userEntry.getLastName();
 				extras.putString(Globals.KEY_USER_FIRST_NAME, mValue);
 
 				// Event Organizer profile image
@@ -299,6 +385,10 @@ public class GoingFragment extends ListFragment{
 				mAttendees = mEntries.get(mPosition).getAttendees();
 				extras.putStringArrayList(Globals.KEY_EVENT_ATTENDEES,
 						mAttendees);
+				
+				// EventId
+				mValue = mEntries.get(mPosition).getEventId();
+				extras.putString(Globals.KEY_EVENT_ID, mValue);
 
 				// Fire intent to EventDetailActivity
 				intent.setClass(mContext, EventDetailsActivity.class);

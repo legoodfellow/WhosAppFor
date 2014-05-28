@@ -22,14 +22,13 @@ public class Globals {
 	// CreateNewEventActivity
 	public static final int PICK_DATE = 1;
 	public static final int PICK_TIME = 2;
-	
+
 	// SelectNewEventTypeActivity
 	public static final int EVENT_TYPE_FOOD = 0;
 	public static final int EVENT_TYPE_SPORTS = 1;
 	public static final int EVENT_TYPE_STUDY = 2;
 	public static final int EVENT_TYPE_MOVIE = 3;
 	public static final int EVENT_TYPE_PARTY = 4;
-	
 
 	// EventEntry
 	public static final String DATE_FORMAT = "HH:mm:ss MMM d yyyy";
@@ -43,6 +42,7 @@ public class Globals {
 
 	public static final String TABLE_NAME_EVENT_ENTRIES = "eventEntryTable";
 	public static final String KEY_EVENT_ROWID = "event_id";
+	public static final String KEY_EVENT_ID = "event_unique_id";
 	public static final String KEY_EVENT_EMAIL = "event_email";
 	public static final String KEY_EVENT_TYPE = "event_type";
 	public static final String KEY_EVENT_TITLE = "event_title";
@@ -66,7 +66,6 @@ public class Globals {
 	public static final String KEY_USER_MAJOR = "user_major";
 	public static final String KEY_USER_PASSWORD = "user_password";
 	public static final String KEY_USER_PROFILE_PHOTO = "user_profile_photo";
-	
 
 	// EditProfileActivity
 	public static final String IMG_INSTANCE_STATE_KEY = "saved_image";
@@ -83,17 +82,22 @@ public class Globals {
 	// SettingsActivity
 	public static final String[] SETTINGS_ARRAY = { "Notification", "Privacy",
 			"Like us on Facebook", "Like us on Twitter", "About", "Donations" };
-	
+
 	// GCM
-//	public static final String SERVER_ADDR = "http://10.31.238.127:8888";
+	// public static final String SERVER_ADDR = "http://10.31.238.127:8888";
 	public static final String SERVER_ADDR = "http://whosupfor.appspot.com";
-	
-//	public static final String SENDER_ID = "424192184423";
+
+	// public static final String SENDER_ID = "424192184423";
 	public static final String SENDER_ID = "141554009918";
 	public static final String PROPERTY_REG_ID = "registration_id";
 	public static final String PROPERTY_APP_VERSION = "appVersion";
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-	
-	public static final String[] EVENT_TYPE_ARRAY = { "Food", "Sports", "Study", "Movie", "Party" };
+
+	public static final String[] EVENT_TYPE_ARRAY = { "Food", "Sports",
+			"Study", "Movie", "Party" };
+
+	// EventDetailActivity
+	public static final int GOING = 0;
+	public static final int DECLINE = 1;
 
 }

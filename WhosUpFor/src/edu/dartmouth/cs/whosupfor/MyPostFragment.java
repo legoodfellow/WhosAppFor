@@ -385,6 +385,10 @@ public class MyPostFragment extends ListFragment {
 				mAttendees = mEntries.get(mPosition).getAttendees();
 				extras.putStringArrayList(Globals.KEY_EVENT_ATTENDEES,
 						mAttendees);
+				
+				// EventId
+				mValue = mEntries.get(mPosition).getEventId();
+				extras.putString(Globals.KEY_EVENT_ID, mValue);
 
 				// Fire intent to EventDetailActivity
 				intent.setClass(mContext, EventDetailsActivity.class);

@@ -234,7 +234,7 @@ public class CreateNewEventActivity extends Activity {
 
 		// EventTimeStamp
 		mEventEntry.setTimeStamp(System.currentTimeMillis());
-
+		
 		// Save it to database
 		mEventEntryDbHelper.insertEntry(mEventEntry);
 		mEventEntryDbHelper.close();

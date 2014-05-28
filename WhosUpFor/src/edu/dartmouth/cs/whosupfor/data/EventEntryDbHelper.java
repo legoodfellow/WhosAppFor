@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.Settings.Global;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 public class EventEntryDbHelper extends SQLiteOpenHelper {
@@ -14,11 +15,12 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 	private SQLiteDatabase mDatabase;
 
 	private String[] allColumns = { Globals.KEY_EVENT_ROWID,
-			Globals.KEY_EVENT_EMAIL, Globals.KEY_EVENT_TYPE,
-			Globals.KEY_EVENT_TITLE, Globals.KEY_EVENT_LOCATION,
-			Globals.KEY_EVENT_TIME_STAMP, Globals.KEY_EVENT_START_DATE_TIME,
-			Globals.KEY_EVENT_END_DATE_TIME, Globals.KEY_EVENT_DETAIL,
-			Globals.KEY_EVENT_ATTENDEES, Globals.KEY_EVENT_CIRCLE };
+			Globals.KEY_EVENT_ID, Globals.KEY_EVENT_EMAIL,
+			Globals.KEY_EVENT_TYPE, Globals.KEY_EVENT_TITLE,
+			Globals.KEY_EVENT_LOCATION, Globals.KEY_EVENT_TIME_STAMP,
+			Globals.KEY_EVENT_START_DATE_TIME, Globals.KEY_EVENT_END_DATE_TIME,
+			Globals.KEY_EVENT_DETAIL, Globals.KEY_EVENT_ATTENDEES,
+			Globals.KEY_EVENT_CIRCLE };
 
 	// SQL query to create the table for the first time
 	// Data types are defined below
@@ -27,6 +29,8 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 			+ " ("
 			+ Globals.KEY_EVENT_ROWID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ Globals.KEY_EVENT_ID
+			+ " TEXT, "
 			+ Globals.KEY_EVENT_EMAIL
 			+ " TEXT, "
 			+ Globals.KEY_EVENT_TYPE
@@ -78,7 +82,9 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 		mDatabase = getWritableDatabase();
 		ContentValues values = new ContentValues();
 
-		// values.put(KEY_ROWID, entry.getID());
+		entry.setEventId();
+		
+		values.put(Globals.KEY_EVENT_ID, entry.getEventId());
 		values.put(Globals.KEY_EVENT_EMAIL, entry.getEmail());
 		values.put(Globals.KEY_EVENT_TYPE, entry.getEventType());
 		values.put(Globals.KEY_EVENT_TITLE, entry.getEventTitle());
@@ -90,22 +96,13 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 				entry.getEndDateTimeInMillis());
 		values.put(Globals.KEY_EVENT_DETAIL, entry.getDetail());
 		values.put(Globals.KEY_EVENT_CIRCLE, entry.getCircle());
+		values.put(Globals.KEY_EVENT_ATTENDEES, entry.getAttendeesByteArray());
 
 		long insertId = mDatabase.insert(Globals.TABLE_NAME_EVENT_ENTRIES,
 				null, values);
 
 		mDatabase.close();
-		// Log.d(Globals.TAG_DATABASE,
-		// "insertEntry(ExerciseEntry entry) saved new entry to mDatabase: "
-		// + "KEY_INPUT_TYPE: " + entry.getInputType()
-		// + ", KEY_ACTIVITY_TYPE: " + entry.getActivityType()
-		// + ", KEY_DATE: " + entry.getDate() + ", KEY_TIME: "
-		// + entry.getTime() + ", KEY_DURATION: "
-		// + entry.getDuration() + ", KEY_DISTANCE: "
-		// + entry.getDistance() + ", KEY_CALORIES: "
-		// + entry.getCalorie() + ", KEY_HEARTRATE: "
-		// + entry.getHeartRate() + ", KEY_COMMENT: "
-		// + entry.getComment());
+
 		return insertId;
 	}
 
@@ -139,20 +136,20 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 	 * @return
 	 */
 	public EventEntry fetchEntryByIndex(long rowId) {
-		EventEntry exerciseEntry = new EventEntry();
+		EventEntry eventEntry = new EventEntry();
 		mDatabase = getReadableDatabase();
 		Cursor cursor = mDatabase.query(Globals.TABLE_NAME_EVENT_ENTRIES,
 				allColumns, Globals.KEY_EVENT_ROWID + "=" + rowId, null, null,
 				null, null);
 		if (cursor.moveToFirst()) {
 			// convert the cursor to an ExerciseEntry object
-			exerciseEntry = cursorToEventEntry(cursor);
+			eventEntry = cursorToEventEntry(cursor);
 		}
 
 		cursor.close();
 		mDatabase.close();
 
-		return exerciseEntry;
+		return eventEntry;
 	}
 
 	/**
@@ -218,7 +215,7 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 
 		return result;
 	}
-	
+
 	/**
 	 * Query the entire table, return all rows
 	 * 
@@ -277,6 +274,10 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 				.getColumnIndex(Globals.KEY_EVENT_DETAIL)));
 		mEventEntry.setCircle(cursor.getInt(cursor
 				.getColumnIndex(Globals.KEY_EVENT_CIRCLE)));
+
+		mEventEntry.setAttendees(cursor.getBlob(cursor
+				.getColumnIndex(Globals.KEY_EVENT_ATTENDEES)));
+		mEventEntry.setEventId();
 
 		return mEventEntry;
 	}

@@ -320,6 +320,7 @@ public class MainActivity extends FragmentActivity {
 			// Launch LoginActivity
 			Toast.makeText(this, getString(R.string.ui_menu_logout),
 					Toast.LENGTH_SHORT).show();
+			finish();
 			return true;
 		}
 

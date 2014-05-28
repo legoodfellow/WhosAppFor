@@ -1,5 +1,10 @@
 package edu.dartmouth.cs.whosupfor.data;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -38,6 +43,7 @@ public class EventEntry {
 	private ArrayList<String> mAttendees; // List of attendee IDs
 	private int mCircle; // Indicates which friend circle can view the event (
 							// e.g. 0 = public, 1 = friends)
+	private String mEventId;
 
 	public EventEntry() {
 		this.mEventType = -1;
@@ -54,6 +60,7 @@ public class EventEntry {
 		this.mDetail = " ";
 		this.mAttendees = new ArrayList<String>();
 		this.mCircle = -1;
+		this.mEventId = " ";
 	}
 
 	/**
@@ -63,18 +70,20 @@ public class EventEntry {
 	 * @return
 	 */
 	public void fromJSONObject(JSONObject obj) {
-			mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
-			mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
-			mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
-			mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
-			mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
-			mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
-			mStartDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_START_DATE_TIME));
-			mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
-			mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
-			mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
-//			mAttendees = (ArrayList<String>) obj
-//					.get(Globals.KEY_EVENT_ATTENDEES);
+		mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
+		mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
+		mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
+		mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
+		mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
+		mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
+		mStartDateTime.setTimeInMillis(obj
+				.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+		mEndDateTime.setTimeInMillis(obj
+				.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+		mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
+		mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
+		// mAttendees = (ArrayList<String>) obj
+		// .get(Globals.KEY_EVENT_ATTENDEES);
 	}
 
 	/**
@@ -92,8 +101,10 @@ public class EventEntry {
 			obj.put(Globals.KEY_EVENT_TITLE, mEventTitle);
 			obj.put(Globals.KEY_EVENT_LOCATION, mLocation);
 			obj.put(Globals.KEY_EVENT_TIME_STAMP, mTimeStamp.getTimeInMillis());
-			obj.put(Globals.KEY_EVENT_START_DATE_TIME, mStartDateTime.getTimeInMillis());
-			obj.put(Globals.KEY_EVENT_END_DATE_TIME, mEndDateTime.getTimeInMillis());
+			obj.put(Globals.KEY_EVENT_START_DATE_TIME,
+					mStartDateTime.getTimeInMillis());
+			obj.put(Globals.KEY_EVENT_END_DATE_TIME,
+					mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
 			obj.put(Globals.KEY_EVENT_ATTENDEES, mAttendees);
@@ -115,6 +126,17 @@ public class EventEntry {
 
 	public Long getID() {
 		return mDbId;
+	}
+
+	/**
+	 * Set unique event id
+	 */
+	public void setEventId() {
+		mEventId = mEmail + String.valueOf(mTimeStamp.getTimeInMillis());
+	}
+
+	public String getEventId() {
+		return mEventId;
 	}
 
 	/**
@@ -351,15 +373,60 @@ public class EventEntry {
 		mAttendees = attendees;
 	}
 
+	/**
+	 * Set attendees
+	 * 
+	 * @param bytes
+	 */
+	public void setAttendees(byte[] bytes) {
+		ArrayList<String> attendees = new ArrayList<String>();
+
+		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+		DataInputStream in = new DataInputStream(bais);
+		try {
+			while (in.available() > 0) {
+				String element = in.readUTF();
+				attendees.add(element);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		mAttendees = attendees;
+	}
+
 	public ArrayList<String> getAttendees() {
 		return mAttendees;
+	}
+
+	/**
+	 * Convert arraylist<String> to byte[], and store it in database
+	 * 
+	 * @return
+	 */
+	public byte[] getAttendeesByteArray() {
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(baos);
+		for (String attendee : mAttendees) {
+			try {
+				out.writeUTF(attendee);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		byte[] bytes = baos.toByteArray();
+
+		return bytes;
 	}
 
 	public void addAttendee(String attendee) {
 		if (mAttendees != null) {
 			mAttendees.add(attendee);
 		}
-		
+
 	}
 
 }
