@@ -3,6 +3,7 @@ package edu.dartmouth.cs.whosupfor.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Base64;
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 /**
@@ -53,7 +54,8 @@ public class UserEntry {
 			mClassYear = obj.getInt(Globals.KEY_USER_CLASS_YEAR);
 			mMajor = obj.getString(Globals.KEY_USER_MAJOR);
 			mPassword = obj.getString(Globals.KEY_USER_PASSWORD);
-			mProfilePhoto = (byte[]) obj.get(Globals.KEY_USER_PROFILE_PHOTO);
+			String decodedImage = obj.getString(Globals.KEY_USER_PROFILE_PHOTO);
+			mProfilePhoto = Base64.decode(decodedImage, Base64.DEFAULT);
 
 		} catch (JSONException e) {
 			
@@ -79,7 +81,9 @@ public class UserEntry {
 			obj.put(Globals.KEY_USER_CLASS_YEAR, mClassYear);
 			obj.put(Globals.KEY_USER_MAJOR, mMajor);
 			obj.put(Globals.KEY_USER_PASSWORD, mPassword);
-			obj.put(Globals.KEY_USER_PROFILE_PHOTO, mProfilePhoto);
+			
+			String encodedImage = Base64.encodeToString(mProfilePhoto, Base64.DEFAULT);
+			obj.put(Globals.KEY_USER_PROFILE_PHOTO, encodedImage);
 		} catch (JSONException e) {
 			return null;
 		}
