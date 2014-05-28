@@ -33,19 +33,19 @@ public class PostServlet extends HttpServlet {
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_EVENT)) {
 			createNewEvent(postText);
-			resp.sendRedirect("/sendmsg.do");
+			resp.sendRedirect("/send_event_update_msg.do");
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_USER)) {
 			createNewUser(postText);
-			// TODO: redirect to sendmsg for user data
+			resp.sendRedirect("/send_user_update_msg.do");
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_REPLY_GOING)) {
 			long eventId; // TODO: get eventID, eventually this will be string not long
 			String attendee; // TODO: get attendee
 //			if (EventDatastore.addAttendee(eventId, attendee)) {
-//				resp.sendRedirect("/sendmsg.do");
+//			resp.sendRedirect("/send_event_update_msg.do");
 //			}
 		}
 		
@@ -53,16 +53,16 @@ public class PostServlet extends HttpServlet {
 			long eventId; // TODO: get eventID, eventually this will be string not long
 			String attendee; // TODO: get attendee
 //			if (EventDatastore.deleteAttendee(eventId, attendee)) {
-//				resp.sendRedirect("/sendmsg.do");
+//				resp.sendRedirect("/send_event_update_msg.do");
 //			}
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_GET_EVENTS)) {
-			resp.sendRedirect("/get_history.do");
+			resp.sendRedirect("/get_event_history.do");
 		}
 		
 		if (taskType.equals(DataGlobals.TASK_TYPE_GET_USERS)) {
-			// TODO: resp.sendRedirect("/get_history.do"); for user data!
+			resp.sendRedirect("/get_user_history.do");
 		}
 
 	}

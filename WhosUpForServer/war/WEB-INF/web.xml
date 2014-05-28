@@ -15,12 +15,21 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>get_history</servlet-name>
+		<servlet-name>get_event_history</servlet-name>
 		<servlet-class>edu.dartmouth.cs.whosupfor.server.GetHistoryServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>get_history</servlet-name>
-		<url-pattern>/get_history.do</url-pattern>
+		<servlet-name>get_event_history</servlet-name>
+		<url-pattern>/get_event_history.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>get_user_history</servlet-name>
+		<servlet-class>edu.dartmouth.cs.whosupfor.server.GetUserHistoryServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>get_user_history</servlet-name>
+		<url-pattern>/get_user_history.do</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -33,12 +42,21 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>sendmsg</servlet-name>
+		<servlet-name>send_event_update_msg</servlet-name>
 		<servlet-class>edu.dartmouth.cs.whosupfor.server.SendMessagesServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>sendmsg</servlet-name>
-		<url-pattern>/sendmsg.do</url-pattern>
+		<servlet-name>send_event_update_msg</servlet-name>
+		<url-pattern>/send_event_update_msg.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>send_user_update_msg</servlet-name>
+		<servlet-class>edu.dartmouth.cs.whosupfor.server.SendMessagesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>send_user_update_msg</servlet-name>
+		<url-pattern>/send_user_update_msg.do</url-pattern>
 	</servlet-mapping>
 
 	<servlet>

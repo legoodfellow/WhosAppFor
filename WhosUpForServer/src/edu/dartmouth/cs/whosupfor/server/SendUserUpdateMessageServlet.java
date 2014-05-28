@@ -29,12 +29,10 @@ import edu.dartmouth.cs.whosupfor.server.data.RegDatastore;
 
 /**
  * Servlet that adds a new message to all registered devices informing
- * them to update their event database.
- * <p>
- * This servlet is used just by the browser (i.e., not device).
+ * them to update their user database
  */
 @SuppressWarnings("serial")
-public class SendMessagesServlet extends HttpServlet {
+public class SendUserUpdateMessageServlet extends HttpServlet {
 
 	private static final int MAX_RETRY = 5;
 
@@ -47,14 +45,14 @@ public class SendMessagesServlet extends HttpServlet {
 		List<String> devices = RegDatastore.getDevices();
 		
 		Message message = new Message(devices);
-		message.addData("message", "update");
+		message.addData("message", "update_user");
 
 		// Have to hard-code the API key when creating the Sender
 		Sender sender = new Sender(Globals.GCMAPIKEY);
 		// Send the message to device, at most retrying MAX_RETRY times
 		sender.send(message, MAX_RETRY);
 
-		resp.sendRedirect("/get_history.do");
+		resp.sendRedirect("/get_user_history.do");
 	}
 
 	@Override
