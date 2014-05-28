@@ -105,8 +105,13 @@ public class EventDetailsActivity extends ListActivity {
 			}
 
 			// Event Organizer name
-			((TextView) findViewById(R.id.eventDetailActivityTextName))
-					.setText(extras.getString(Globals.KEY_USER_FIRST_NAME));
+			try {
+				((TextView) findViewById(R.id.eventDetailActivityTextName))
+						.setText(extras.getString(Globals.KEY_USER_FIRST_NAME));
+			} catch (Exception e) {
+				((TextView) findViewById(R.id.eventDetailActivityTextName))
+						.setText("unknown");
+			}
 
 			// Event type
 			((TextView) findViewById(R.id.eventDetailActivityTextType))

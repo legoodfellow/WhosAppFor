@@ -44,22 +44,17 @@ public class UserEntry {
 	 * @return
 	 */
 	public void fromJSONObject(JSONObject obj) {
-		try {
-			mDbId = obj.getLong(Globals.KEY_USER_ROWID);
-			mFirstName = obj.getString(Globals.KEY_USER_FIRST_NAME);
-			mLastName = obj.getString(Globals.KEY_USER_LAST_NAME);
-			mEmail = obj.getString(Globals.KEY_USER_EMAIL);
-			mBio = obj.getString(Globals.KEY_USER_BIO);
-			mGender = obj.getInt(Globals.KEY_USER_GENDER);
-			mClassYear = obj.getInt(Globals.KEY_USER_CLASS_YEAR);
-			mMajor = obj.getString(Globals.KEY_USER_MAJOR);
-			mPassword = obj.getString(Globals.KEY_USER_PASSWORD);
+		mDbId = obj.optLong(Globals.KEY_USER_ROWID);
+		mFirstName = obj.optString(Globals.KEY_USER_FIRST_NAME);
+		mLastName = obj.optString(Globals.KEY_USER_LAST_NAME);
+		mEmail = obj.optString(Globals.KEY_USER_EMAIL);
+		mBio = obj.optString(Globals.KEY_USER_BIO);
+		mGender = obj.optInt(Globals.KEY_USER_GENDER);
+		mClassYear = obj.optInt(Globals.KEY_USER_CLASS_YEAR);
+		mMajor = obj.optString(Globals.KEY_USER_MAJOR);
+		mPassword = obj.optString(Globals.KEY_USER_PASSWORD);
 //			String decodedImage = obj.getString(Globals.KEY_USER_PROFILE_PHOTO);
 //			mProfilePhoto = Base64.decode(decodedImage, Base64.DEFAULT);
-
-		} catch (JSONException e) {
-			
-		}
 		
 	}
 

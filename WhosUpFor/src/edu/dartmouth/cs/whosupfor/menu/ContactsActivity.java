@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -144,9 +145,50 @@ public class ContactsActivity extends ListActivity {
 			// mHolder.mButton.setVisibility(View.GONE);
 			// }
 
+			// Set onClick listener
+			convertView.setOnClickListener(new OnItemClickListener(position));
 			// Log.d(TAG, "getView() finished");
 			return convertView;
 
+		}
+
+		/**
+		 * Helper class OnItemClickListener, hanlde the click on list item
+		 * 
+		 * @author Aaron Jun Yang
+		 * 
+		 */
+		private class OnItemClickListener implements OnClickListener {
+
+			private int mPosition;
+
+			public OnItemClickListener(int position) {
+				mPosition = position;
+			}
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Bundle extras = new Bundle();
+				int mIntValue = -1;
+				String mValue = " ";
+				ArrayList<String> mAttendees = new ArrayList<String>();
+				Intent intent = new Intent();
+
+				// Write row id into extras.
+				extras.putLong(Globals.KEY_EVENT_ROWID, mEntries.get(mPosition)
+						.getID());
+
+				// Add user email
+				extras.putString(Globals.KEY_USER_EMAIL, mEntries
+						.get(mPosition).getEmail());
+
+				// Fire intent to EventDetailActivity
+				intent.setClass(mContext, EditProfileActivity.class);
+				intent.putExtras(extras);
+				startActivity(intent);
+
+			}
 		}
 
 		// ViewHolder class that hold over ListView Item

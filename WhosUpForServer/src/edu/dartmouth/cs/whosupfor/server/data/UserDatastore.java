@@ -139,9 +139,9 @@ public class UserDatastore {
 		user.setFirstName((String) entity.getProperty(Globals.KEY_USER_FIRST_NAME));
 		user.setLastName((String) entity.getProperty(Globals.KEY_USER_LAST_NAME));
 		user.setBio((String) entity.getProperty(Globals.KEY_USER_BIO));
-		user.setGender((Integer) entity.getProperty(Globals.KEY_USER_GENDER));
-		user.setClassYear((Integer) entity.getProperty(Globals.KEY_USER_CLASS_YEAR));
-		user.setMajor((String) entity.getProperty(Globals.KEY_USER_MAJOR));
+//		user.setGender((int)(entity.getProperty(Globals.KEY_USER_GENDER)));
+//		user.setClassYear((Integer) entity.getProperty(Globals.KEY_USER_CLASS_YEAR));
+//		user.setMajor((String) entity.getProperty(Globals.KEY_USER_MAJOR));
 //		user.setProfilePhoto((String) entity.getProperty(Globals.KEY_USER_PROFILE_PHOTO));
 //		user.setPassword((String) entity.getProperty(Globals.KEY_USER_PASSWORD));
 		
