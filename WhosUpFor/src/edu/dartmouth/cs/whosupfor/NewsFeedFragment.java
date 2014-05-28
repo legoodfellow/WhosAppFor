@@ -125,6 +125,24 @@ public class NewsFeedFragment extends ListFragment {
 	}
 
 	/**
+	 * Broadcast Receiver
+	 * 
+	 * @author Aaron Jun Yang
+	 * 
+	 */
+	private class MyBroadcastReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String msg = intent.getStringExtra("message");
+			if (msg != null && msg.equals("update")) {
+				refreshPostHistory();
+			} else if (msg != null && msg.equals("update_user")) {
+				refreshUserHistory();
+			}
+		}
+	}
+
+	/**
 	 * Refresh event list
 	 */
 	private void refreshPostHistory() {
@@ -133,7 +151,7 @@ public class NewsFeedFragment extends ListFragment {
 			@Override
 			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
 				// Call GetHistoryServlet on server side
-				String url = Globals.SERVER_ADDR + "/get_history.do";
+				String url = Globals.SERVER_ADDR + "/get_event_history.do";
 				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("task_type", "get_events");
@@ -173,25 +191,6 @@ public class NewsFeedFragment extends ListFragment {
 		}.execute();
 	}
 
-	/**
-	 * Broadcast Receiver
-	 * 
-	 * @author Aaron Jun Yang
-	 * 
-	 */
-	private class MyBroadcastReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String msg = intent.getStringExtra("message");
-			if (msg != null && msg.equals("update")) {
-				refreshPostHistory();
-			}
-			else if (msg != null && msg.equals("update_user")){
-				refreshUserHistory();
-			}
-		}
-	}
-	
 	/**
 	 * Refresh event list
 	 */
@@ -233,7 +232,6 @@ public class NewsFeedFragment extends ListFragment {
 			}
 		}.execute();
 	}
-
 
 	// -----------------------------------------------------------------------------------------
 	// ArrayAdapter

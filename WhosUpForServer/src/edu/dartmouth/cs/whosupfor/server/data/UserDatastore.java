@@ -2,6 +2,7 @@ package edu.dartmouth.cs.whosupfor.server.data;
 
 import java.util.ArrayList;
 
+import com.google.android.gms.R.integer;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -124,8 +125,8 @@ public class UserDatastore {
 		entity.setProperty(Globals.KEY_USER_GENDER, user.getGender());
 		entity.setProperty(Globals.KEY_USER_CLASS_YEAR, user.getClassYear());
 		entity.setProperty(Globals.KEY_USER_MAJOR, user.getMajor());
-		entity.setProperty(Globals.KEY_USER_PROFILE_PHOTO, user.getProfilePhoto());
-		entity.setProperty(Globals.KEY_USER_PASSWORD, user.getPassword());
+//		entity.setProperty(Globals.KEY_USER_PROFILE_PHOTO, user.getProfilePhotoInString());
+//		entity.setProperty(Globals.KEY_USER_PASSWORD, user.getPassword());
 	}
 	
 	private static UserEntry getUserEntryFromEntity(Entity entity){
@@ -138,11 +139,11 @@ public class UserDatastore {
 		user.setFirstName((String) entity.getProperty(Globals.KEY_USER_FIRST_NAME));
 		user.setLastName((String) entity.getProperty(Globals.KEY_USER_LAST_NAME));
 		user.setBio((String) entity.getProperty(Globals.KEY_USER_BIO));
-		user.setGender((int) entity.getProperty(Globals.KEY_USER_GENDER));
-		user.setClassYear((int) entity.getProperty(Globals.KEY_USER_CLASS_YEAR));
+		user.setGender((Integer) entity.getProperty(Globals.KEY_USER_GENDER));
+		user.setClassYear((Integer) entity.getProperty(Globals.KEY_USER_CLASS_YEAR));
 		user.setMajor((String) entity.getProperty(Globals.KEY_USER_MAJOR));
-		user.setProfilePhoto((byte[]) entity.getProperty(Globals.KEY_USER_PROFILE_PHOTO));
-		user.setPassword((String) entity.getProperty(Globals.KEY_USER_PASSWORD));
+//		user.setProfilePhoto((String) entity.getProperty(Globals.KEY_USER_PROFILE_PHOTO));
+//		user.setPassword((String) entity.getProperty(Globals.KEY_USER_PASSWORD));
 		
 		return user;
 	}

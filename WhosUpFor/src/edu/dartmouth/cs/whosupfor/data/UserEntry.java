@@ -54,8 +54,8 @@ public class UserEntry {
 			mClassYear = obj.getInt(Globals.KEY_USER_CLASS_YEAR);
 			mMajor = obj.getString(Globals.KEY_USER_MAJOR);
 			mPassword = obj.getString(Globals.KEY_USER_PASSWORD);
-			String decodedImage = obj.getString(Globals.KEY_USER_PROFILE_PHOTO);
-			mProfilePhoto = Base64.decode(decodedImage, Base64.DEFAULT);
+//			String decodedImage = obj.getString(Globals.KEY_USER_PROFILE_PHOTO);
+//			mProfilePhoto = Base64.decode(decodedImage, Base64.DEFAULT);
 
 		} catch (JSONException e) {
 			
@@ -63,7 +63,7 @@ public class UserEntry {
 		
 	}
 
-	/**
+	/** 
 	 * Convert UserEntry to JSON file upload it to web
 	 * 
 	 * @return
@@ -82,8 +82,8 @@ public class UserEntry {
 			obj.put(Globals.KEY_USER_MAJOR, mMajor);
 			obj.put(Globals.KEY_USER_PASSWORD, mPassword);
 			
-			String encodedImage = Base64.encodeToString(mProfilePhoto, Base64.DEFAULT);
-			obj.put(Globals.KEY_USER_PROFILE_PHOTO, encodedImage);
+//			String encodedImage = Base64.encodeToString(mProfilePhoto, Base64.DEFAULT);
+//			obj.put(Globals.KEY_USER_PROFILE_PHOTO, encodedImage);
 		} catch (JSONException e) {
 			return null;
 		}
@@ -211,9 +211,18 @@ public class UserEntry {
 	public void setProfilePhoto(byte[] profilePhoto) {
 		mProfilePhoto = profilePhoto;
 	}
+	
+	public void setProfilePhoto(String profilePhoto) {
+		mProfilePhoto = Base64.decode(profilePhoto, Base64.DEFAULT);
+	}
 
 	public byte[] getProfilePhoto() {
 		return mProfilePhoto;
+	}
+	
+	public String getProfilePhotoInString (){
+		String encodedImage = Base64.encodeToString(mProfilePhoto, Base64.DEFAULT);
+		return encodedImage;
 	}
 
 }

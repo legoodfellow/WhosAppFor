@@ -12,7 +12,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	<servlet-mapping>
 		<servlet-name>query</servlet-name>
 		<url-pattern>/query.do</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping>get_event_historyget_event_history
 
 	<servlet>
 		<servlet-name>get_event_history</servlet-name>

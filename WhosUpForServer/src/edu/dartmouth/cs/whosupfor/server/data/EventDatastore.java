@@ -161,6 +161,7 @@ public class EventDatastore {
 		}
 		
 		entity.setProperty(Globals.KEY_EVENT_ROWID, event.getEventId());
+		entity.setProperty(Globals.KEY_EVENT_ID, event.getEventId());
 		entity.setProperty(Globals.KEY_EVENT_EMAIL, event.getEmail());
 		entity.setProperty(Globals.KEY_EVENT_TITLE, event.getEventTitle());
 		entity.setProperty(Globals.KEY_EVENT_TYPE, event.getEventType());

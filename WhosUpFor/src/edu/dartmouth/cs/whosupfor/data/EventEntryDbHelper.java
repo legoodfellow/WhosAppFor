@@ -82,7 +82,7 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 		mDatabase = getWritableDatabase();
 		ContentValues values = new ContentValues();
 
-		entry.setEventId();
+//		entry.setEventId();
 		
 		values.put(Globals.KEY_EVENT_ID, entry.getEventId());
 		values.put(Globals.KEY_EVENT_EMAIL, entry.getEmail());
@@ -277,7 +277,8 @@ public class EventEntryDbHelper extends SQLiteOpenHelper {
 
 		mEventEntry.setAttendees(cursor.getBlob(cursor
 				.getColumnIndex(Globals.KEY_EVENT_ATTENDEES)));
-		mEventEntry.setEventId();
+		mEventEntry.setEventId(cursor.getString(cursor
+				.getColumnIndex(Globals.KEY_EVENT_ID)));
 
 		return mEventEntry;
 	}

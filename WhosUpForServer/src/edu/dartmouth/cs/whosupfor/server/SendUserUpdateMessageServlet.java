@@ -52,7 +52,8 @@ public class SendUserUpdateMessageServlet extends HttpServlet {
 		// Send the message to device, at most retrying MAX_RETRY times
 		sender.send(message, MAX_RETRY);
 
-		resp.sendRedirect("/get_user_history.do");
+
+//		resp.sendRedirect("/get_user_history.do");
 	}
 
 	@Override

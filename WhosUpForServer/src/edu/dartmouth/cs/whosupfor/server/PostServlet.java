@@ -31,6 +31,7 @@ public class PostServlet extends HttpServlet {
 		String taskType = req.getParameter(DataGlobals.POST_KEY_TASK_TYPE);
 		System.out.println(postText);
 		System.out.println(taskType);
+		
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_EVENT)) {
 			createNewEvent(postText);
 			resp.sendRedirect("/send_event_update_msg.do");
@@ -81,7 +82,7 @@ public class PostServlet extends HttpServlet {
 			JSONArray jsonArray = new JSONArray(postText);
 			for (int i=0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				if (jsonObject.has(Globals.KEY_EVENT_ID)) {
+				if (jsonObject.optString(Globals.KEY_EVENT_ID) != null) {
 					EventEntry event = jsonToEventEntry(jsonObject);
 					EventDatastore.add(event);
 				}
@@ -98,7 +99,7 @@ public class PostServlet extends HttpServlet {
 			for (int i=0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				System.out.println("jsonobj: " + jsonObject);
-				if (jsonObject.has(Globals.KEY_USER_EMAIL)) {
+				if (jsonObject.optString(Globals.KEY_USER_EMAIL) != null) {
 					System.out.println("add user");
 					UserEntry user = jsonToUserEntry(jsonObject);
 					UserDatastore.add(user);
@@ -146,8 +147,8 @@ public class PostServlet extends HttpServlet {
 			user.setGender(userJSON.optInt(Globals.KEY_USER_GENDER));
 			user.setClassYear(userJSON.optInt(Globals.KEY_USER_CLASS_YEAR));
 			user.setMajor(userJSON.optString(Globals.KEY_USER_MAJOR));
-			user.setProfilePhoto((byte[]) userJSON.opt(Globals.KEY_USER_PROFILE_PHOTO));
-			user.setPassword(userJSON.optString(Globals.KEY_USER_PASSWORD));
+//			user.setProfilePhoto(userJSON.optString(Globals.KEY_USER_PROFILE_PHOTO));
+//			user.setPassword(userJSON.optString(Globals.KEY_USER_PASSWORD));
 		}
 		return user;
 	}

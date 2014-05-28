@@ -234,10 +234,11 @@ public class CreateNewEventActivity extends Activity {
 
 		// EventTimeStamp
 		mEventEntry.setTimeStamp(System.currentTimeMillis());
-		
+		mEventEntry.setEventId();
+
 		// Save it to database
-//		mEventEntryDbHelper.insertEntry(mEventEntry);
-//		mEventEntryDbHelper.close();
+		// mEventEntryDbHelper.insertEntry(mEventEntry);
+		// mEventEntryDbHelper.close();
 
 		// -------------------------------------------------------------------------------
 		// GCM
@@ -252,7 +253,8 @@ public class CreateNewEventActivity extends Activity {
 	/**
 	 * Post new event to Google Cloud
 	 * 
-	 * @param msg :  JSON string
+	 * @param msg
+	 *            : JSON string
 	 */
 	private void postMsg(String msg) {
 		new AsyncTask<String, Void, ArrayList<EventEntry>>() {
@@ -278,12 +280,56 @@ public class CreateNewEventActivity extends Activity {
 			@Override
 			protected void onPostExecute(ArrayList<EventEntry> res) {
 				// mPostText.setText("");
-				// refreshPostHistory();
+				refreshPostHistory();
 			}
 
 		}.execute(msg);
 		Log.d(Globals.TAG_CREATE_NEW_EVENT_ACTIVITY,
 				"postMsg().doInBackground() got called");
+	}
+
+	/**
+	 * Refresh event list
+	 */
+	private void refreshPostHistory() {
+		new AsyncTask<Void, Void, ArrayList<EventEntry>>() {
+
+			@Override
+			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
+				// Call GetHistoryServlet on server side
+				String url = Globals.SERVER_ADDR + "/get_event_history.do";
+				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("task_type", "get_events");
+				// Get ArrayList<EventEntry> from datastore
+				try {
+					res = ServerUtilities.post(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			/**
+			 * Update the event list and local database
+			 */
+			protected void onPostExecute(ArrayList<EventEntry> res) {
+				if (!res.isEmpty() || res.size() != 0) {
+
+					// Update database
+					mEventEntryDbHelper.getWritableDatabase();
+					mEventEntryDbHelper.removeAllEntries();
+					for (EventEntry eventEntry : res) {
+						mEventEntryDbHelper.insertEntry(eventEntry);
+					}
+					mEventEntryDbHelper.close();
+
+				}
+			}
+
+		}.execute();
 	}
 
 	// private void postMsg(String msg) {

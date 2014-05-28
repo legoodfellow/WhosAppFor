@@ -83,6 +83,7 @@ public class EventEntry {
 				.optLong(Globals.KEY_EVENT_END_DATE_TIME));
 		mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
 		mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
+		mEventId = obj.optString(Globals.KEY_EVENT_ID);
 
 		JSONArray attendees = obj.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
 		for (int i = 0; i < attendees.length(); i++) {
@@ -114,6 +115,7 @@ public class EventEntry {
 					mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
+			obj.put(Globals.KEY_EVENT_ID, mEventId);
 
 			JSONArray attendees = new JSONArray();
 			for (int i = 0; i < mAttendees.size(); i++) {

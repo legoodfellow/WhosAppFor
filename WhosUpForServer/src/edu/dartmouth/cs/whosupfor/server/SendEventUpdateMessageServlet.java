@@ -54,7 +54,7 @@ public class SendEventUpdateMessageServlet extends HttpServlet {
 		// Send the message to device, at most retrying MAX_RETRY times
 		sender.send(message, MAX_RETRY);
 
-		resp.sendRedirect("/get_history.do");
+//		resp.sendRedirect("/get_history.do");
 	}
 
 	@Override

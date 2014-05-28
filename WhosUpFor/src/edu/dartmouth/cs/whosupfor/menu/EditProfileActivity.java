@@ -492,6 +492,10 @@ public class EditProfileActivity extends Activity {
 				FileInputStream fis = openFileInput(getString(R.string.preference_key_edit_profile_photo_file_name));
 				Bitmap bmap = BitmapFactory.decodeStream(fis);
 				mImageView.setImageBitmap(bmap);
+				// Convert bitmap to byte[]
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				bmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+				mByteArray = stream.toByteArray();
 				fis.close();
 			} catch (IOException e) {
 				// Default profile photo if no photo saved before.
