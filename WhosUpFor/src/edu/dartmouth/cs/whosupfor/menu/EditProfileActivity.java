@@ -309,7 +309,7 @@ public class EditProfileActivity extends Activity {
 			@Override
 			protected ArrayList<UserEntry> doInBackground(Void... arg0) {
 				// Call GetHistoryServlet on server side
-				String url = Globals.SERVER_ADDR + "/get_history.do";
+				String url = Globals.SERVER_ADDR + "/get_user_history.do";
 				ArrayList<UserEntry> res = new ArrayList<UserEntry>();
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("task_type", "get_users");

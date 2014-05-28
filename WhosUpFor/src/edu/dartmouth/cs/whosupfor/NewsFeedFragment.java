@@ -3,7 +3,6 @@ package edu.dartmouth.cs.whosupfor;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +12,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -135,7 +133,7 @@ public class NewsFeedFragment extends ListFragment {
 			@Override
 			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
 				// Call GetHistoryServlet on server side
-				String url = Globals.SERVER_ADDR + "/get_event_history.do";
+				String url = Globals.SERVER_ADDR + "/get_history.do";
 				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("task_type", "get_events");
@@ -188,8 +186,54 @@ public class NewsFeedFragment extends ListFragment {
 			if (msg != null && msg.equals("update")) {
 				refreshPostHistory();
 			}
+			else if (msg != null && msg.equals("update_user")){
+				refreshUserHistory();
+			}
 		}
 	}
+	
+	/**
+	 * Refresh event list
+	 */
+	private void refreshUserHistory() {
+		new AsyncTask<Void, Void, ArrayList<UserEntry>>() {
+
+			@Override
+			protected ArrayList<UserEntry> doInBackground(Void... arg0) {
+				// Call GetHistoryServlet on server side
+				String url = Globals.SERVER_ADDR + "/get_user_history.do";
+				ArrayList<UserEntry> res = new ArrayList<UserEntry>();
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("task_type", "get_users");
+				// Get ArrayList<EventEntry> from datastore
+				try {
+					res = ServerUtilities.postUser(url, params);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				return res;
+			}
+
+			@Override
+			/**
+			 * Update the userEntry in the local database
+			 */
+			protected void onPostExecute(ArrayList<UserEntry> res) {
+				if (!res.isEmpty() || res.size() != 0) {
+
+					// Update database
+					mUserEntryDbHelper.getWritableDatabase();
+					mUserEntryDbHelper.removeAllEntries();
+					for (UserEntry userEntry : res) {
+						mUserEntryDbHelper.insertEntry(userEntry);
+					}
+					mUserEntryDbHelper.close();
+				}
+			}
+		}.execute();
+	}
+
 
 	// -----------------------------------------------------------------------------------------
 	// ArrayAdapter
@@ -454,6 +498,7 @@ public class NewsFeedFragment extends ListFragment {
 						.newInstance(R.string.ui_news_feed_fragment_btn_filter);
 				fragment.show(getActivity().getFragmentManager(),
 						getString(R.string.ui_news_feed_fragment_btn_filter));
+
 			}
 		});
 	}

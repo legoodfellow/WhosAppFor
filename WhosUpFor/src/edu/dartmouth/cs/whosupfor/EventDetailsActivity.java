@@ -234,7 +234,7 @@ public class EventDetailsActivity extends ListActivity {
 			@Override
 			protected ArrayList<EventEntry> doInBackground(Void... arg0) {
 				// Call GetHistoryServlet on server side
-				String url = Globals.SERVER_ADDR + "/get_history.do";
+				String url = Globals.SERVER_ADDR + "/get_event_history.do";
 				ArrayList<EventEntry> res = new ArrayList<EventEntry>();
 
 				Map<String, String> params = new HashMap<String, String>();

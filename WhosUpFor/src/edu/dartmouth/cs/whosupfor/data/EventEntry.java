@@ -32,8 +32,8 @@ public class EventEntry {
 	// location ("Boloco", "Sudikoff", etc) (GPS
 	// data might be added for v2)
 	private Calendar mTimeStamp; // Automatically generated timestamp in
-	// milliseconds
-	// of when the event was created
+									// milliseconds
+									// of when the event was created
 	private Calendar mStartDateTime;
 	private Calendar mEndDateTime;
 	// private String mStartDate; // Event start date
@@ -43,7 +43,7 @@ public class EventEntry {
 	private String mDetail; // The organizer's comment with event details
 	private ArrayList<String> mAttendees; // List of attendee IDs
 	private int mCircle; // Indicates which friend circle can view the event (
-	// e.g. 0 = public, 1 = friends)
+							// e.g. 0 = public, 1 = friends)
 	private String mEventId;
 
 	public EventEntry() {
@@ -72,18 +72,20 @@ public class EventEntry {
 	 */
 	public void fromJSONObject(JSONObject obj) {
 		mDbId = obj.optLong(Globals.KEY_EVENT_ROWID);
-		mEventId = obj.optString(Globals.KEY_EVENT_ID);
 		mEmail = obj.optString(Globals.KEY_EVENT_EMAIL);
 		mEventType = obj.optInt(Globals.KEY_EVENT_TYPE);
 		mEventTitle = obj.optString(Globals.KEY_EVENT_TITLE);
 		mLocation = obj.optString(Globals.KEY_EVENT_LOCATION);
 		mTimeStamp.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_TIME_STAMP));
-		mStartDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_START_DATE_TIME));
-		mEndDateTime.setTimeInMillis(obj.optLong(Globals.KEY_EVENT_END_DATE_TIME));
+		mStartDateTime.setTimeInMillis(obj
+				.optLong(Globals.KEY_EVENT_START_DATE_TIME));
+		mEndDateTime.setTimeInMillis(obj
+				.optLong(Globals.KEY_EVENT_END_DATE_TIME));
 		mDetail = obj.optString(Globals.KEY_EVENT_DETAIL);
 		mCircle = obj.optInt(Globals.KEY_EVENT_CIRCLE);
+
 		JSONArray attendees = obj.optJSONArray(Globals.KEY_EVENT_ATTENDEES);
-		for (int i=0; i < attendees.length(); i++){
+		for (int i = 0; i < attendees.length(); i++) {
 			String attendee = attendees.optString(i, null);
 			if (attendee != null) {
 				mAttendees.add(attendee);
@@ -101,7 +103,6 @@ public class EventEntry {
 
 		try {
 			obj.put(Globals.KEY_EVENT_ROWID, mDbId);
-			obj.put(Globals.KEY_EVENT_ID, mEventId);
 			obj.put(Globals.KEY_EVENT_EMAIL, mEmail);
 			obj.put(Globals.KEY_EVENT_TYPE, mEventType);
 			obj.put(Globals.KEY_EVENT_TITLE, mEventTitle);
@@ -113,16 +114,14 @@ public class EventEntry {
 					mEndDateTime.getTimeInMillis());
 			obj.put(Globals.KEY_EVENT_DETAIL, mDetail);
 			obj.put(Globals.KEY_EVENT_CIRCLE, mCircle);
-			mAttendees.add("test1@gmail.com");
-			mAttendees.add("test@gmail.com");
+
 			JSONArray attendees = new JSONArray();
-			for (int i=0; i< mAttendees.size(); i++){
+			for (int i = 0; i < mAttendees.size(); i++) {
 				attendees.put(mAttendees.get(i));
 			}
 			obj.put(Globals.KEY_EVENT_ATTENDEES, attendees);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return null;
 		}
 
 		return obj;

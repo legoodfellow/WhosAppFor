@@ -238,15 +238,15 @@ containing a value of this type.
         public static final int icon_selfies=0x7f02001e;
     }
     public static final class id {
-        public static final int action_settings=0x7f050045;
+        public static final int action_settings=0x7f050046;
         public static final int activitySelectNewEventTypeBtnAddNew=0x7f05002a;
         public static final int activitySelectNewEventTypeBtnFood=0x7f050025;
         public static final int activitySelectNewEventTypeBtnMovie=0x7f050028;
         public static final int activitySelectNewEventTypeBtnParty=0x7f050029;
         public static final int activitySelectNewEventTypeBtnSports=0x7f050026;
         public static final int activitySelectNewEventTypeBtnStudy=0x7f050027;
-        public static final int btnNewsFeedFragmentFilter=0x7f050040;
-        public static final int btnNewsFeedFragmentPostEvent=0x7f050041;
+        public static final int btnNewsFeedFragmentFilter=0x7f050041;
+        public static final int btnNewsFeedFragmentPostEvent=0x7f050042;
         public static final int contactListItemDelete=0x7f05002e;
         public static final int contactListItemUserName=0x7f05002d;
         public static final int contactListItemUserProfileImage=0x7f05002c;
@@ -287,30 +287,31 @@ containing a value of this type.
         public static final int eventListItemStartDateTime=0x7f050033;
         public static final int eventListItemUserName=0x7f050030;
         public static final int eventListItemUserProfileImage=0x7f05002f;
-        public static final int fragmentFilterDialogRadioCircle=0x7f05003a;
-        public static final int fragmentFilterDialogRadioCircleCS65=0x7f05003c;
-        public static final int fragmentFilterDialogRadioCircleFriends=0x7f05003b;
-        public static final int fragmentFilterDialogRadioCirclePublic=0x7f05003d;
-        public static final int fragmentFilterDialogRadioEventMovie=0x7f050038;
-        public static final int fragmentFilterDialogRadioEventParty=0x7f050039;
-        public static final int fragmentFilterDialogRadioEventSports=0x7f050036;
-        public static final int fragmentFilterDialogRadioEventStudy=0x7f050037;
-        public static final int fragmentFilterDialogRadioEventType=0x7f050034;
-        public static final int fragmentFilterDialogRadioEventTypeFood=0x7f050035;
+        public static final int fragmentFilterContainer=0x7f050034;
+        public static final int fragmentFilterDialogRadioCircle=0x7f05003b;
+        public static final int fragmentFilterDialogRadioCircleCS65=0x7f05003d;
+        public static final int fragmentFilterDialogRadioCircleFriends=0x7f05003c;
+        public static final int fragmentFilterDialogRadioCirclePublic=0x7f05003e;
+        public static final int fragmentFilterDialogRadioEventMovie=0x7f050039;
+        public static final int fragmentFilterDialogRadioEventParty=0x7f05003a;
+        public static final int fragmentFilterDialogRadioEventSports=0x7f050037;
+        public static final int fragmentFilterDialogRadioEventStudy=0x7f050038;
+        public static final int fragmentFilterDialogRadioEventType=0x7f050035;
+        public static final int fragmentFilterDialogRadioEventTypeFood=0x7f050036;
         public static final int hybrid=0x7f050004;
-        public static final int imageNewsFeedFragmentProfile=0x7f05003f;
-        public static final int menuitem_add_contacts=0x7f050044;
-        public static final int menuitem_contacts=0x7f050047;
-        public static final int menuitem_logout=0x7f050049;
-        public static final int menuitem_profile=0x7f050046;
-        public static final int menuitem_settings=0x7f050048;
-        public static final int newsFeedFirstLayout=0x7f05003e;
+        public static final int imageNewsFeedFragmentProfile=0x7f050040;
+        public static final int menuitem_add_contacts=0x7f050045;
+        public static final int menuitem_contacts=0x7f050048;
+        public static final int menuitem_logout=0x7f05004a;
+        public static final int menuitem_profile=0x7f050047;
+        public static final int menuitem_settings=0x7f050049;
+        public static final int newsFeedFirstLayout=0x7f05003f;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int pager=0x7f050024;
         public static final int satellite=0x7f050002;
-        public static final int settingsListItemName=0x7f050042;
-        public static final int settingsSwitch=0x7f050043;
+        public static final int settingsListItemName=0x7f050043;
+        public static final int settingsSwitch=0x7f050044;
         public static final int terrain=0x7f050003;
     }
     public static final class integer {
@@ -339,9 +340,8 @@ containing a value of this type.
         public static final int event_details=0x7f0b0003;
         public static final int login=0x7f0b0004;
         public static final int main=0x7f0b0005;
-        public static final int post=0x7f0b0006;
-        public static final int select_new_event_type=0x7f0b0007;
-        public static final int settings=0x7f0b0008;
+        public static final int select_new_event_type=0x7f0b0006;
+        public static final int settings=0x7f0b0007;
     }
     public static final class string {
         public static final int action_settings=0x7f06001c;
