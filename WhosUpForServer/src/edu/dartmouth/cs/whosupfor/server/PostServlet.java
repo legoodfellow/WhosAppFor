@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
+import com.google.common.io.BaseEncoding;
 
 import edu.dartmouth.cs.whosupfor.data.EventEntry;
 import edu.dartmouth.cs.whosupfor.data.UserEntry;
@@ -37,9 +38,7 @@ public class PostServlet extends HttpServlet {
 		}
 
 		if (taskType.equals(DataGlobals.TASK_TYPE_CREATE_NEW_USER)) {
-			System.out.println("create new user");
 			createNewUser(postText);
-			System.out.println("new user created");
 			resp.sendRedirect("/send_user_update_msg.do");
 		}
 
@@ -50,7 +49,6 @@ public class PostServlet extends HttpServlet {
 				System.out.println("add");
 				boolean result = EventDatastore.addAttendee(eventId, attendee);
 				if (result) {
-//					resp.sendRedirect("/get_event_history.do");
 					resp.sendRedirect("/send_event_update_msg.do");
 				}
 			}
@@ -105,7 +103,6 @@ public class PostServlet extends HttpServlet {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				System.out.println("jsonobj: " + jsonObject);
 				if (jsonObject.optString(Globals.KEY_USER_EMAIL) != null) {
-					System.out.println("add user");
 					UserEntry user = jsonToUserEntry(jsonObject);
 					UserDatastore.add(user);
 				}
@@ -155,9 +152,10 @@ public class PostServlet extends HttpServlet {
 			user.setGender(userJSON.optInt(Globals.KEY_USER_GENDER));
 			user.setClassYear(userJSON.optInt(Globals.KEY_USER_CLASS_YEAR));
 			user.setMajor(userJSON.optString(Globals.KEY_USER_MAJOR));
-//			user.setProfilePhoto((String) userJSON
-//					.optString(Globals.KEY_USER_PROFILE_PHOTO));
-			// user.setPassword(userJSON.optString(Globals.KEY_USER_PASSWORD));
+			byte[] profilePhoto = BaseEncoding.base64Url().decode((String) userJSON
+					.optString(Globals.KEY_USER_PROFILE_PHOTO));
+			System.out.println(profilePhoto.toString());
+			user.setProfilePhoto(profilePhoto);
 		}
 		return user;
 	}

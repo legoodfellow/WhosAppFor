@@ -3,7 +3,8 @@ package edu.dartmouth.cs.whosupfor.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.util.Base64;
+import com.google.common.io.BaseEncoding;
+
 import edu.dartmouth.cs.whosupfor.util.Globals;
 
 /**
@@ -23,6 +24,8 @@ public class UserEntry {
 	private String mMajor;
 	private byte[] mProfilePhoto;
 	private String mPassword;
+	private String mBlobKey;
+
 
 	public UserEntry() {
 
@@ -53,8 +56,7 @@ public class UserEntry {
 		mClassYear = obj.optInt(Globals.KEY_USER_CLASS_YEAR);
 		mMajor = obj.optString(Globals.KEY_USER_MAJOR);
 		mPassword = obj.optString(Globals.KEY_USER_PASSWORD);
-//		String decodedImage = obj.optString(Globals.KEY_USER_PROFILE_PHOTO);
-//		mProfilePhoto = Base64.decode(decodedImage, Base64.DEFAULT);
+		mProfilePhoto = BaseEncoding.base64Url().decode((String) obj.optString(Globals.KEY_USER_PROFILE_PHOTO));
 
 	}
 
@@ -76,10 +78,9 @@ public class UserEntry {
 			obj.put(Globals.KEY_USER_CLASS_YEAR, mClassYear);
 			obj.put(Globals.KEY_USER_MAJOR, mMajor);
 			obj.put(Globals.KEY_USER_PASSWORD, mPassword);
-
-//			String encodedImage = Base64.encodeToString(mProfilePhoto,
-//					Base64.DEFAULT);
-//			obj.put(Globals.KEY_USER_PROFILE_PHOTO, encodedImage);
+			String encodedImage = BaseEncoding.base64Url().encode(mProfilePhoto);
+			obj.put(Globals.KEY_USER_PROFILE_PHOTO, encodedImage);
+			
 		} catch (JSONException e) {
 			return null;
 		}
@@ -209,7 +210,7 @@ public class UserEntry {
 	}
 
 	public void setProfilePhoto(String profilePhoto) {
-		mProfilePhoto = Base64.decode(profilePhoto, Base64.DEFAULT);
+		mProfilePhoto = BaseEncoding.base64Url().decode(profilePhoto);
 	}
 
 	public byte[] getProfilePhoto() {
@@ -217,9 +218,15 @@ public class UserEntry {
 	}
 
 	public String getProfilePhotoInString() {
-		String encodedImage = Base64.encodeToString(mProfilePhoto,
-				Base64.DEFAULT);
-		return encodedImage;
+		return BaseEncoding.base64Url().encode(mProfilePhoto);
+	}
+	
+	public String getBlobKey() {
+		return mBlobKey;
+	}
+
+	public void setBlobKey(String blobKey) {
+		this.mBlobKey = blobKey;
 	}
 
 }

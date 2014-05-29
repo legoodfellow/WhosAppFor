@@ -1,8 +1,5 @@
 package edu.dartmouth.cs.whosupfor.util;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
 public class Globals {
 
 	// LOG
@@ -66,6 +63,7 @@ public class Globals {
 	public static final String KEY_USER_MAJOR = "user_major";
 	public static final String KEY_USER_PASSWORD = "user_password";
 	public static final String KEY_USER_PROFILE_PHOTO = "user_profile_photo";
+	public static final String KEY_USER_BLOB_KEY = "user_blob_key";
 
 	// EditProfileActivity
 	public static final String IMG_INSTANCE_STATE_KEY = "saved_image";
@@ -86,11 +84,11 @@ public class Globals {
 	// GCM
 //	 public static final String SERVER_ADDR = "http://10.0.0.3:8888";
 
-	public static final String SERVER_ADDR = "http://10.31.227.124:8888";
+	public static final String SERVER_ADDR = "http://10.31.233.62:8888";
 //	public static final String SERVER_ADDR = "http://whosupfor.appspot.com";
 
-	 public static final String SENDER_ID = "424192184423";
-//	public static final String SENDER_ID = "141554009918";
+//	 public static final String SENDER_ID = "424192184423";
+	public static final String SENDER_ID = "141554009918";
 	public static final String PROPERTY_REG_ID = "registration_id";
 	public static final String PROPERTY_APP_VERSION = "appVersion";
 	public static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
